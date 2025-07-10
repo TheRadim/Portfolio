@@ -4,6 +4,13 @@ html {
   cursor: default;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .name-short .the,
+  .name-short .rad {
+    transition: transform 0.4s ease, color 0.3s ease;
+  }
+}
+
 .container {
   max-width: 1600px;
   margin: 0 auto;
@@ -97,6 +104,48 @@ body {
   cursor: pointer;
 }
 
+.name-short {
+  display: inline-block;
+  transform: translateX(0.8em); /* optional slight right */
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  opacity: 0;
+  position: absolute;
+  left: 0;
+}
+
+.name-short .the {
+  color: #3b7d8e;
+  margin-right: 0.2em;
+  transition: transform 0.4s ease;
+}
+
+.name-short .rad {
+  color: #fafafa;
+  display: inline-block;
+  transform: translateX(1.9em); /* Start a bit right */
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  opacity: 0;
+}
+
+/* When scrolled, slide "RAD" left and fade in */
+.name-scrolled .name-short .rad {
+  transform: translateX(0); /* End position */
+  opacity: 1;
+}
+
+.name-scrolled .name-full {
+  display: none;
+}
+
+.name-scrolled .name-short {
+  opacity: 1;
+  transform: translateX(0);
+  position: static;
+}
+
+.name-scrolled .name-short .rad {
+  transform: translateX(-0.2em); /* smooth shift */
+}
 
 /* === SOCIAL LINKS === */
 .social-link {
@@ -108,6 +157,46 @@ body {
 
 .social-link:hover {
   color: #3b7d8e;
+}
+
+.name-short,
+.name-full {
+  display: inline-block;
+  opacity: 1;
+  transform: translateX(0);
+  transition: 
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+/* When scrolled, hide full name */
+.name-scrolled .name-full {
+  opacity: 0;
+  transform: translateX(-10px);
+  pointer-events: none;
+}
+
+/* When scrolled, show short name */
+.name-short {
+  opacity: 0;
+  transform: translateX(10px);
+  position: absolute;
+  left: 0;
+}
+
+.name-scrolled .name-short {
+  opacity: 1;
+  transform: translateX(0);
+  position: static;
+}
+
+.name-short .the {
+  color: #3b7d8e;
+  margin-right: 0.2em;
+}
+
+.name-short .rad {
+  color: #fafafa;
 }
 
 

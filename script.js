@@ -68,4 +68,13 @@ document.addEventListener('scroll', () => {
   }
 });
 
+const nameWrapper = document.querySelector('.name-wrapper');
+
+if (nameWrapper) {
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY > 50;
+    nameWrapper.classList.toggle('name-scrolled', scrolled);
+  });
+}
+
 });
