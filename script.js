@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const overlay = document.getElementById('contactOverlay');
   const closeBtn = document.getElementById('closeOverlay');
   const themeToggle = document.getElementById('themeToggle');
-  const circle = document.getElementById('bikerCircle');
+const circle = document.getElementById('bikerCircle');
 
   // Load saved theme
   if (localStorage.getItem('theme') === 'dark') {
@@ -45,26 +45,27 @@ const photos = document.getElementById('photos');
 
 document.addEventListener('scroll', () => {
   const scrollTop = window.scrollY;
-  const introBottom = intro?.offsetTop + intro?.offsetHeight;
   const maxScroll = window.innerHeight;
   const containerWidth = window.innerWidth;
 
-  // Animate within first screen height only
-  if (scrollTop < maxScroll) {
-    const progress = Math.min(scrollTop / maxScroll, 1);
+  const progress = Math.min(scrollTop / maxScroll, 1);
 
-    const startLeft = containerWidth;
-    const endLeft = -100;
-    const currentLeft = startLeft + progress * (endLeft - startLeft);
+  const startLeft = containerWidth;
+  const endLeft = -100;
+  const currentLeft = startLeft + progress * (endLeft - startLeft);
 
-    if (circle) {
-      circle.style.left = `${currentLeft}px`;
-      circle.style.opacity = 1;
-    }
-  } else {
-    if (circle) {
-      circle.style.opacity = 0;
-    }
+  // Set top position to be 30% down the viewport OR at least 350px
+  const minTop = 350;
+  const topOffset = Math.max(window.innerHeight * 0.3, minTop);
+
+  if (circle) {
+    circle.style.left = `${currentLeft}px`;
+    circle.style.top = `${topOffset}px`;
+    circle.style.opacity = 1;
+  }
+
+  if (scrollTop > maxScroll && circle) {
+    circle.style.opacity = 0;
   }
 });
 
