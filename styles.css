@@ -20,7 +20,7 @@ body {
   margin: 0;
   background: #fafafa;
   color: #111;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Courier New', Courier, monospace;
   font-size: clamp(14px, 1.5vw + 0.2rem, 18px);
   line-height: 1.1;
   letter-spacing: 0.01em;
@@ -54,7 +54,7 @@ body {
 .name {
   font-size: clamp(2rem, 4vw + 0.2rem, 3.4rem);
   font-weight: 300;
-  padding: 0;
+  padding-left: 20px;
   color: #111;
   text-decoration: none;
   letter-spacing: 0.04em;
@@ -185,8 +185,8 @@ body {
   line-height: 1.0;
   letter-spacing: 0.01em;
   margin-top: 0.3rem;
-  padding: 0;
-  max-width: 700px;
+  padding-left: 20px;
+  max-width: 800px;
 }
 
 .intro-section {
@@ -410,11 +410,11 @@ body.dark-mode .bulb-rope {
 #bikerCircle {
   width: 100px;
   height: 100px;
-  background-image: url('assets/biker-dark.svg');
+  background-image: url('assets/biker-dark.gif');
   background-size: contain;
   background-repeat: no-repeat;
   position: fixed;
-  top: 260px;
+  top: 25vh;
   left: 100vw;
   opacity: 0;
   transition: opacity 0.5s ease, background-image 0.3s ease;
@@ -423,5 +423,5 @@ body.dark-mode .bulb-rope {
 }
 
 body.dark-mode #bikerCircle {
-  background-image: url('assets/biker-light.svg');
+  background-image: url('assets/biker-light.gif');
 }
