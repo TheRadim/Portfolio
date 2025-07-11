@@ -209,7 +209,7 @@ body {
 
 
 /* === BIKER CIRCLE ANIMATION === */
-.biker-placeholder {
+/* .biker-placeholder {
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -220,7 +220,7 @@ body {
   transform: translate(-50%, 0);
   pointer-events: none;
   z-index: 0;
-}
+} */
 
 
 /* === FOOTER === */
@@ -422,13 +422,18 @@ body.dark-mode .bulb-rope {
 #bikerCircle {
   width: 100px;
   height: 100px;
-  background-image: url('biker.png');
+  background-image: url('assets/biker-dark.svg');
   background-size: contain;
   background-repeat: no-repeat;
   position: fixed;
   top: 260px;
   left: 100vw;
   opacity: 0;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.5s ease, background-image 0.3s ease;
   z-index: 1;
+  pointer-events: none;
+}
+
+body.dark-mode #bikerCircle {
+  background-image: url('assets/biker-light.svg');
 }
