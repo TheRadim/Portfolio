@@ -83,7 +83,7 @@ body {
 }
 
 .name-short .the {
-  color: #3b7d8e;
+  color: #4984b8;
   margin-right: 0.2em;
 }
 
@@ -124,7 +124,7 @@ body {
 }
 
 .contact-link:hover {
-  color: #3b7d8e;
+  color: #4984b8;
 }
 
 /* === RIGHT HEADER GROUP === */
@@ -167,7 +167,7 @@ body {
 }
 
 .social-link:hover {
-  color: #3b7d8e;
+  color: #4984b8;
 }
 
 
@@ -213,7 +213,7 @@ body {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background-color: #3b7d8e;
+  background-color: #4984b8;
   position: fixed;
   top: 0;
   left: 100%;
@@ -230,7 +230,7 @@ footer {
   align-items: flex-end;
   padding: 0.3rem 1.5rem 0.5rem;
   background: #fafafa;
-  border-top: 0.1px solid #3b7d8e;
+  border-top: 0.1px solid #4984b8;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -254,7 +254,7 @@ footer {
 }
 
 .footer-center a:hover {
-  color: #3b7d8e;
+  color: #4984b8;
 }
 
 
@@ -298,7 +298,7 @@ footer {
 }
 
 .contact-box a:hover {
-  color: #3b7d8e;
+  color: #4984b8;
 }
 
 .contact-overlay .close-btn {
@@ -386,7 +386,7 @@ body.dark-mode .social-link:hover,
 body.dark-mode .contact-link:hover,
 body.dark-mode .contact-box a:hover,
 body.dark-mode .close-btn:hover {
-  color: #3b7d8e;
+  color: #4984b8;
 }
 
 body.dark-mode .lightbulb-toggle {
