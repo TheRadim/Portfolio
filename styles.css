@@ -208,19 +208,6 @@ body {
 }
 
 
-/* === BIKER CIRCLE ANIMATION === */
-/* .biker-placeholder {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background-color: #4984b8;
-  position: fixed;
-  top: 0;
-  left: 100%;
-  transform: translate(-50%, 0);
-  pointer-events: none;
-  z-index: 0;
-} */
 
 
 /* === FOOTER === */
@@ -367,7 +354,8 @@ body.dark-mode .contact-overlay {
 background-color: #2c2c2c;
 }
 
-body.dark-mode a, .section-title,
+body.dark-mode .section-title,
+body.dark-mode a,
 body.dark-mode .social-link,
 body.dark-mode .contact-link,
 body.dark-mode .footer-left,
