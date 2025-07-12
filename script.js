@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (cursorFlashlight && document.body.classList.contains('dark-mode')) {
-      cursorFlashlight.style.left = `${e.clientX + 0}px`; // 0px offset
+      cursorFlashlight.style.left = `${e.clientX - 0}px`; // 0px offset
       cursorFlashlight.style.top = `${e.clientY + 0}px`;
     }
   });
