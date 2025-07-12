@@ -652,7 +652,7 @@ body.dark-mode #bikerCircle {
 
 /* === PHOTO SCROLL SECTION === */
 section#photos.section {
-  padding: 30px 20px 0px 20px;      /* was 50px 0 */
+  padding: 50px 20px 0px 20px; /* padding-top adjusted for sticky header */
   min-height: 20vh;
 }
 
