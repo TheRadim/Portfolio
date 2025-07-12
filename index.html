@@ -41,8 +41,9 @@
 
   <div class="container">
 
-    <!-- Place circle directly in body -->
     <div id="bikerCircle" class="biker-placeholder"></div>
+    <div id="scrollObject"></div>
+    <div id="scrollArrow">↓</div>
 
     <section id="intro" class="section intro-section">
       <div class="sticky-intro-wrapper">
@@ -50,7 +51,12 @@
           <p>CREATIVE OCTOPUS —</p>
           <p>BASED IN COPENHAGEN</p>
           <p>STILLS + VIDEO / UX/UI / APP DEV / WEB THINGS / PRODUCT STUFF</p>
-          <!-- <p>STILLS + VIDEO, UX/UI, WEB & APP DEV, PRODUCT OWNER</p> -->
+        </div>
+      </div>
+
+      <div class="typewriter-container">
+        <div class="typewriter-text-wrapper">
+          <span id="typewriterText"></span><span class="cursor">|</span>
         </div>
       </div>
     </section>
@@ -87,8 +93,6 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
-
   <!-- Contact Overlay -->
   <div id="contactOverlay" class="contact-overlay hidden">
     <div class="close-btn" id="closeOverlay">×</div>
@@ -102,8 +106,9 @@
     </div>
   </div>
 
-<div id="cursorOrb"></div>
-<div id="cursorFlashlight"></div>
+  <div id="cursorOrb"></div>
+  <div id="cursorFlashlight"></div>
+  <script src="script.js"></script>
 </body>
 
 </html>

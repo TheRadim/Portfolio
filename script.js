@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Elements
+  // === ELEMENTS ===
   const contactBtn = document.getElementById('openContact');
   const overlay = document.getElementById('contactOverlay');
   const closeBtn = document.getElementById('closeOverlay');
@@ -8,6 +8,37 @@ document.addEventListener('DOMContentLoaded', () => {
   const album = document.querySelector('.photo-album');
   const albumWrapper = document.querySelector('.photo-scroll-wrapper');
   const nameWrapper = document.querySelector('.name-wrapper');
+  const arrow = document.getElementById('scrollArrow');
+  const photoSection = document.getElementById('photos');
+  const cursorOrb = document.getElementById('cursorOrb');
+  const cursorFlashlight = document.getElementById('cursorFlashlight');
+  const flashlight = document.getElementById('cursorFlashlight');
+
+  // === ARROW SCROLL ===
+  if (arrow && photoSection) {
+    arrow.addEventListener("click", () => {
+      const targetY = photoSection.offsetTop;
+      const startY = window.scrollY;
+      const distance = targetY - startY;
+      const duration = 2000;
+      const startTime = performance.now();
+
+      function easeInOutQuad(t) {
+        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      }
+
+      function smoothScroll(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        window.scrollTo(0, startY + distance * easeInOutQuad(progress));
+        if (progress < 1) {
+          requestAnimationFrame(smoothScroll);
+        }
+      }
+
+      requestAnimationFrame(smoothScroll);
+    });
+  }
 
   // === THEME TOGGLE ===
   if (localStorage.getItem('theme') === 'dark') {
@@ -17,8 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
   themeToggle?.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
     localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-
-    // Animate toggle
     themeToggle.classList.remove('animate');
     void themeToggle.offsetWidth;
     themeToggle.classList.add('animate');
@@ -48,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const containerWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    // === BIKER ANIMATION ===
+    // Biker animation
     const progress = Math.min(scrollY / viewportHeight, 1);
     const startLeft = containerWidth;
     const endLeft = -100;
@@ -62,29 +91,23 @@ document.addEventListener('DOMContentLoaded', () => {
       circle.style.opacity = scrollY > viewportHeight ? 0 : 1;
     }
 
-    // === PHOTO ALBUM SCROLL ZOOM ===
-    const album = document.querySelector('.photo-album');
+    // Photo album zoom effect
     if (album) {
       const albumTop = album.getBoundingClientRect().top + scrollY;
-      const zoomStart = albumTop - viewportHeight; // starts before entering view
-      const zoomEnd = zoomStart + 300; // 300px scroll distance for zoom
-
+      const zoomStart = albumTop - viewportHeight;
+      const zoomEnd = zoomStart + 300;
       const zoomProgress = Math.min(Math.max((scrollY - zoomStart) / (zoomEnd - zoomStart), 0), 1);
-      const scale = 1.1 - 0.1 * zoomProgress; // from 1.1 to 1.0
-
+      const scale = 1.1 - 0.1 * zoomProgress;
       album.style.transform = `translateX(-50%) scale(${scale})`;
     }
 
-    // === STICKY NAME SHRINK ===
+    // Sticky name shrink
     if (nameWrapper) {
       nameWrapper.classList.toggle('name-scrolled', scrollY > 50);
     }
   });
 
   // === CURSOR ORB ===
-  const cursorOrb = document.getElementById('cursorOrb');
-  const cursorFlashlight = document.getElementById('cursorFlashlight');
-
   document.addEventListener('mousemove', (e) => {
     if (cursorOrb && document.body.classList.contains('dark-mode')) {
       cursorOrb.style.left = `${e.clientX - 6}px`;
@@ -92,18 +115,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (cursorFlashlight && document.body.classList.contains('dark-mode')) {
-      cursorFlashlight.style.left = `${e.clientX - 0}px`; // 0px offset
-      cursorFlashlight.style.top = `${e.clientY + 0}px`;
+      cursorFlashlight.style.left = `${e.clientX}px`;
+      cursorFlashlight.style.top = `${e.clientY}px`;
     }
   });
 
-  const flashlight = document.getElementById('cursorFlashlight');
-
-  // Hover effect listener
+  // Hover effects for flashlight cursor
   document.querySelectorAll('a, .lightbulb-toggle').forEach(el => {
     el.addEventListener('mouseenter', () => {
       if (document.body.classList.contains('dark-mode')) {
-        flashlight.style.transform = 'translate(-50%, -45%)'; // lower by 5%
+        flashlight.style.transform = 'translate(-50%, -45%)';
       }
     });
 
@@ -113,4 +134,80 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+});
+
+// === TYPEWRITER EFFECT ===
+document.addEventListener("DOMContentLoaded", () => {
+  const typewriter = document.getElementById("typewriterText");
+
+  if (!typewriter) {
+    console.error("Typewriter element not found.");
+    return;
+  }
+
+  const phrases = [
+    "SCROLL DOWN TO SEE MORE…",
+    "SCROLL SLOW — STORIES AHEAD",
+    "SCROLL DOWN AND RIDE THROUGH MY WORK",
+    "CREATIVE RIDES. DIGITAL SIDETRACKS.",
+    "CREATIVITY IN MOTION, ONE FRAME AT A TIME",
+    "EXPERIENCE THE JOURNEY",
+    "FROM STILLS TO MOTION",
+    "A CREATIVE JOURNEY ON TWO WHEELS",
+    "FOLLOW THE ROAD — EXPLORE THE WORK",
+    "ROLL DOWN INTO THE JOURNEY —",
+    "WHERE DESIGN MEETS MOTION",
+    "EVERY PIXEL TELLS A STORY",
+    "CRAFTED ON THE ROAD, SHAPED BY CODE"
+  ];
+
+  let index = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  let isPaused = true;
+
+  const typingSpeed = 90;
+  const deletingSpeed = 30;
+  const pauseBeforeDelete = 2500;
+  const pauseBeforeNext = 800;
+
+  function typeLoop() {
+    if (isPaused) return;
+
+    const currentPhrase = phrases[index];
+
+    if (isDeleting) {
+      if (charIndex > 0) {
+        charIndex--;
+        typewriter.textContent = currentPhrase.substring(0, charIndex);
+        setTimeout(typeLoop, deletingSpeed);
+      } else {
+        isDeleting = false;
+        index = (index + 1) % phrases.length;
+        isPaused = true;
+        setTimeout(() => {
+          isPaused = false;
+          typeLoop();
+        }, pauseBeforeNext);
+      }
+    } else {
+      if (charIndex < currentPhrase.length) {
+        typewriter.textContent = currentPhrase.substring(0, charIndex + 1);
+        charIndex++;
+        setTimeout(typeLoop, typingSpeed);
+      } else {
+        isDeleting = true;
+        isPaused = true;
+        setTimeout(() => {
+          isPaused = false;
+          typeLoop();
+        }, pauseBeforeDelete);
+      }
+    }
+  }
+
+  setTimeout(() => {
+    isPaused = false;
+    typeLoop();
+  }, 1000);
 });
