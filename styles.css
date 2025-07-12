@@ -1,6 +1,6 @@
 /* === BASE === */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto !important;
   cursor: default;
 }
 
@@ -377,6 +377,32 @@ body {
   animation: arrowBlink 3s ease-in-out infinite;
   animation-delay: 0.5s;
   cursor: pointer;
+  display: inline-block;
+  position: absolute;
+}
+
+.scroll-text {
+  position: absolute;
+  top: 1rem;
+  left: 5rem;
+  transform: translateX(-50%) translateY(5px); /* Slight offset when hidden */
+  font-size: 0.9rem;
+  color: #333;
+  white-space: nowrap;
+  padding: 2px 6px;
+  border-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+#scrollArrow:hover .scroll-text {
+  opacity: 0.9;
+  transform: translateX(-50%) translateY(0); /* Ease back into place */
+}
+
+#scrollArrow:hover .scroll-text {
+  display: block;
 }
 
 @keyframes arrowBlink {
@@ -531,6 +557,7 @@ body.dark-mode .contact-overlay {
 
 body.dark-mode .section-title,
 body.dark-mode #scrollArrow,
+body.dark-mode .scroll-text,
 body.dark-mode .photo-album,
 body.dark-mode a,
 body.dark-mode .social-link,

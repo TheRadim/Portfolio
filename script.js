@@ -17,26 +17,35 @@ document.addEventListener('DOMContentLoaded', () => {
   // === ARROW SCROLL ===
   if (arrow && photoSection) {
     arrow.addEventListener("click", () => {
-      const targetY = photoSection.offsetTop;
-      const startY = window.scrollY;
-      const distance = targetY - startY;
-      const duration = 2000;
-      const startTime = performance.now();
+      const fixedHeaderHeight = 40; // Height of your fixed top bar (adjust if needed)
 
-      function easeInOutQuad(t) {
-        return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      const targetY = photoSection.offsetTop - fixedHeaderHeight; // Scroll destination (top of section minus header)
+      const startY = window.scrollY; // Current scroll position
+      const distance = targetY - startY; // Total distance to scroll
+
+      const duration = 2000; // Duration of the scroll in milliseconds (e.g. 2000 = 2s)
+      const startTime = performance.now(); // Timestamp for animation start
+
+      // Easing function — easeOutCubic: starts fast, slows at the end
+      // Try others like easeInOutCubic, easeInQuad, etc. for different feel
+      function easeInOutCubic(t) {
+        return -(Math.cos(Math.PI * t) - 1) / 2;
       }
 
       function smoothScroll(currentTime) {
         const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        window.scrollTo(0, startY + distance * easeInOutQuad(progress));
+        const progress = Math.min(elapsed / duration, 1); // Normalize to 0–1 over duration
+
+        const easedProgress = easeInOutCubic(progress); // Apply easing function
+
+        window.scrollTo(0, startY + distance * easedProgress); // Scroll step
+
         if (progress < 1) {
-          requestAnimationFrame(smoothScroll);
+          requestAnimationFrame(smoothScroll); // Keep animating until complete
         }
       }
 
-      requestAnimationFrame(smoothScroll);
+      requestAnimationFrame(smoothScroll); // Start animation
     });
   }
 
