@@ -114,6 +114,7 @@ body.dark-mode .lightbulb-toggle {
 
 body.dark-mode a,
 body.dark-mode #scrollArrow,
+body.dark-mode #scrollObject,
 body.dark-mode button,
 body.dark-mode .lightbulb-toggle,
 body.dark-mode .contact-link,
@@ -297,7 +298,7 @@ body {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 2rem;
-  padding-left: 2rem;
+  padding-left: 50px;
   color: #111;
 }
 
@@ -354,15 +355,21 @@ body {
 
 #scrollObject {
   position: absolute;
-  top: 90vh;
-  right: 10px;
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(circle at center, #fff, #ccc);
-  /* placeholder look */
-  border-radius: 50%;
+  top: 92vh;
+  right: 30px;
+  width: 6vh;
+  height: 6vh;
   z-index: 1;
   transition: transform 1s ease-out;
+  pointer-events: auto;  /* Enable clicking */
+  cursor: pointer;       /* Show pointer cursor */
+}
+
+#scrollObject img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 #scrollArrow {
@@ -594,8 +601,8 @@ body.dark-mode #scrollArrow {
   color: #f9d71c;
 }
 body.dark-mode .typewriter-container {
-  opacity: 0.7;
-  color: #f9d71c;
+  opacity: 0.3;
+  color: #fafafa;
 }
 
 body.dark-mode .lightbulb-toggle svg {
@@ -644,30 +651,32 @@ body.dark-mode #bikerCircle {
 
 
 /* === PHOTO SCROLL SECTION === */
+section#photos.section {
+  padding: 30px 20px 0px 20px;      /* was 50px 0 */
+  min-height: 20vh;
+}
+
 .photo-scroll-wrapper {
-  position: relative;
-  min-height: 50vh;
-  /* Enough space to scroll in */
   max-width: 1600px;
   margin: 0 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .photo-title {
-  position: sticky;
-  top: 20px;
-  /* was 100px — now it scrolls away quicker */
+  position: relative; /* remove sticky */
+  margin-bottom: 2rem;
   z-index: 5;
-  padding-left: 2rem;
 }
 
 .photo-album {
-  color: #111;
-  position: relative;
-  margin-top: 50px;
-  left: 50%;
+  align-self: center;
   transform: translateX(-50%) scale(1.99);
-  /* start zoomed in */
-  width: 90vw;
+  position: relative;
+  left: 50%;
+  padding-top: 30vh;
+  width: 100%;
   max-width: 1600px;
   height: 500px;
   background-image: url('assets/book-trans.svg');
@@ -677,6 +686,8 @@ body.dark-mode #bikerCircle {
   z-index: 1;
   opacity: 1;
   transition: transform 0.2s ease-out;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 body.dark-mode .photo-album {

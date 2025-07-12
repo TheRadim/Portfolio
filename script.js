@@ -13,53 +13,73 @@ document.addEventListener('DOMContentLoaded', () => {
   const cursorOrb = document.getElementById('cursorOrb');
   const cursorFlashlight = document.getElementById('cursorFlashlight');
   const flashlight = document.getElementById('cursorFlashlight');
+  const scrollImage = document.getElementById('scrollImage');
+  const scrollObject = document.getElementById('scrollObject');
 
-  // === ARROW SCROLL ===
-  if (arrow && photoSection) {
-    arrow.addEventListener("click", () => {
-      const fixedHeaderHeight = 40; // Height of your fixed top bar (adjust if needed)
+  // === SCROLL TO PHOTO SECTION ===
 
-      const targetY = photoSection.offsetTop - fixedHeaderHeight; // Scroll destination (top of section minus header)
-      const startY = window.scrollY; // Current scroll position
-      const distance = targetY - startY; // Total distance to scroll
+  function scrollToPhotoSection() {
+    const fixedHeaderHeight = 40;
+    const targetY = photoSection.offsetTop - fixedHeaderHeight;
+    const startY = window.scrollY;
+    const distance = targetY - startY;
+    const duration = 2000;
+    const startTime = performance.now();
 
-      const duration = 2000; // Duration of the scroll in milliseconds (e.g. 2000 = 2s)
-      const startTime = performance.now(); // Timestamp for animation start
+    function easeInOutCubic(t) {
+      return -(Math.cos(Math.PI * t) - 1) / 2;
+    }
 
-      // Easing function — easeOutCubic: starts fast, slows at the end
-      // Try others like easeInOutCubic, easeInQuad, etc. for different feel
-      function easeInOutCubic(t) {
-        return -(Math.cos(Math.PI * t) - 1) / 2;
+    function smoothScroll(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easedProgress = easeInOutCubic(progress);
+      window.scrollTo(0, startY + distance * easedProgress);
+      if (progress < 1) {
+        requestAnimationFrame(smoothScroll);
       }
+    }
 
-      function smoothScroll(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1); // Normalize to 0–1 over duration
-
-        const easedProgress = easeInOutCubic(progress); // Apply easing function
-
-        window.scrollTo(0, startY + distance * easedProgress); // Scroll step
-
-        if (progress < 1) {
-          requestAnimationFrame(smoothScroll); // Keep animating until complete
-        }
-      }
-
-      requestAnimationFrame(smoothScroll); // Start animation
-    });
+    requestAnimationFrame(smoothScroll);
   }
 
+  if (arrow && photoSection) {
+    arrow.addEventListener("click", scrollToPhotoSection);
+  }
+
+  if (scrollObject && photoSection) {
+    scrollObject.addEventListener("click", scrollToPhotoSection);
+  }
+  
   // === THEME TOGGLE ===
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark-mode');
+    updateScrollImage(); // make sure image is correct on load
+  }
+
+  // Function to switch scroll image based on theme
+  function updateScrollImage() {
+    const scrollImage = document.getElementById('scrollImage');
+    if (!scrollImage) return;
+
+    scrollImage.src = document.body.classList.contains('dark-mode')
+      ? 'assets/camera-dark.svg'
+      : 'assets/camera.svg';
   }
 
   themeToggle?.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
-    localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    localStorage.setItem(
+      'theme',
+      document.body.classList.contains('dark-mode') ? 'dark' : 'light'
+    );
+
+    // Animation reset (already in your code)
     themeToggle.classList.remove('animate');
     void themeToggle.offsetWidth;
     themeToggle.classList.add('animate');
+
+    updateScrollImage(); // 🔁 update image when theme changes
   });
 
   // === CONTACT OVERLAY ===
