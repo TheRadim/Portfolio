@@ -361,8 +361,10 @@ body {
   height: 6vh;
   z-index: 1;
   transition: transform 1s ease-out;
-  pointer-events: auto;  /* Enable clicking */
-  cursor: pointer;       /* Show pointer cursor */
+  pointer-events: auto;
+  /* Enable clicking */
+  cursor: pointer;
+  /* Show pointer cursor */
 }
 
 #scrollObject img {
@@ -399,7 +401,8 @@ body {
   position: absolute;
   top: 1rem;
   left: 5rem;
-  transform: translateX(-50%) translateY(5px); /* Slight offset when hidden */
+  transform: translateX(-50%) translateY(5px);
+  /* Slight offset when hidden */
   font-size: 0.9rem;
   color: #333;
   white-space: nowrap;
@@ -412,7 +415,8 @@ body {
 
 #scrollArrow:hover .scroll-text {
   opacity: 0.9;
-  transform: translateX(-50%) translateY(0); /* Ease back into place */
+  transform: translateX(-50%) translateY(0);
+  /* Ease back into place */
 }
 
 #scrollArrow:hover .scroll-text {
@@ -420,8 +424,15 @@ body {
 }
 
 @keyframes arrowBlink {
-  0%, 100% { opacity: 0.2; }
-  50%      { opacity: 0.8; }
+
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 
 
@@ -600,6 +611,7 @@ body.dark-mode .lightbulb-toggle,
 body.dark-mode #scrollArrow {
   color: #f9d71c;
 }
+
 body.dark-mode .typewriter-container {
   opacity: 0.3;
   color: #fafafa;
@@ -651,8 +663,9 @@ body.dark-mode #bikerCircle {
 
 
 /* === PHOTO SCROLL SECTION === */
+/* === SECTION === */
 section#photos.section {
-  padding: 50px 20px 0px 20px; /* padding-top adjusted for sticky header */
+  padding: 50px 20px 0px 20px;
   min-height: 20vh;
 }
 
@@ -665,7 +678,7 @@ section#photos.section {
 }
 
 .photo-title {
-  position: relative; /* remove sticky */
+  position: relative;
   margin-bottom: 2rem;
   z-index: 5;
 }
