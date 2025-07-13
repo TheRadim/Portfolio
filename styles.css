@@ -288,7 +288,7 @@ body {
 /* === SECTIONS === */
 .section {
   padding: 50px 0px;
-  min-height: 45vh;
+  min-height: 70vh;
   line-height: 1;
 }
 
@@ -662,11 +662,10 @@ body.dark-mode #bikerCircle {
 }
 
 
-/* === PHOTO SCROLL SECTION === */
 /* === SECTION === */
 section#photos.section {
-  padding: 50px 20px 0px 20px;
-  min-height: 20vh;
+  padding: 8vh 20px 0px 20px; /* ✅ dynamic top padding */
+  min-height: 80vh; /* give enough height for layout to breathe */
 }
 
 .photo-scroll-wrapper {
@@ -683,26 +682,43 @@ section#photos.section {
   z-index: 5;
 }
 
-.photo-album {
-  align-self: center;
-  transform: translateX(-50%) scale(1.99);
+.photo-album-wrapper {
   position: relative;
-  left: 50%;
-  padding-top: 30vh;
   width: 100%;
-  max-width: 1600px;
-  height: 500px;
-  background-image: url('assets/book-trans.svg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  z-index: 1;
-  opacity: 1;
-  transition: transform 0.2s ease-out;
-  margin-top: auto;
-  margin-bottom: auto;
+  max-width: 1150px; /* lock layout at perfect breakpoint */
+  aspect-ratio: 16 / 5.5;
+  margin: 0 auto;
+  transform: none;
+    display: flex;
+  align-items: center;
+  justify-content: center;
+    top: 7vh
 }
 
-body.dark-mode .photo-album {
-  background-image: url('assets/book-trans-dark.svg');
+.photo-book-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.album-grid {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 3%;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.debug-page {
+  width: 50%;
+  height: 100%;
+  background-color: rgba(200, 200, 255, 0.3);
+  border: 1px dashed #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
