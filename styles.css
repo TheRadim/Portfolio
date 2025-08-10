@@ -662,63 +662,151 @@ body.dark-mode #bikerCircle {
 }
 
 
-/* === SECTION === */
-section#photos.section {
-  padding: 8vh 20px 0px 20px; /* ✅ dynamic top padding */
-  min-height: 80vh; /* give enough height for layout to breathe */
-}
+/* ============= PHOTO ALBUM ============= */
 
-.photo-scroll-wrapper {
+/* Section scaffold */
+section#photos.section{
+  padding: 8vh 20px 0;
+  min-height: 80vh;
+}
+.photo-scroll-wrapper{
   max-width: 1600px;
   margin: 0 auto;
   position: relative;
   display: flex;
   flex-direction: column;
 }
-
-.photo-title {
+.photo-title{
   position: relative;
   margin-bottom: 2rem;
   z-index: 5;
 }
 
-.photo-album-wrapper {
+/* Book wrapper (holds the SVG and the two page containers) */
+.photo-album-wrapper{
+  /* easy knobs you can tweak */
+  --page-inset-top: 7%;
+  --page-height: 70%;
+  --page-side-pad: 3%;
+
   position: relative;
   width: 100%;
-  max-width: 1150px; /* lock layout at perfect breakpoint */
-  aspect-ratio: 16 / 5.5;
+  max-width: 1150px;
+  aspect-ratio: 16 / 5.5;        /* matches the book artwork */
   margin: 0 auto;
-  transform: none;
-    display: flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-    top: 7vh
+  top: 7vh;
 }
-
-.photo-book-img {
+.photo-book-img{
   width: 100%;
   height: auto;
   display: block;
 }
 
-.album-grid {
+/* Two-page overlay container */
+.album-grid{
   position: absolute;
   inset: 0;
   display: flex;
   justify-content: space-between;
-  padding: 0 3%;
+  padding: 0 var(--page-side-pad);
   box-sizing: border-box;
   z-index: 2;
 }
 
-.debug-page {
+/* A single page (left/right) – hard clipping area */
+.debug-page{
   width: 50%;
-  height: 100%;
-  background-color: rgba(200, 200, 255, 0.3);
-  border: 1px dashed #999;
+  margin-top: var(--page-inset-top);
+  height: var(--page-height);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  font-size: 1.2rem;
+  overflow: hidden;                       /* nothing escapes the page */
+  background: rgba(200,200,255,.18);      /* dev aid; remove if desired */
+  border: 1px dashed #999;
+}
+
+/* ===== Fit-to-page grid (pure CSS) =====
+   Computes a square cell that fits both width & height so the grid
+   can never push below the book artwork.                           */
+.page-grid{
+  /* 3×3 defaults */
+  --cols: 3;
+  --rows: 3;
+  --gap: clamp(6px, 0.9vw, 24px);
+
+  /* photo inset (how big the photo sits inside the paper frame) */
+  --photo-size: 64%;   /* a bit smaller for 3×3 so it breathes */
+  --photo-shift: 2%;
+
+  /* square cell that fits both axes */
+  --cell-w: calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  --cell-h: calc((100% - (var(--rows) - 1) * var(--gap)) / var(--rows));
+  --cell: min(var(--cell-w), var(--cell-h));
+
+  display: grid;
+  grid-template-columns: repeat(var(--cols), var(--cell));
+  grid-auto-rows: var(--cell);
+  gap: var(--gap);
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- Responsive: 2×2 and drop extras ---- */
+@media (max-width: 1000px){
+  .page-grid{
+    --cols: 2;
+    --rows: 2;
+    --gap: clamp(8px, 2.2vw, 18px);
+    /* your “perfect” inset on smaller screens */
+    --photo-size: 70%;
+    --photo-shift: 6%;
+  }
+  .page-grid .photo-frame:nth-child(n+5){ display: none; }
+}
+
+/* ===== One square tile (frame + photo) =====
+   The frame artwork is drawn on ::before above the image.
+   The image is square, centered, clipped.                         */
+.photo-frame{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;                 /* hard clip for the photo */
+}
+
+/* Draw the paper frame ABOVE the photo */
+.photo-frame::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Bind each frame artwork */
+.frame1::before{ background-image: url("assets/frame1.svg"); }
+.frame2::before{ background-image: url("assets/frame2.svg"); }
+.frame3::before{ background-image: url("assets/frame3.svg"); }
+
+/* The photo itself */
+.photo-frame img{
+  display: block;
+  width: var(--photo-size);
+  height: var(--photo-size);
+  object-fit: cover;                /* perfect square crop */
+  border-radius: 6px;
+  transform: translateY(var(--photo-shift));
+  z-index: 1;                       /* under the paper frame */
 }

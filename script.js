@@ -43,14 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(smoothScroll);
   }
 
-  if (arrow && photoSection) {
-    arrow.addEventListener("click", scrollToPhotoSection);
-  }
-
-  if (scrollObject && photoSection) {
-    scrollObject.addEventListener("click", scrollToPhotoSection);
-  }
-  
   // === THEME TOGGLE ===
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark-mode');
