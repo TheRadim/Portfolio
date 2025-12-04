@@ -662,151 +662,129 @@ body.dark-mode #bikerCircle {
 }
 
 
-/* ============= PHOTO ALBUM ============= */
+/* === ALBUM-ONLY CSS (FIXED) === */
 
 /* Section scaffold */
-section#photos.section{
-  padding: 8vh 20px 0;
-  min-height: 80vh;
-}
-.photo-scroll-wrapper{
-  max-width: 1600px;
-  margin: 0 auto;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-.photo-title{
-  position: relative;
-  margin-bottom: 2rem;
-  z-index: 5;
-}
+section#photos.section { padding: 8vh 20px 0; min-height: 80vh; }
 
-/* Book wrapper (holds the SVG and the two page containers) */
-.photo-album-wrapper{
-  /* easy knobs you can tweak */
-  --page-inset-top: 7%;
-  --page-height: 70%;
-  --page-side-pad: 3%;
-
+/* 0. NEW SETTING: Inner margin for the photo area relative to the book pages */
+/* Use a positive value (e.g., 2%) to shrink the page grid inside the .debug-page */
+.photo-album-wrapper {
+  --inner-page-margin: 0%; /* Inner margin for the photo grid */
+  
+  /* easy knobs for page box inside the book, NOW BASED ON BOOK IMAGE HEIGHT */
+  /* Reverting to previous page margin values that worked well */
+  --page-top: 15%;    
+  --page-bottom: 22.5%; 
+  --page-outer-margin: 16.5%; 
+  --page-center-gap: 5%; /* Controls the padding/gap near the book spine */
+  
   position: relative;
   width: 100%;
-  max-width: 1150px;
-  aspect-ratio: 16 / 5.5;        /* matches the book artwork */
+  /* 🎯 KEY CHANGE: Increased max-width to 1800px to greatly enlarge the book graphic */
+  max-width: 1800px; 
   margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  top: 7vh;
-}
-.photo-book-img{
-  width: 100%;
-  height: auto;
-  display: block;
+  
+  /* Calculate the responsive height of the container */
+  padding-bottom: 34.375%; /* Set height based on a 16 / 5.5 ratio */
+  height: 0; 
+  
+  background: rgba(255, 0, 0, .06); /* debug - now background of the wrapper, not the pages */
 }
 
-/* Two-page overlay container */
+
+/* 1. Horizontal Scroll Fix */
+.photo-scroll-wrapper { 
+  /* 🎯 KEY CHANGE: Increased max-width to allow the content to center properly with the new book size */
+  max-width: 1800px; 
+  padding: 0 20px; 
+  margin: 0 auto; 
+  position: relative; 
+  display: flex; 
+  flex-direction: column; 
+}
+.photo-title { position: relative; margin-bottom: 2rem; z-index: 5; }
+
+/* 2. Position the book image absolutely to fill the established height */
+.photo-book-img{ 
+  width:100%; height:100%; 
+  object-fit:contain; 
+  position:absolute; inset:0; 
+  display:block; 
+}
+
+/* 3. Position the pages container absolutely to match the book area */
 .album-grid{
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 var(--page-side-pad);
-  box-sizing: border-box;
-  z-index: 2;
+  position:absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%;
+  height: 100%;
+  display:flex; 
+  justify-content:space-between;
+  padding: 0; 
+  box-sizing:border-box;
 }
 
-/* A single page (left/right) – hard clipping area */
+/* 4. Define the page area using absolute positioning and the defined knobs */
 .debug-page{
-  width: 50%;
-  margin-top: var(--page-inset-top);
-  height: var(--page-height);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;                       /* nothing escapes the page */
-  background: rgba(200,200,255,.18);      /* dev aid; remove if desired */
-  border: 1px dashed #999;
+  position:absolute; 
+  top:var(--page-top);
+  height:calc(100% - var(--page-top) - var(--page-bottom)); 
+  
+  overflow:hidden;
+  display:grid; place-items:center;
+  background:rgba(255, 190, 0, .08); /* light pink/amber area */
+  
+  border: 2px solid #D11A2C; /* The requested red border */
+  
+  /* Positioning logic remains robust and responsive */
+  &:first-child { 
+    /* Left Page */
+    left: var(--page-outer-margin); 
+    right: calc(50% + (var(--page-center-gap) / 2)); 
+  }
+  &:last-child { 
+    /* Right Page */
+    left: calc(50% + (var(--page-center-gap) / 2)); 
+    right: var(--page-outer-margin); 
+  }
 }
 
-/* ===== Fit-to-page grid (pure CSS) =====
-   Computes a square cell that fits both width & height so the grid
-   can never push below the book artwork.                           */
+/* 5. Apply the Inner Margin */
 .page-grid{
-  /* 3×3 defaults */
-  --cols: 3;
-  --rows: 3;
-  --gap: clamp(6px, 0.9vw, 24px);
-
-  /* photo inset (how big the photo sits inside the paper frame) */
-  --photo-size: 64%;   /* a bit smaller for 3×3 so it breathes */
-  --photo-shift: 2%;
-
-  /* square cell that fits both axes */
+  --cols:3; --rows:3;
+  --gap:clamp(8px,1.1vw,22px);
+  
+  /* Add margin/padding to the grid itself */
+  padding: var(--inner-page-margin); 
+  width: calc(100% - 2 * var(--inner-page-margin)); 
+  height: calc(100% - 2 * var(--inner-page-margin)); 
+  
+  /* compute a square cell that fits both axes */
   --cell-w: calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
   --cell-h: calc((100% - (var(--rows) - 1) * var(--gap)) / var(--rows));
   --cell: min(var(--cell-w), var(--cell-h));
 
-  display: grid;
-  grid-template-columns: repeat(var(--cols), var(--cell));
-  grid-auto-rows: var(--cell);
-  gap: var(--gap);
-  justify-content: center;
-  align-content: center;
-  width: 100%;
-  height: 100%;
+  display:grid;
+  grid-template-columns:repeat(var(--cols), var(--cell));
+  grid-template-rows:repeat(var(--rows), var(--cell));
+  gap:var(--gap);
+  place-content:center;
 }
 
-/* ---- Responsive: 2×2 and drop extras ---- */
-@media (max-width: 1000px){
-  .page-grid{
-    --cols: 2;
-    --rows: 2;
-    --gap: clamp(8px, 2.2vw, 18px);
-    /* your “perfect” inset on smaller screens */
-    --photo-size: 70%;
-    --photo-shift: 6%;
-  }
-  .page-grid .photo-frame:nth-child(n+5){ display: none; }
-}
-
-/* ===== One square tile (frame + photo) =====
-   The frame artwork is drawn on ::before above the image.
-   The image is square, centered, clipped.                         */
+/* frame + photo: simple, square, centered */
 .photo-frame{
-  position: relative;
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 1 / 1;
-  display: grid;
-  place-items: center;
-  overflow: hidden;                 /* hard clip for the photo */
+  width:var(--cell); height:var(--cell);
+  aspect-ratio:1/1;
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  display:flex; align-items:center; justify-content:center;
+  background-color: rgba(255, 105, 0, .10);  /* orange tint */
 }
-
-/* Draw the paper frame ABOVE the photo */
-.photo-frame::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  z-index: 2;
-  pointer-events: none;
-}
-
-/* Bind each frame artwork */
-.frame1::before{ background-image: url("assets/frame1.svg"); }
-.frame2::before{ background-image: url("assets/frame2.svg"); }
-.frame3::before{ background-image: url("assets/frame3.svg"); }
-
-/* The photo itself */
 .photo-frame img{
-  display: block;
-  width: var(--photo-size);
-  height: var(--photo-size);
-  object-fit: cover;                /* perfect square crop */
-  border-radius: 6px;
-  transform: translateY(var(--photo-shift));
-  z-index: 1;                       /* under the paper frame */
+  width:75%; height:75%;
+  object-fit:cover;           /* square crop */
+  border-radius:6px;
 }
