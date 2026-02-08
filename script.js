@@ -13,8 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const cursorOrb = document.getElementById('cursorOrb');
   const cursorFlashlight = document.getElementById('cursorFlashlight');
   const flashlight = document.getElementById('cursorFlashlight');
-  const scrollImage = document.getElementById('scrollImage');
-  const scrollObject = document.getElementById('scrollObject');
 
   // === SCROLL TO PHOTO SECTION ===
 
@@ -47,24 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
     arrow.addEventListener("click", scrollToPhotoSection);
   }
 
-  if (scrollObject && photoSection) {
-    scrollObject.addEventListener("click", scrollToPhotoSection);
-  }
-
   // === THEME TOGGLE ===
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark-mode');
-    updateScrollImage(); // make sure image is correct on load
-  }
-
-  // Function to switch scroll image based on theme
-  function updateScrollImage() {
-    const scrollImage = document.getElementById('scrollImage');
-    if (!scrollImage) return;
-
-    scrollImage.src = document.body.classList.contains('dark-mode')
-      ? 'assets/camera-dark.svg'
-      : 'assets/camera.svg';
   }
 
   themeToggle?.addEventListener('click', () => {
