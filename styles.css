@@ -1001,3 +1001,50 @@ body.dark-mode .photo-book-img{ content:url("assets/book-trans-dark.svg"); }
     content: url("assets/phone.svg"); /* swap if you have phone-dark.svg */
   }
 }
+
+.album-grid .debug-page
+{
+  padding: 0 !important;
+  place-items: stretch;
+  container-type: size;   /* enables cqw/cqh */
+}
+
+.album-grid .page-grid
+{
+  --cols: 3;
+  --rows: 3;
+
+  --edge-min: 10px;          /* outer margin ≥10px */
+  --gap-min: 8px;            /* gap between tiles */
+  --fit: 1;                  /* .98/.96 to shrink uniformly */
+
+  --edge: clamp(var(--edge-min), 1.6cqw, 28px);
+  --gap:  clamp(var(--gap-min), 1.4cqw, 22px);
+
+  /* bottom-only safety for the curved book edge */
+  --curve-b: 25cqh;
+
+  --edge-t: var(--edge);
+  --edge-r: var(--edge);
+  --edge-b: max(var(--edge), var(--curve-b));  /* ← bottom-only */
+  --edge-l: var(--edge);
+
+  --inner-w: calc(100% - var(--edge-l) - var(--edge-r));
+  --inner-h: calc(100% - var(--edge-t) - var(--edge-b));
+
+  --cell-w: calc((var(--inner-w) - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  --cell-h: calc((var(--inner-h) - (var(--rows) - 1) * var(--gap)) / var(--rows));
+  --cell:   calc(min(var(--cell-w), var(--cell-h)) * var(--fit) - 0.5px);
+
+  display: grid;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+
+  padding: var(--edge-t) var(--edge-r) var(--edge-b) var(--edge-l);
+  grid-template-columns: repeat(var(--cols), var(--cell));
+  grid-template-rows:    repeat(var(--rows), var(--cell));
+  gap: var(--gap);
+  justify-content: center;
+  align-content: center;
+}
