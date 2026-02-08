@@ -193,30 +193,47 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(loop, 800);
 });
 
-// ========== PHOTO GALLERY ==========
-document.addEventListener("DOMContentLoaded", () => {
-  const galleryEl = document.getElementById("gallery");
-  const listEl = document.querySelector(".project-list");
-  const stageImg = document.getElementById("stageImage");
-  const stripEl = document.querySelector(".viewer-strip");
-  const prevBtn = document.querySelector(".viewer-stage .prev");
-  const nextBtn = document.querySelector(".viewer-stage .next");
-  const descBlock = document.querySelector(".desc-block");
-  const descTitle = document.querySelector(".desc-title");
-  const descText = document.querySelector(".desc-text");
-
-  if (!galleryEl) {
+// ===================================================================
+// ======================= PHOTO GALLERY ==============================
+// ===================================================================
+document.addEventListener("DOMContentLoaded", () =>
+{
+  const gallery = document.getElementById("gallery");
+  if (!gallery)
+  {
     return;
   }
 
-  // Data (replace with real assets)
-  const projects = [
+  // --- NEW: avoid canvas sampling & CORS quirks on file:// ---
+  const CAN_SAMPLE = location.protocol !== "file:";
+
+  const ribbonEl   = gallery.querySelector(".project-ribbon");
+  const aboutTitle = gallery.querySelector(".about-title");
+  const aboutText  = gallery.querySelector(".about-text");
+  const stageBox   = gallery.querySelector("#stageBox");
+  const stageImg   = gallery.querySelector("#stageImage");
+  const stageIndex = gallery.querySelector("#stageIndex");
+  const prevBtn    = gallery.querySelector(".stage-box .prev");
+  const nextBtn    = gallery.querySelector(".stage-box .next");
+  const stripEl    = gallery.querySelector(".strip");
+  const mobileList = gallery.querySelector(".mobile-list");
+
+  const lb     = document.getElementById("lightbox");
+  const lbImg  = document.getElementById("lbImage");
+  const lbPrev = lb.querySelector(".lb-prev");
+  const lbNext = lb.querySelector(".lb-next");
+  const lbClose= lb.querySelector(".lb-close");
+
+  // REMOVE this line if you had it before:
+
+  const projects =
+  [
     {
       id: "bo-kanda-lita-baehre",
       title: "BO KANDA LITA BAEHRE",
       year: 2025,
       thumb: "assets/photo.jpeg",
-      images: Array.from({ length: 9 }, () => "assets/photo.jpeg"),
+      images: Array.from({ length: 9 }, () => "assets/photo2.jpeg"),
       description: "Sample project description."
     },
     {
@@ -224,7 +241,7 @@ document.addEventListener("DOMContentLoaded", () => {
       title: "SPRING LINES",
       year: 2024,
       thumb: "assets/photo.jpeg",
-      images: Array.from({ length: 8 }, () => "assets/photo.jpeg"),
+      images: Array.from({ length: 8 }, () => "assets/photo3.jpeg"),
       description: ""
     },
     {
@@ -232,7 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
       title: "BERLIN HALFMARATHON",
       year: 2024,
       thumb: "assets/photo.jpeg",
-      images: Array.from({ length: 10 }, () => "assets/photo.jpeg"),
+      images: Array.from({ length: 10 }, () => "assets/photo2.jpeg"),
       description: "Road energy. Street lungs."
     },
     {
@@ -245,160 +262,274 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   ];
 
-  // State
-  let activeProjectIndex = 0;
-  let activeSlideIndex = 0;
+  let activeProject = 0;
+  let activeSlide   = 0;
 
-  // Helpers
-  function create(tag, cls) {
+  function z2(n)
+  {
+    return n < 10 ? `0${n}` : String(n);
+  }
+
+  function create(tag, cls)
+  {
     const el = document.createElement(tag);
-    if (cls) {
+    if (cls)
+    {
       el.className = cls;
     }
     return el;
   }
 
-  function formatNum(n) {
-    return n < 10 ? `0${n}` : String(n);
+  // ---------- Stage index pinned to actual image corner ----------
+  function positionStageIndex()
+  {
+    const cw = stageBox.clientWidth;
+    const ch = stageBox.clientHeight;
+
+    const iw = stageImg.naturalWidth || 1;
+    const ih = stageImg.naturalHeight || 1;
+
+    const scale = Math.min(cw / iw, ch / ih);
+    const dw = iw * scale;
+    const dh = ih * scale;
+
+    const left = (cw - dw) / 2;
+    const top  = (ch - dh) / 2;
+
+    stageIndex.style.left = `${Math.round(left) + 8}px`;
+    stageIndex.style.top  = `${Math.round(top)  + 8}px`;
+
+    if (CAN_SAMPLE)
+    {
+      updateStageIndexContrast();
+    }
+    else
+    {
+      stageIndex.classList.remove("index--dark"); // default white w/ black outline
+    }
   }
 
-  // Renderers
-  function renderProjectList() {
-    listEl.innerHTML = "";
+  function updateStageIndexContrast()
+  {
+    if (!CAN_SAMPLE)
+    {
+      return;
+    }
 
-    projects.forEach((p, idx) => {
-      const row = create("div", "project-row");
-      row.setAttribute("role", "listitem");
-      row.dataset.index = String(idx);
+    try
+    {
+      const cw = stageBox.clientWidth;
+      const ch = stageBox.clientHeight;
+
+      const iw = stageImg.naturalWidth || 1;
+      const ih = stageImg.naturalHeight || 1;
+
+      const scale = Math.min(cw / iw, ch / ih);
+      const dw = iw * scale;
+      const dh = ih * scale;
+      const left = (cw - dw) / 2;
+      const top  = (ch - dh) / 2;
+
+      const sx = Math.max(0, Math.floor(left + 14));
+      const sy = Math.max(0, Math.floor(top  + 14));
+      const sw = 20, sh = 20;
+
+      const canvas = updateStageIndexContrast._c || (updateStageIndexContrast._c = document.createElement("canvas"));
+      const ctx    = updateStageIndexContrast._x || (updateStageIndexContrast._x = canvas.getContext("2d", { willReadFrequently: true }));
+
+      canvas.width = cw;
+      canvas.height = ch;
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.drawImage(stageImg, left, top, dw, dh);
+
+      const data = ctx.getImageData(sx, sy, sw, sh).data;
+      let sum = 0, count = 0;
+
+      for (let i = 0; i < data.length; i += 4)
+      {
+        const r = data[i], g = data[i + 1], b = data[i + 2];
+        sum += 0.2126 * r + 0.7152 * g + 0.0722 * b;
+        count++;
+      }
+
+      const L = sum / count;          // 0..255
+      const lightBg = L > 150;
+      stageIndex.classList.toggle("index--dark", lightBg);
+    }
+    catch (_e)
+    {
+      stageIndex.classList.remove("index--dark");
+    }
+  }
+
+  // ---------- Ribbon ----------
+  function renderRibbon()
+  {
+    ribbonEl.innerHTML = "";
+
+    projects.forEach((p, i) =>
+    {
+      const item = create("button", "ribbon-item");
+      item.type = "button";
+      item.setAttribute("role", "listitem");
+      item.setAttribute("aria-current", i === activeProject ? "true" : "false");
 
       const num = create("div", "num");
-      num.textContent = formatNum(idx + 1);
-
-      const title = create("div", "title");
-      title.textContent = p.title;
+      num.textContent = z2(i + 1);
 
       const thumb = create("div", "thumb");
-      const img = create("img");
-      img.loading = "lazy";
-      img.alt = "";
+      const img = new Image();
       img.src = p.thumb;
+      img.alt = "";
       thumb.appendChild(img);
 
-      const chev = create("div", "chev");
-      chev.textContent = "→";
+      const ov = create("div", "overlay");
+      ov.textContent = p.title;
+      thumb.appendChild(ov);
 
-      row.appendChild(num);
-      row.appendChild(title);
-      row.appendChild(thumb);
-      row.appendChild(chev);
+      item.appendChild(num);
+      item.appendChild(thumb);
 
-      row.addEventListener("click", () => {
-        setActiveProject(idx, 0, true);
-        if (window.matchMedia("(max-width: 1024px)").matches) {
-          row.scrollIntoView({ block: "start", behavior: "smooth" });
-        }
+      item.addEventListener("click", () =>
+      {
+        setActiveProject(i, 0, true);
+
+        const header = document.querySelector(".sticky-header");
+        const headerH = header ? header.offsetHeight : 0;
+
+        const y = ribbonEl.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: Math.max(0, y - headerH), behavior: "smooth" });
       });
 
-      listEl.appendChild(row);
+      ribbonEl.appendChild(item);
     });
   }
 
-  function renderStrip(project, current) {
+  // ---------- Viewer ----------
+  function renderStrip(proj, current)
+  {
     stripEl.innerHTML = "";
-    project.images.forEach((src, i) => {
+
+    proj.images.forEach((src, i) =>
+    {
       const b = create("button", "strip-thumb");
       b.type = "button";
-      b.setAttribute("aria-label", `Image ${i + 1} of ${project.images.length}`);
+      b.dataset.num = z2(i + 1);
+      b.setAttribute("aria-label", `Image ${i + 1} of ${proj.images.length}`);
       b.setAttribute("aria-selected", i === current ? "true" : "false");
-
-      const thumb = create("img");
-      thumb.alt = "";
-      thumb.decoding = "async";
-      thumb.loading = "lazy";
-      thumb.src = src;
-
-      b.appendChild(thumb);
       b.addEventListener("click", () => setActiveSlide(i, true));
+
+      const img = new Image();
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.src = src;
+      img.alt = "";
+
+      b.appendChild(img);
       stripEl.appendChild(b);
     });
   }
 
-  function updateDesc(project) {
-    if (project.description && project.description.trim().length > 0) {
-      descBlock.hidden = false;
-      descTitle.textContent = `${project.title} — BY RADIM THEINER`;
-      descText.textContent = project.description;
-    }
-    else {
-      descBlock.hidden = true;
-    }
+  function updateAbout(proj)
+  {
+    aboutTitle.textContent = proj.title;
+    aboutText.textContent  = proj.description || "";
   }
 
-  function setStageImage(src) {
+  function setStage(src, idx)
+  {
+    stageIndex.textContent = z2(idx + 1);
     stageImg.style.opacity = "0";
+
     const img = new Image();
-    img.onload = () => {
+    if (CAN_SAMPLE)
+    {
+      img.crossOrigin = "anonymous";
+    }
+    img.onload = () =>
+    {
       stageImg.src = src;
       stageImg.style.opacity = "1";
+      positionStageIndex();
     };
     img.src = src;
   }
 
-  function setActiveProject(index, slide = 0, push = false) {
-    activeProjectIndex = index;
-    activeSlideIndex = Math.max(0, Math.min(slide, projects[index].images.length - 1));
+  function setActiveProject(index, slide, pushHash)
+  {
+    activeProject = index;
+    activeSlide   = Math.max(0, Math.min(slide, projects[index].images.length - 1));
 
-    document.querySelectorAll(".project-row").forEach((row, i) => {
-      if (i === index) {
-        row.setAttribute("aria-current", "true");
-      }
-      else {
-        row.removeAttribute("aria-current");
-      }
+    gallery.querySelectorAll(".ribbon-item").forEach((it, i) =>
+    {
+      it.setAttribute("aria-current", i === index ? "true" : "false");
     });
 
-    const project = projects[index];
-    renderStrip(project, activeSlideIndex);
-    updateDesc(project);
-    setStageImage(project.images[activeSlideIndex]);
+    const proj = projects[index];
+    updateAbout(proj);
+    renderStrip(proj, activeSlide);
+    setStage(proj.images[activeSlide], activeSlide);
 
-    if (push) {
+    if (pushHash)
+    {
       syncHash();
     }
   }
 
-  function setActiveSlide(slide, push = false) {
-    const project = projects[activeProjectIndex];
-    activeSlideIndex = Math.max(0, Math.min(slide, project.images.length - 1));
-    setStageImage(project.images[activeSlideIndex]);
+  function setActiveSlide(slide, pushHash)
+  {
+    const proj = projects[activeProject];
+    activeSlide = Math.max(0, Math.min(slide, proj.images.length - 1));
 
-    document.querySelectorAll(".strip-thumb").forEach((el, i) => {
-      el.setAttribute("aria-selected", i === activeSlideIndex ? "true" : "false");
+    setStage(proj.images[activeSlide], activeSlide);
+
+    stripEl.querySelectorAll(".strip-thumb").forEach((el, i) =>
+    {
+      el.setAttribute("aria-selected", i === activeSlide ? "true" : "false");
     });
 
-    if (push) {
+    if (pushHash)
+    {
       syncHash();
     }
   }
 
-  // Routing
-  function syncHash() {
-    const proj = projects[activeProjectIndex];
-    const slideParam = `?i=${activeSlideIndex + 1}`;
-    const hash = `#photo/${encodeURIComponent(proj.id)}${slideParam}`;
-    if (location.hash !== hash) {
+  function prev()
+  {
+    setActiveSlide(activeSlide - 1, true);
+  }
+
+  function next()
+  {
+    setActiveSlide(activeSlide + 1, true);
+  }
+
+  prevBtn.addEventListener("click", prev);
+  nextBtn.addEventListener("click", next);
+  stageImg.addEventListener("click", () => openLightbox());
+  window.addEventListener("resize", positionStageIndex);
+
+  // ---------- Routing ----------
+  function syncHash()
+  {
+    const proj = projects[activeProject];
+    const hash = `#photo/${encodeURIComponent(proj.id)}?i=${activeSlide + 1}`;
+    if (location.hash !== hash)
+    {
       history.replaceState(null, "", hash);
     }
   }
 
-  function readHash() {
+  function readHash()
+  {
     const m = location.hash.match(/^#photo\/([^?]+)(?:\?i=(\d+))?/i);
-    if (m) {
-      const slug = decodeURIComponent(m[1]);
-      const idx = projects.findIndex(p => p.id === slug);
+    if (m)
+    {
+      const slug  = decodeURIComponent(m[1]);
+      const idx   = projects.findIndex(p => p.id === slug);
       const slide = Math.max(1, Number(m[2] || 1)) - 1;
-
-      if (idx >= 0) {
+      if (idx >= 0)
+      {
         setActiveProject(idx, slide, false);
         return;
       }
@@ -408,23 +539,160 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("hashchange", readHash);
 
-  // Keyboard nav
-  function prev() {
-    setActiveSlide(activeSlideIndex - 1, true);
-  }
-  function next() {
-    setActiveSlide(activeSlideIndex + 1, true);
+  // ---------- Mobile accordion ----------
+  function renderMobile()
+  {
+    mobileList.innerHTML = "";
+
+    projects.forEach((p, idx) =>
+    {
+      const item = create("div", "mobile-item");
+      item.setAttribute("role", "listitem");
+      item.setAttribute("aria-expanded", "false");
+
+      const head  = create("div", "mobile-head");
+      const num   = create("div", "mobile-num");
+      const title = create("div", "mobile-title");
+      const mth   = create("div", "mobile-thumb");
+      const chev  = create("div", "mobile-chev");
+
+      num.textContent = z2(idx + 1);
+      title.textContent = p.title;
+      chev.textContent = "›";
+
+      const timg = new Image();
+      timg.src = p.thumb; timg.alt = "";
+      mth.appendChild(timg);
+
+      head.appendChild(num);
+      head.appendChild(title);
+      head.appendChild(mth);
+      head.appendChild(chev);
+
+      const body  = create("div", "mobile-body");
+      const about = create("div", "mobile-about");
+      about.textContent = p.description || "";
+      body.appendChild(about);
+
+      const stage = create("div", "mobile-stage");
+      const mp = create("button", "nav prev"); mp.textContent = "‹";
+      const mn = create("button", "nav next"); mn.textContent = "›";
+      const img = new Image(); img.alt = ""; img.src = p.images[0];
+
+      stage.appendChild(mp);
+      stage.appendChild(img);
+      stage.appendChild(mn);
+
+      const mStrip = create("div", "mobile-strip");
+      p.images.forEach((src, i) =>
+      {
+        const b = create("button", "strip-thumb");
+        b.type = "button";
+        b.dataset.num = z2(i + 1);
+        const im = new Image();
+        im.src = src; im.alt = "";
+        b.appendChild(im);
+        b.addEventListener("click", () => mSet(i));
+        mStrip.appendChild(b);
+      });
+
+      body.appendChild(stage);
+      body.appendChild(mStrip);
+
+      let cur = 0;
+      function mSet(i)
+      {
+        cur = Math.max(0, Math.min(i, p.images.length - 1));
+        img.src = p.images[cur];
+      }
+      mp.addEventListener("click", () => mSet(cur - 1));
+      mn.addEventListener("click", () => mSet(cur + 1));
+      img.addEventListener("click", () =>
+      {
+        activeProject = idx;
+        activeSlide = cur;
+        openLightbox();
+      });
+
+      head.addEventListener("click", () =>
+      {
+        const open = mobileList.querySelector('.mobile-item[aria-expanded="true"]');
+        if (open && open !== item) { animateClose(open); }
+        if (item.getAttribute("aria-expanded") === "true") { animateClose(item); }
+        else { animateOpen(item); }
+      });
+
+      item.appendChild(head);
+      item.appendChild(body);
+      mobileList.appendChild(item);
+    });
   }
 
-  prevBtn.addEventListener("click", prev);
-  nextBtn.addEventListener("click", next);
+  function animateOpen(item)
+  {
+    const body = item.querySelector(".mobile-body");
+    item.setAttribute("aria-expanded", "true");
+    body.style.maxHeight = "0px";
+    const h = body.scrollHeight;
+    requestAnimationFrame(() => { body.style.maxHeight = `${h}px`; });
+  }
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft") { prev(); }
-    if (e.key === "ArrowRight") { next(); }
+  function animateClose(item)
+  {
+    const body = item.querySelector(".mobile-body");
+    const h = body.scrollHeight;
+    body.style.maxHeight = `${h}px`;
+    requestAnimationFrame(() => { body.style.maxHeight = "0px"; });
+    item.setAttribute("aria-expanded", "false");
+  }
+
+  // ---------- Lightbox ----------
+  function openLightbox()
+  {
+    const proj = projects[activeProject];
+    lb.classList.remove("hidden");
+    lb.setAttribute("aria-hidden", "false");
+    lbImg.src = proj.images[activeSlide];
+  }
+
+  function closeLightbox()
+  {
+    lb.classList.add("hidden");
+    lb.setAttribute("aria-hidden", "true");
+  }
+
+  lbPrev.addEventListener("click", () =>
+  {
+    prev();
+    lbImg.src = projects[activeProject].images[activeSlide];
+  });
+  lbNext.addEventListener("click", () =>
+  {
+    next();
+    lbImg.src = projects[activeProject].images[activeSlide];
+  });
+  lbClose.addEventListener("click", closeLightbox);
+  lb.addEventListener("click", (e) =>
+  {
+    if (e.target === lb) { closeLightbox(); }
+  });
+  document.addEventListener("keydown", (e) =>
+  {
+    if (lb.classList.contains("hidden"))
+    {
+      if (e.key === "ArrowLeft")  { prev(); }
+      if (e.key === "ArrowRight") { next(); }
+    }
+    else
+    {
+      if (e.key === "Escape")     { closeLightbox(); }
+      if (e.key === "ArrowLeft")  { lbPrev.click(); }
+      if (e.key === "ArrowRight") { lbNext.click(); }
+    }
   });
 
-  // Init
-  renderProjectList();
+  // ---------- Init ----------
+  renderRibbon();
+  renderMobile();
   readHash();
 });
