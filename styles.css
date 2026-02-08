@@ -617,7 +617,7 @@ body.dark-mode {
 .gallery {
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: clamp(14px, 2.6vw, 28px);
+  gap: clamp(100px, 2.6vw, 28px);
   padding-inline: var(--edge);
   align-items: start;
 }
