@@ -13,7 +13,6 @@
   <header class="sticky-header">
     <div class="name-wrapper">
       <a class="name name-full" href="#">Theiner Radim</a>
-
       <div class="name name-short">
         <span class="the">THE</span><span class="rad">RAD</span>
       </div>
@@ -22,8 +21,8 @@
     <div class="header-right">
       <div class="bulb-wrapper">
         <div class="bulb-rope"></div>
-        <div class="lightbulb-toggle" id="themeToggle">
-          <svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+        <div class="lightbulb-toggle" id="themeToggle" aria-label="Toggle theme" role="button" tabindex="0">
+          <svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <g id="Group">
               <g id="g1">
                 <path fill="currentColor"
@@ -40,8 +39,8 @@
   </header>
 
   <div class="container">
+    <div id="bikerCircle" class="biker-placeholder" aria-hidden="true"></div>
 
-    <div id="bikerCircle" class="biker-placeholder"></div>
     <div class="arrow-wrapper">
       <div id="scrollArrow">↓<div class="scroll-text">scroll down</div>
       </div>
@@ -56,27 +55,45 @@
         </div>
       </div>
 
-      <div class="typewriter-container">
+      <div class="typewriter-container" aria-hidden="true">
         <div class="typewriter-text-wrapper">
           <span id="typewriterText"></span><span class="cursor">|</span>
         </div>
       </div>
     </section>
 
-
-    <!-- PHOTO ALBUM (clean, album-only) -->
-<section id="photos" class="section">
+    <section id="photos" class="section">
       <h2 class="section-title">PHOTO</h2>
+
+      <div id="gallery" class="gallery" data-mode="desktop">
+        <aside class="project-list" role="list" aria-label="Projects"></aside>
+
+        <main class="project-viewer" aria-live="polite">
+          <div class="viewer-stage">
+            <button class="nav prev" aria-label="Previous image">←</button>
+            <figure class="stage-figure">
+              <img id="stageImage" alt="" />
+              <figcaption id="stageCaption"></figcaption>
+            </figure>
+            <button class="nav next" aria-label="Next image">→</button>
+          </div>
+
+          <div class="viewer-strip" role="listbox" aria-label="Thumbnails"></div>
+
+          <section class="desc-block" hidden>
+            <h3 class="desc-title"></h3>
+            <p class="desc-text"></p>
+          </section>
+        </main>
+      </div>
     </section>
 
     <section id="videos" class="section">
       <h2 class="section-title">VIDEO</h2>
-      <!-- TV with video previews -->
     </section>
 
     <section id="web-projects" class="section">
       <h2 class="section-title">CODING</h2>
-      <!-- Laptop with tabs for web projects -->
     </section>
   </div>
 
@@ -94,9 +111,8 @@
     </div>
   </footer>
 
-  <!-- Contact Overlay -->
-  <div id="contactOverlay" class="contact-overlay hidden">
-    <div class="close-btn" id="closeOverlay">×</div>
+  <div id="contactOverlay" class="contact-overlay hidden" aria-hidden="true">
+    <div class="close-btn" id="closeOverlay" role="button" tabindex="0" aria-label="Close">×</div>
     <div class="contact-box">
       <p>LOVE WHAT I DO?</p>
       <p>DROP ME A MESSAGE.</p>
