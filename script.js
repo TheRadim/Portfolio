@@ -62,29 +62,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Scroll to PHOTO section
-  function scrollToPhotoSection() {
-    const fixedHeaderHeight = 40;
-    const targetY = photoSection.offsetTop - fixedHeaderHeight;
+  // Smooth scroll helper (shared)
+  function smoothScrollTo(targetY, duration = 900) {
     const startY = window.scrollY;
     const distance = targetY - startY;
-    const duration = 900;
-    const startTime = performance.now();
+    const start = performance.now();
 
-    function ease(t) {
-      return -(Math.cos(Math.PI * t) - 1) / 2;
-    }
+    function ease(t) { return -(Math.cos(Math.PI * t) - 1) / 2; }
 
     function step(now) {
-      const progress = Math.min((now - startTime) / duration, 1);
-      window.scrollTo(0, startY + distance * ease(progress));
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      }
+      const p = Math.min((now - start) / duration, 1);
+      window.scrollTo(0, startY + distance * ease(p));
+      if (p < 1) requestAnimationFrame(step);
     }
-
     requestAnimationFrame(step);
   }
+
+  // Scroll to PHOTO section (keeps the "PHOTO" title visible)
+  function scrollToPhotoSection() {
+    const header = document.querySelector(".sticky-header");
+    const headerH = header ? header.offsetHeight : 60;
+    const keepTitle = 20; // extra space so the section title stays visible
+    const targetY = Math.max(0, photoSection.offsetTop - headerH - keepTitle);
+    smoothScrollTo(targetY, 900);
+  }
+
+  // expose for gallery ribbon clicks
+  window.scrollToPhotoSection = scrollToPhotoSection;
 
   arrow?.addEventListener("click", scrollToPhotoSection);
 
@@ -442,18 +446,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       item.addEventListener("click", () => {
         setActiveProject(i, 0, true);
-
-        const header = document.querySelector(".sticky-header");
-        const headerH = header ? header.offsetHeight : 0;
-
-        const y = ribbonEl.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo({ top: Math.max(0, y - headerH), behavior: "smooth" });
+        // Use the same smooth scroll as the bottom arrow
+        window.scrollToPhotoSection?.();
       });
 
       ribbonEl.appendChild(item);
     });
   }
 
+  // ---------- Viewer ----------
   // ---------- Viewer ----------
   function renderStrip(proj, current) {
     stripEl.innerHTML = "";
@@ -475,6 +476,11 @@ document.addEventListener("DOMContentLoaded", () => {
       b.appendChild(img);
       stripEl.appendChild(b);
     });
+
+    // Make the bottom strip always fit in TWO rows on small screens
+    // (CSS reads this value and creates that many columns of equal width)
+    const cols = Math.max(1, Math.ceil(proj.images.length / 2));
+    stripEl.style.setProperty("--strip-cols", String(cols));
   }
 
   function updateAbout(proj) {
