@@ -247,7 +247,7 @@ body {
 }
 
 .section-title {
-    font: 600 clamp(18px, 2.2vw, 28px) var(--font-heading);
+  font: 600 clamp(18px, 2.2vw, 28px) var(--font-heading);
   font-size: 36px;
   font-weight: 500;
   text-transform: uppercase;
