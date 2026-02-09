@@ -757,6 +757,8 @@ body.dark-mode {
   opacity: 0;
   z-index: 1;
   cursor: zoom-in;
+  transition: opacity .6s var(--ease), filter .6s var(--ease), transform .6s var(--ease);
+  will-change: opacity, filter, transform;
 }
 
 .stage-index {
@@ -863,6 +865,63 @@ body.dark-mode {
 .strip-thumb:hover::after,
 .strip-thumb[aria-selected="true"]::after {
   opacity: 1;
+}
+
+.stage-box img.is-preview {
+  filter: blur(8px);
+  transform: scale(1.01);
+}
+
+/* Stage caption above image & arrows */
+.stage-caption {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  padding: 2px 6px;
+  font: 600 11px/1.2 var(--font-heading);
+  letter-spacing: .03em;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
+  opacity: .95;
+  pointer-events: none;
+  z-index: 3;
+  /* <<< add this */
+}
+
+.stage-caption:not(.has-caption) {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .mobile-caption {
+    position: absolute;
+    left: 8px;
+    bottom: 6px;
+    font: 600 11px/1.2 var(--font-heading);
+    letter-spacing: .03em;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
+    opacity: .95;
+    pointer-events: none;
+    z-index: 3;
+    /* <<< add this */
+  }
+
+  .mobile-caption:not(.has-caption) {
+    display: none;
+  }
+}
+
+.about-text p {
+  margin: 0 0 12px 0;
+}
+
+.about-text p+p {
+  margin-top: 10px;
+}
+
+.mobile-about p {
+  margin: 0 0 10px 0;
 }
 
 /* ===== Mobile (accordion) — fits on tiny screens ===== */
@@ -996,24 +1055,23 @@ body.dark-mode {
   .mobile-stage .next {
     right: 8px;
   }
+  /* >>> Mobile strip: THREE ROWS, NO SCROLL <<< */
+.mobile-strip
+{
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap);
+  overflow: hidden; /* no internal scrollbars */
+  /* 3 rows tall: 3 thumb heights + 2 vertical gaps between rows */
+  max-height: calc(var(--strip-thumb-m) * 3 + var(--gap) * 2);
+  padding: 0 0 8px 0;
+}
 
-  /* >>> Mobile strip: TWO ROWS, NO HORIZONTAL OVERFLOW <<< */
-  .mobile-strip {
-    display: flex;
-    flex-wrap: wrap;
-    /* wrap to multiple lines */
-    gap: var(--gap);
-    overflow: hidden;
-    /* no sideways scrollbars */
-    max-height: calc(var(--strip-thumb-m) * 2 + var(--gap));
-    /* exactly two rows */
-    padding: 0 0 8px 0;
-  }
-
-  .mobile-strip .strip-thumb {
-    width: var(--strip-thumb-m);
-    height: var(--strip-thumb-m);
-  }
+.mobile-strip .strip-thumb
+{
+  width: var(--strip-thumb-m);
+  height: var(--strip-thumb-m);
+}
 }
 
 /* Micro: ~480px phones */

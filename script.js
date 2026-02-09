@@ -225,30 +225,58 @@ document.addEventListener("DOMContentLoaded", () => {
   const lbNext = lb.querySelector(".lb-next");
   const lbClose = lb.querySelector(".lb-close");
 
-  // ---------- Projects (thumb = first full image: 1.jpeg) ----------
-  // Folder layout per project:
-  // assets/photo/{dir}/full/1.jpeg, 2.jpeg, 3.jpeg, ... (up to count)
-  // No separate thumbs folder needed.
+  let stageCaption = document.getElementById("stageCaption");
+  if (!stageCaption) {
+    stageCaption = document.createElement("div");
+    stageCaption.id = "stageCaption";
+    stageCaption.className = "stage-caption";
+    stageBox.appendChild(stageCaption);
+  }
 
-  function rangePaths(dir, count, ext) {
-    return Array.from({ length: count }, (_, i) =>
-      `assets/photo/${dir}/full/${i + 1}.${ext}`
-    );
+  // ---------- Projects ----------
+  function rangePaths(dir, count, ext, subfolder) {
+    return Array.from({ length: count }, (_, i) => `assets/photo/${dir}/${subfolder}/${i + 1}.${ext}`);
   }
 
   function buildProjects(defs) {
     return defs.map(d => {
-      const ext = d.ext || "jpeg";
-      const imgs = d.files?.length
-        ? d.files.map(n => `assets/photo/${d.dir}/full/${n}.${ext}`)
-        : rangePaths(d.dir, d.count || 0, ext);
+      const defExt = d.ext || "webp";
+      const defT = d.thumbExt || "webp";
+
+      let images = [];
+      let thumbs = [];
+      let captions = Array.isArray(d.captions) ? [...d.captions] : [];
+
+      if (Array.isArray(d.sources) && d.sources.length > 0) {
+        d.sources.forEach(s => {
+          const ext = s.ext || defExt;
+          const tExt = s.thumbExt || defT;
+          const cnt = s.count || 0;
+
+          images.push(...rangePaths(s.dir, cnt, ext, "full"));
+          thumbs.push(...rangePaths(s.dir, cnt, tExt, "thumbs"));
+        });
+      }
+      else {
+        const cnt = d.count || 0;
+        if (d.dir && cnt > 0) {
+          images = rangePaths(d.dir, cnt, defExt, "full");
+          thumbs = rangePaths(d.dir, cnt, defT, "thumbs");
+        }
+      }
+
+      if (captions.length < images.length) {
+        captions.length = images.length;
+      }
 
       return {
         id: d.id,
         title: d.title,
         description: d.description || "",
-        thumb: `assets/photo/${d.dir}/full/1.${ext}`, // thumb = first image
-        images: imgs
+        thumb: thumbs[0] || images[0] || "",
+        images,
+        thumbs,
+        captions
       };
     });
   }
@@ -259,76 +287,140 @@ document.addEventListener("DOMContentLoaded", () => {
         dir: "1",
         id: "pas-normal",
         title: "PAS NORMAL STUDIOS",
-        description: "Team ride around Copenhagen in late-summer light, plus a panel with racers and brand designers on their bond with Pas Normal.",
+        description:
+          "Shooting for a lovebrand: team ride through Copenhagen’s Indian summer and a social evening where racers and brand designers talked about their bond with Pas Normal.",
         count: 10,
-        ext: "jpeg"
+        ext: "webp",
+        thumbExt: "webp",
+        captions:
+          []
       },
       {
         dir: "2",
         id: "gravity-snowboards",
         title: "GRAVITY SNB",
-        description: "Pre-season product work—tuning kits, edge and base prep—because snowboarding is a lifelong habit.",
-        count: 8,
-        ext: "jpeg"
+        description:
+          "Snowboarding is a lifelong habit. Pre-season product work on their tuning line — edges and bases getting ready for winter.",
+        count: 9,
+        ext: "webp",
+        thumbExt: "webp",
+        captions:
+          []
       },
       {
         dir: "3",
         id: "happy-socks",
         title: "HAPPY SOCKS",
-        description: "University editorial with Matija Max Vidović. Playful, a bit absurd—still one of my favorite series.",
+        description:
+          "Editorial at the university with Matija Max Vidović. Playful, a little absurd — still one of my favorites.",
         count: 9,
-        ext: "jpeg"
+        ext: "webp",
+        thumbExt: "webp",
+        captions:
+          []
       },
       {
         dir: "4",
         id: "studio-pyntet",
         title: "STUDIO PYNTET",
-        description: "Close to my heart: full visuals—photo, video, and website—for a jewelry brand between Prague and Copenhagen.",
+        description:
+          "Small jewels and art pieces. A project close to my heart — I handled visuals end-to-end: photos, video, and website for a brand living between Prague and Copenhagen.",
         count: 16,
-        ext: "jpeg"
+        ext: "webp",
+        thumbExt: "webp",
+        captions:
+          []
       },
       {
         dir: "5",
-        id: "downhill-in-town",
-        title: "DOWNHILL IN TOWN",
-        description: "Urban DH—sunny day, fast lines, and some properly bonkers bikes.",
-        count: 12,
-        ext: "jpeg"
+        id: "bikes",
+        title: "BIKES",
+        description:
+          "Did I mention I love bikes? Here are a few projects I enjoyed shooting.\n\n" +
+          "Downhill in Town — Urban DH threaded through city streets. Fast lines, alley sprints, and that echo of freehubs between buildings.\n\n" +
+          "Sunshine Criterium — Fixed-gear crit meets running in Copenhagen. Hot corners, ringing cowbells, salt in the air, and smiles you can hear.\n\n" +
+          "Jinglecross — Pre-Christmas cyclocross where mud, bells, and winter light mix into a beautiful mess; cold fingers, warm hearts.\n\n" +
+          "Stevens Bikes — Product portraits and quick spins. The chameleon paint sings in daylight while the bikes feel eager to launch.",
+        count: 24,
+        ext: "webp",
+        thumbExt: "webp",
+        captions:
+          [
+            "Downhill in Town",
+            "Sunshine Crit",
+            "Jinglecross",
+            "Sunshine Crit",
+            "Stevens Bikes",
+            "Downhill in Town",
+            "Sunshine Crit",
+            "Jinglecross",
+            "Stevens Bikes",
+            "Sunshine Crit",
+            "Downhill in Town",
+            "Jinglecross",
+            "Stevens Bikes",
+            "Jinglecross",
+            "Sunshine Crit",
+            "Stevens Bikes",
+            "Downhill in Town",
+            "Jinglecross",
+            "Sunshine Crit",
+            "Jinglecross",
+            "Stevens Bikes",
+            "Downhill in Town",
+            "Jinglecross",
+            "Jinglecross"
+          ]
       },
       {
         dir: "6",
-        id: "stevens-bikes",
-        title: "STEVENS BIKES",
-        description: "A chance to shoot new Stevens cuties—yes, with that chameleon paint.",
-        count: 9,
-        ext: "jpeg"
+        id: "fragaria-coffee",
+        title: "FRAGARIA COFFEE",
+        description:
+          "Specialty coffee by special people — good friends. Texture first, people always.",
+        count: 8,
+        ext: "webp",
+        thumbExt: "webp",
+        captions:
+          []
       },
       {
         dir: "7",
-        id: "sunshine-criterium",
-        title: "SUNSHINE CRIT",
-        description: "Fixed-gear crit meets running in Copenhagen. Favorite race; all vibes, all heart.",
-        count: 15,
-        ext: "jpeg"
+        id: "portraits",
+        title: "FACES",
+        description:
+          "People first — portraits, moments, sometimes on film, sometimes digital. Always about the person in front of me.",
+        count: 14,
+        ext: "webp",
+        thumbExt: "webp",
+        captions:
+          []
       },
       {
         dir: "8",
-        id: "kmen-coffee",
-        title: "KMEN COFFEE",
-        description: "Specialty coffee by special people—also good friends. Beans, steam, community.",
-        count: 8,
-        ext: "jpeg"
+        id: "arch",
+        title: "ARCH",
+        description:
+          "Lines, light, materials — and how spaces are actually used.",
+        count: 19,
+        ext: "webp",
+        thumbExt: "webp",
+        captions:
+          []
       },
       {
         dir: "9",
-        id: "dirty-series-jinglecross",
-        title: "DIRTY SERIES",
-        description: "Mud, bells, pre-Christmas cross. A beautiful mess.",
-        count: 11,
-        ext: "jpeg"
+        id: "nature",
+        title: "NATURE",
+        description:
+          "Quiet frames outdoors — textures, weather, patience.",
+        count: 24,
+        ext: "webp",
+        thumbExt: "webp",
+        captions:
+          []
       }
     ];
-
   const projects = buildProjects(projectDefs);
 
   // ---------- Utils ----------
@@ -344,8 +436,49 @@ document.addEventListener("DOMContentLoaded", () => {
     return el;
   }
 
+  function defaultCaption(proj, idx) {
+    return `${proj.title} — ${z2(idx + 1)}/${z2(proj.images.length)}`;
+  }
+
+  function getCaption(proj, idx) {
+    const base =
+      (proj.captions && typeof proj.captions[idx] === "string" && proj.captions[idx].trim())
+      || proj.title
+      || "";
+
+    return `${base} — ${z2(idx + 1)}/${z2(proj.images.length)}`;
+  }
+
+  // Lazy load helper
+  const io = ("IntersectionObserver" in window)
+    ? new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const src = el.getAttribute("data-src");
+          if (src) {
+            el.src = src;
+            el.removeAttribute("data-src");
+          }
+          io.unobserve(el);
+        }
+      });
+    },
+      { rootMargin: "200px 0px 200px 0px", threshold: 0.01 })
+    : null;
+
+  function lazySet(img, src) {
+    if (io) {
+      img.setAttribute("data-src", src);
+      io.observe(img);
+    }
+    else {
+      img.src = src;
+    }
+  }
+
   // ---------- Stage index pin ----------
-  function positionStageIndex() {
+  function positionStageOverlays() {
     const cw = stageBox.clientWidth;
     const ch = stageBox.clientHeight;
 
@@ -359,8 +492,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const left = (cw - dw) / 2;
     const top = (ch - dh) / 2;
 
+    // Stage number: top-left inside the image
     stageIndex.style.left = `${Math.round(left) + 8}px`;
     stageIndex.style.top = `${Math.round(top) + 8}px`;
+
+    // Caption: bottom-left inside the image
+    stageCaption.style.left = `${Math.round(left) + 8}px`;
+    const bottom = Math.round(ch - (top + dh)) + 8;
+    stageCaption.style.bottom = `${bottom}px`;
 
     if (CAN_SAMPLE) {
       updateStageIndexContrast();
@@ -433,8 +572,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const thumb = create("div", "thumb");
       const img = new Image();
-      img.src = p.thumb;
       img.alt = "";
+      img.loading = "lazy";
+      img.decoding = "async";
+      lazySet(img, p.thumb);
       thumb.appendChild(img);
 
       const ov = create("div", "overlay");
@@ -446,8 +587,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       item.addEventListener("click", () => {
         setActiveProject(i, 0, true);
-        // Use the same smooth scroll as the bottom arrow
-        window.scrollToPhotoSection?.();
+
+        const header = document.querySelector(".sticky-header");
+        const headerH = header ? header.offsetHeight : 0;
+        const y = ribbonEl.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: Math.max(0, y - headerH), behavior: "smooth" });
       });
 
       ribbonEl.appendChild(item);
@@ -455,53 +599,96 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ---------- Viewer ----------
-  // ---------- Viewer ----------
   function renderStrip(proj, current) {
     stripEl.innerHTML = "";
 
-    proj.images.forEach((src, i) => {
+    proj.images.forEach((_src, i) => {
       const b = create("button", "strip-thumb");
       b.type = "button";
       b.dataset.num = z2(i + 1);
-      b.setAttribute("aria-label", `Image ${i + 1} of ${proj.images.length}`);
+
+      const capText = getCaption(proj, i);
+
+      b.setAttribute("aria-label", `${capText}`);
       b.setAttribute("aria-selected", i === current ? "true" : "false");
+      b.title = capText;
       b.addEventListener("click", () => setActiveSlide(i, true));
 
       const img = new Image();
       img.loading = "lazy";
       img.decoding = "async";
-      img.src = src;
-      img.alt = "";
+      img.alt = capText;
+      lazySet(img, (proj.thumbs && proj.thumbs[i]) ? proj.thumbs[i] : proj.images[i]);
 
       b.appendChild(img);
       stripEl.appendChild(b);
     });
+  }
 
-    // Make the bottom strip always fit in TWO rows on small screens
-    // (CSS reads this value and creates that many columns of equal width)
-    const cols = Math.max(1, Math.ceil(proj.images.length / 2));
-    stripEl.style.setProperty("--strip-cols", String(cols));
+  // Add near your utils:
+  function renderParagraphs(container, text) {
+    container.replaceChildren();
+    const parts = String(text || "").trim().split(/\n\s*\n/);
+    parts.forEach(t => {
+      const s = t.trim();
+      if (!s) { return; }
+      const p = document.createElement("p");
+      p.textContent = s;
+      container.appendChild(p);
+    });
   }
 
   function updateAbout(proj) {
     aboutTitle.textContent = proj.title;
-    aboutText.textContent = proj.description || "";
+    renderParagraphs(aboutText, proj.description || "");
+  }
+
+  function preloadNeighbors(proj, idx) {
+    [idx - 1, idx + 1].forEach(j => {
+      if (j >= 0 && j < proj.images.length) {
+        const pre = new Image();
+        pre.decoding = "async";
+        pre.loading = "eager";
+        pre.src = proj.images[j];
+      }
+    });
   }
 
   function setStage(src, idx) {
-    stageIndex.textContent = z2(idx + 1);
-    stageImg.style.opacity = "0";
+    const proj = projects[activeProject];
+    const caption = getCaption(proj, idx);
 
-    const img = new Image();
-    if (CAN_SAMPLE) {
-      img.crossOrigin = "anonymous";
-    }
-    img.onload = () => {
-      stageImg.src = src;
-      stageImg.style.opacity = "1";
-      positionStageIndex();
+    stageCaption.textContent = caption;
+    stageCaption.classList.add("has-caption");
+
+    const preview = (proj.thumbs && proj.thumbs[idx]) ? proj.thumbs[idx] : src;
+    stageIndex.textContent = z2(idx + 1);
+    stageImg.classList.add("is-preview");
+    stageImg.style.opacity = "1";
+    stageImg.decoding = "async";
+    stageImg.fetchPriority = "high";
+    stageImg.alt = caption;
+    stageImg.src = preview;
+
+    /* >>> ensure overlays are placed for the preview, not just the full <<< */
+    stageImg.addEventListener("load", positionStageOverlays, { once: true });
+
+    const full = new Image();
+    full.decoding = "async";
+    full.onload = () => {
+      stageImg.style.opacity = "0";
+      requestAnimationFrame(() => {
+        stageImg.src = src;
+        stageImg.onload = () => {
+          stageImg.classList.remove("is-preview");
+          stageImg.style.opacity = "1";
+          positionStageOverlays();
+        };
+      });
     };
-    img.src = src;
+    full.src = src;
+
+    preloadNeighbors(proj, idx);
   }
 
   let activeProject = 0;
@@ -551,7 +738,8 @@ document.addEventListener("DOMContentLoaded", () => {
   prevBtn.addEventListener("click", prev);
   nextBtn.addEventListener("click", next);
   stageImg.addEventListener("click", () => openLightbox());
-  window.addEventListener("resize", positionStageIndex);
+  window.addEventListener("resize", positionStageOverlays);
+  window.addEventListener("resize", positionStageOverlays);
 
   // ---------- Routing ----------
   function syncHash() {
@@ -578,7 +766,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("hashchange", readHash);
 
-  // ---------- Mobile accordion ----------
+  // Render mobile list (accordion style)
   function renderMobile() {
     mobileList.innerHTML = "";
 
@@ -598,7 +786,10 @@ document.addEventListener("DOMContentLoaded", () => {
       chev.textContent = "›";
 
       const timg = new Image();
-      timg.src = p.thumb; timg.alt = "";
+      timg.alt = "";
+      timg.decoding = "async";
+      timg.loading = "lazy";
+      lazySet(timg, p.thumb);
       mth.appendChild(timg);
 
       head.appendChild(num);
@@ -608,51 +799,110 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const body = create("div", "mobile-body");
       const about = create("div", "mobile-about");
-      about.textContent = p.description || "";
+      renderParagraphs(about, p.description || "");
       body.appendChild(about);
 
-      const stage = create("div", "mobile-stage");
-      const mp = create("button", "nav prev"); mp.textContent = "‹";
-      const mn = create("button", "nav next"); mn.textContent = "›";
-      const img = new Image(); img.alt = ""; img.src = p.images[0];
+      let built = false;
 
-      stage.appendChild(mp);
-      stage.appendChild(img);
-      stage.appendChild(mn);
+      function buildBody() {
+        if (built) { return; }
+        built = true;
 
-      const mStrip = create("div", "mobile-strip");
-      p.images.forEach((src, i) => {
-        const b = create("button", "strip-thumb");
-        b.type = "button";
-        b.dataset.num = z2(i + 1);
-        const im = new Image();
-        im.src = src; im.alt = "";
-        b.appendChild(im);
-        b.addEventListener("click", () => mSet(i));
-        mStrip.appendChild(b);
-      });
+        const stage = create("div", "mobile-stage");
+        const mp = create("button", "nav prev"); mp.textContent = "‹";
+        const mn = create("button", "nav next"); mn.textContent = "›";
 
-      body.appendChild(stage);
-      body.appendChild(mStrip);
+        const img = new Image();
+        img.alt = "";
+        img.decoding = "async";
+        img.loading = "eager";
+        img.fetchPriority = "high";
 
-      let cur = 0;
-      function mSet(i) {
-        cur = Math.max(0, Math.min(i, p.images.length - 1));
-        img.src = p.images[cur];
+        const cap = create("div", "mobile-caption");
+
+        // FULL SIZE from the start (no low-res thumb)
+        const first = p.images[0];
+        img.style.opacity = "0";
+        img.onload = () => {
+          img.style.opacity = "1";
+        };
+        img.src = first;
+
+        stage.appendChild(mp);
+        stage.appendChild(img);
+        stage.appendChild(mn);
+        stage.appendChild(cap);
+
+        const mStrip = create("div", "mobile-strip");
+        p.images.forEach((_src, i) => {
+          const b = create("button", "strip-thumb");
+          b.type = "button";
+          b.dataset.num = z2(i + 1);
+
+          const im = new Image();
+          im.alt = getCaption(p, i);
+          im.decoding = "async";
+          im.loading = "lazy";
+          lazySet(im, p.thumbs?.[i] || p.images[i]);
+
+          b.appendChild(im);
+          b.addEventListener("click", () => mSet(i));
+          mStrip.appendChild(b);
+        });
+
+        body.appendChild(stage);
+        body.appendChild(mStrip);
+
+        let cur = 0;
+
+        function mSet(i) {
+          cur = Math.max(0, Math.min(i, p.images.length - 1));
+
+          const caption = getCaption(p, cur);
+          cap.textContent = caption;
+          cap.classList.add("has-caption");
+
+          const full = p.images[cur];
+
+          if (img.src !== full) {
+            img.style.opacity = "0";
+            img.onload = () => {
+              img.style.opacity = "1";
+              img.onload = null;
+            };
+            img.src = full;
+          }
+
+          preloadNeighbors(p, cur);
+        }
+
+        mp.addEventListener("click", () => mSet(cur - 1));
+        mn.addEventListener("click", () => mSet(cur + 1));
+
+        img.addEventListener("click", () => {
+          activeProject = idx;
+          activeSlide = cur;
+          openLightbox();
+        });
+
+        // Initialize
+        cap.textContent = getCaption(p, 0);
+        cap.classList.add("has-caption");
+        mSet(0);
       }
-      mp.addEventListener("click", () => mSet(cur - 1));
-      mn.addEventListener("click", () => mSet(cur + 1));
-      img.addEventListener("click", () => {
-        activeProject = idx;
-        activeSlide = cur;
-        openLightbox();
-      });
 
       head.addEventListener("click", () => {
         const open = mobileList.querySelector('.mobile-item[aria-expanded="true"]');
-        if (open && open !== item) { animateClose(open); }
-        if (item.getAttribute("aria-expanded") === "true") { animateClose(item); }
-        else { animateOpen(item); }
+        if (open && open !== item) {
+          animateClose(open);
+        }
+        if (item.getAttribute("aria-expanded") === "true") {
+          animateClose(item);
+        }
+        else {
+          buildBody();
+          animateOpen(item);
+        }
       });
 
       item.appendChild(head);
@@ -683,6 +933,8 @@ document.addEventListener("DOMContentLoaded", () => {
     lb.classList.remove("hidden");
     lb.setAttribute("aria-hidden", "false");
     lbImg.src = proj.images[activeSlide];
+    lbImg.alt = getCaption(proj, activeSlide);
+    preloadNeighbors(proj, activeSlide);
   }
 
   function closeLightbox() {
@@ -692,15 +944,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   lbPrev.addEventListener("click", () => {
     prev();
-    lbImg.src = projects[activeProject].images[activeSlide];
+    const proj = projects[activeProject];
+    lbImg.src = proj.images[activeSlide];
+    lbImg.alt = getCaption(proj, activeSlide);
   });
   lbNext.addEventListener("click", () => {
     next();
-    lbImg.src = projects[activeProject].images[activeSlide];
+    const proj = projects[activeProject];
+    lbImg.src = proj.images[activeSlide];
+    lbImg.alt = getCaption(proj, activeSlide);
   });
   lbClose.addEventListener("click", closeLightbox);
   lb.addEventListener("click", (e) => {
-    if (e.target === lb) { closeLightbox(); }
+    if (e.target === lb) {
+      closeLightbox();
+    }
   });
   document.addEventListener("keydown", (e) => {
     if (lb.classList.contains("hidden")) {
