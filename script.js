@@ -196,93 +196,152 @@ document.addEventListener("DOMContentLoaded", () => {
 // ===================================================================
 // ======================= PHOTO GALLERY ==============================
 // ===================================================================
-document.addEventListener("DOMContentLoaded", () =>
-{
+document.addEventListener("DOMContentLoaded", () => {
   const gallery = document.getElementById("gallery");
-  if (!gallery)
-  {
+  if (!gallery) {
     return;
   }
 
-  // --- NEW: avoid canvas sampling & CORS quirks on file:// ---
   const CAN_SAMPLE = location.protocol !== "file:";
 
-  const ribbonEl   = gallery.querySelector(".project-ribbon");
+  const ribbonEl = gallery.querySelector(".project-ribbon");
   const aboutTitle = gallery.querySelector(".about-title");
-  const aboutText  = gallery.querySelector(".about-text");
-  const stageBox   = gallery.querySelector("#stageBox");
-  const stageImg   = gallery.querySelector("#stageImage");
+  const aboutText = gallery.querySelector(".about-text");
+  const stageBox = gallery.querySelector("#stageBox");
+  const stageImg = gallery.querySelector("#stageImage");
   const stageIndex = gallery.querySelector("#stageIndex");
-  const prevBtn    = gallery.querySelector(".stage-box .prev");
-  const nextBtn    = gallery.querySelector(".stage-box .next");
-  const stripEl    = gallery.querySelector(".strip");
+  const prevBtn = gallery.querySelector(".stage-box .prev");
+  const nextBtn = gallery.querySelector(".stage-box .next");
+  const stripEl = gallery.querySelector(".strip");
   const mobileList = gallery.querySelector(".mobile-list");
 
-  const lb     = document.getElementById("lightbox");
-  const lbImg  = document.getElementById("lbImage");
+  const lb = document.getElementById("lightbox");
+  const lbImg = document.getElementById("lbImage");
   const lbPrev = lb.querySelector(".lb-prev");
   const lbNext = lb.querySelector(".lb-next");
-  const lbClose= lb.querySelector(".lb-close");
+  const lbClose = lb.querySelector(".lb-close");
 
-  // REMOVE this line if you had it before:
+  // ---------- Projects (thumb = first full image: 1.jpeg) ----------
+  // Folder layout per project:
+  // assets/photo/{dir}/full/1.jpeg, 2.jpeg, 3.jpeg, ... (up to count)
+  // No separate thumbs folder needed.
 
-  const projects =
-  [
-    {
-      id: "bo-kanda-lita-baehre",
-      title: "BO KANDA LITA BAEHRE",
-      year: 2025,
-      thumb: "assets/photo.jpeg",
-      images: Array.from({ length: 9 }, () => "assets/photo2.jpeg"),
-      description: "Sample project description."
-    },
-    {
-      id: "spring-lines",
-      title: "SPRING LINES",
-      year: 2024,
-      thumb: "assets/photo.jpeg",
-      images: Array.from({ length: 8 }, () => "assets/photo3.jpeg"),
-      description: ""
-    },
-    {
-      id: "berlin-halfmarathon",
-      title: "BERLIN HALFMARATHON",
-      year: 2024,
-      thumb: "assets/photo.jpeg",
-      images: Array.from({ length: 10 }, () => "assets/photo2.jpeg"),
-      description: "Road energy. Street lungs."
-    },
-    {
-      id: "alina-run-sire",
-      title: "ALINA . RUN / SIRE",
-      year: 2023,
-      thumb: "assets/photo.jpeg",
-      images: Array.from({ length: 7 }, () => "assets/photo.jpeg"),
-      description: ""
-    }
-  ];
+  function rangePaths(dir, count, ext) {
+    return Array.from({ length: count }, (_, i) =>
+      `assets/photo/${dir}/full/${i + 1}.${ext}`
+    );
+  }
 
-  let activeProject = 0;
-  let activeSlide   = 0;
+  function buildProjects(defs) {
+    return defs.map(d => {
+      const ext = d.ext || "jpeg";
+      const imgs = d.files?.length
+        ? d.files.map(n => `assets/photo/${d.dir}/full/${n}.${ext}`)
+        : rangePaths(d.dir, d.count || 0, ext);
 
-  function z2(n)
-  {
+      return {
+        id: d.id,
+        title: d.title,
+        description: d.description || "",
+        thumb: `assets/photo/${d.dir}/full/1.${ext}`, // thumb = first image
+        images: imgs
+      };
+    });
+  }
+
+  const projectDefs =
+    [
+      {
+        dir: "1",
+        id: "pas-normal",
+        title: "PAS NORMAL STUDIOS",
+        description: "Team ride around Copenhagen in late-summer light, plus a panel with racers and brand designers on their bond with Pas Normal.",
+        count: 10,
+        ext: "jpeg"
+      },
+      {
+        dir: "2",
+        id: "gravity-snowboards",
+        title: "GRAVITY SNB",
+        description: "Pre-season product work—tuning kits, edge and base prep—because snowboarding is a lifelong habit.",
+        count: 8,
+        ext: "jpeg"
+      },
+      {
+        dir: "3",
+        id: "happy-socks",
+        title: "HAPPY SOCKS",
+        description: "University editorial with Matija Max Vidović. Playful, a bit absurd—still one of my favorite series.",
+        count: 9,
+        ext: "jpeg"
+      },
+      {
+        dir: "4",
+        id: "studio-pyntet",
+        title: "STUDIO PYNTET",
+        description: "Close to my heart: full visuals—photo, video, and website—for a jewelry brand between Prague and Copenhagen.",
+        count: 16,
+        ext: "jpeg"
+      },
+      {
+        dir: "5",
+        id: "downhill-in-town",
+        title: "DOWNHILL IN TOWN",
+        description: "Urban DH—sunny day, fast lines, and some properly bonkers bikes.",
+        count: 12,
+        ext: "jpeg"
+      },
+      {
+        dir: "6",
+        id: "stevens-bikes",
+        title: "STEVENS BIKES",
+        description: "A chance to shoot new Stevens cuties—yes, with that chameleon paint.",
+        count: 9,
+        ext: "jpeg"
+      },
+      {
+        dir: "7",
+        id: "sunshine-criterium",
+        title: "SUNSHINE CRIT",
+        description: "Fixed-gear crit meets running in Copenhagen. Favorite race; all vibes, all heart.",
+        count: 15,
+        ext: "jpeg"
+      },
+      {
+        dir: "8",
+        id: "kmen-coffee",
+        title: "KMEN COFFEE",
+        description: "Specialty coffee by special people—also good friends. Beans, steam, community.",
+        count: 8,
+        ext: "jpeg"
+      },
+      {
+        dir: "9",
+        id: "dirty-series-jinglecross",
+        title: "DIRTY SERIES",
+        description: "Mud, bells, pre-Christmas cross. A beautiful mess.",
+        count: 11,
+        ext: "jpeg"
+      }
+    ];
+
+  const projects = buildProjects(projectDefs);
+
+  // ---------- Utils ----------
+  function z2(n) {
     return n < 10 ? `0${n}` : String(n);
   }
 
-  function create(tag, cls)
-  {
+  function create(tag, cls) {
     const el = document.createElement(tag);
-    if (cls)
-    {
+    if (cls) {
       el.className = cls;
     }
     return el;
   }
 
-  // ---------- Stage index pinned to actual image corner ----------
-  function positionStageIndex()
-  {
+  // ---------- Stage index pin ----------
+  function positionStageIndex() {
     const cw = stageBox.clientWidth;
     const ch = stageBox.clientHeight;
 
@@ -294,30 +353,25 @@ document.addEventListener("DOMContentLoaded", () =>
     const dh = ih * scale;
 
     const left = (cw - dw) / 2;
-    const top  = (ch - dh) / 2;
+    const top = (ch - dh) / 2;
 
     stageIndex.style.left = `${Math.round(left) + 8}px`;
-    stageIndex.style.top  = `${Math.round(top)  + 8}px`;
+    stageIndex.style.top = `${Math.round(top) + 8}px`;
 
-    if (CAN_SAMPLE)
-    {
+    if (CAN_SAMPLE) {
       updateStageIndexContrast();
     }
-    else
-    {
-      stageIndex.classList.remove("index--dark"); // default white w/ black outline
+    else {
+      stageIndex.classList.remove("index--dark");
     }
   }
 
-  function updateStageIndexContrast()
-  {
-    if (!CAN_SAMPLE)
-    {
+  function updateStageIndexContrast() {
+    if (!CAN_SAMPLE) {
       return;
     }
 
-    try
-    {
+    try {
       const cw = stageBox.clientWidth;
       const ch = stageBox.clientHeight;
 
@@ -328,14 +382,14 @@ document.addEventListener("DOMContentLoaded", () =>
       const dw = iw * scale;
       const dh = ih * scale;
       const left = (cw - dw) / 2;
-      const top  = (ch - dh) / 2;
+      const top = (ch - dh) / 2;
 
       const sx = Math.max(0, Math.floor(left + 14));
-      const sy = Math.max(0, Math.floor(top  + 14));
+      const sy = Math.max(0, Math.floor(top + 14));
       const sw = 20, sh = 20;
 
       const canvas = updateStageIndexContrast._c || (updateStageIndexContrast._c = document.createElement("canvas"));
-      const ctx    = updateStageIndexContrast._x || (updateStageIndexContrast._x = canvas.getContext("2d", { willReadFrequently: true }));
+      const ctx = updateStageIndexContrast._x || (updateStageIndexContrast._x = canvas.getContext("2d", { willReadFrequently: true }));
 
       canvas.width = cw;
       canvas.height = ch;
@@ -345,30 +399,26 @@ document.addEventListener("DOMContentLoaded", () =>
       const data = ctx.getImageData(sx, sy, sw, sh).data;
       let sum = 0, count = 0;
 
-      for (let i = 0; i < data.length; i += 4)
-      {
+      for (let i = 0; i < data.length; i += 4) {
         const r = data[i], g = data[i + 1], b = data[i + 2];
         sum += 0.2126 * r + 0.7152 * g + 0.0722 * b;
         count++;
       }
 
-      const L = sum / count;          // 0..255
+      const L = sum / count;
       const lightBg = L > 150;
       stageIndex.classList.toggle("index--dark", lightBg);
     }
-    catch (_e)
-    {
+    catch (_e) {
       stageIndex.classList.remove("index--dark");
     }
   }
 
   // ---------- Ribbon ----------
-  function renderRibbon()
-  {
+  function renderRibbon() {
     ribbonEl.innerHTML = "";
 
-    projects.forEach((p, i) =>
-    {
+    projects.forEach((p, i) => {
       const item = create("button", "ribbon-item");
       item.type = "button";
       item.setAttribute("role", "listitem");
@@ -390,8 +440,7 @@ document.addEventListener("DOMContentLoaded", () =>
       item.appendChild(num);
       item.appendChild(thumb);
 
-      item.addEventListener("click", () =>
-      {
+      item.addEventListener("click", () => {
         setActiveProject(i, 0, true);
 
         const header = document.querySelector(".sticky-header");
@@ -406,12 +455,10 @@ document.addEventListener("DOMContentLoaded", () =>
   }
 
   // ---------- Viewer ----------
-  function renderStrip(proj, current)
-  {
+  function renderStrip(proj, current) {
     stripEl.innerHTML = "";
 
-    proj.images.forEach((src, i) =>
-    {
+    proj.images.forEach((src, i) => {
       const b = create("button", "strip-thumb");
       b.type = "button";
       b.dataset.num = z2(i + 1);
@@ -430,24 +477,20 @@ document.addEventListener("DOMContentLoaded", () =>
     });
   }
 
-  function updateAbout(proj)
-  {
+  function updateAbout(proj) {
     aboutTitle.textContent = proj.title;
-    aboutText.textContent  = proj.description || "";
+    aboutText.textContent = proj.description || "";
   }
 
-  function setStage(src, idx)
-  {
+  function setStage(src, idx) {
     stageIndex.textContent = z2(idx + 1);
     stageImg.style.opacity = "0";
 
     const img = new Image();
-    if (CAN_SAMPLE)
-    {
+    if (CAN_SAMPLE) {
       img.crossOrigin = "anonymous";
     }
-    img.onload = () =>
-    {
+    img.onload = () => {
       stageImg.src = src;
       stageImg.style.opacity = "1";
       positionStageIndex();
@@ -455,13 +498,14 @@ document.addEventListener("DOMContentLoaded", () =>
     img.src = src;
   }
 
-  function setActiveProject(index, slide, pushHash)
-  {
-    activeProject = index;
-    activeSlide   = Math.max(0, Math.min(slide, projects[index].images.length - 1));
+  let activeProject = 0;
+  let activeSlide = 0;
 
-    gallery.querySelectorAll(".ribbon-item").forEach((it, i) =>
-    {
+  function setActiveProject(index, slide, pushHash) {
+    activeProject = index;
+    activeSlide = Math.max(0, Math.min(slide, projects[index].images.length - 1));
+
+    gallery.querySelectorAll(".ribbon-item").forEach((it, i) => {
       it.setAttribute("aria-current", i === index ? "true" : "false");
     });
 
@@ -470,37 +514,31 @@ document.addEventListener("DOMContentLoaded", () =>
     renderStrip(proj, activeSlide);
     setStage(proj.images[activeSlide], activeSlide);
 
-    if (pushHash)
-    {
+    if (pushHash) {
       syncHash();
     }
   }
 
-  function setActiveSlide(slide, pushHash)
-  {
+  function setActiveSlide(slide, pushHash) {
     const proj = projects[activeProject];
     activeSlide = Math.max(0, Math.min(slide, proj.images.length - 1));
 
     setStage(proj.images[activeSlide], activeSlide);
 
-    stripEl.querySelectorAll(".strip-thumb").forEach((el, i) =>
-    {
+    stripEl.querySelectorAll(".strip-thumb").forEach((el, i) => {
       el.setAttribute("aria-selected", i === activeSlide ? "true" : "false");
     });
 
-    if (pushHash)
-    {
+    if (pushHash) {
       syncHash();
     }
   }
 
-  function prev()
-  {
+  function prev() {
     setActiveSlide(activeSlide - 1, true);
   }
 
-  function next()
-  {
+  function next() {
     setActiveSlide(activeSlide + 1, true);
   }
 
@@ -510,26 +548,21 @@ document.addEventListener("DOMContentLoaded", () =>
   window.addEventListener("resize", positionStageIndex);
 
   // ---------- Routing ----------
-  function syncHash()
-  {
+  function syncHash() {
     const proj = projects[activeProject];
     const hash = `#photo/${encodeURIComponent(proj.id)}?i=${activeSlide + 1}`;
-    if (location.hash !== hash)
-    {
+    if (location.hash !== hash) {
       history.replaceState(null, "", hash);
     }
   }
 
-  function readHash()
-  {
+  function readHash() {
     const m = location.hash.match(/^#photo\/([^?]+)(?:\?i=(\d+))?/i);
-    if (m)
-    {
-      const slug  = decodeURIComponent(m[1]);
-      const idx   = projects.findIndex(p => p.id === slug);
+    if (m) {
+      const slug = decodeURIComponent(m[1]);
+      const idx = projects.findIndex(p => p.id === slug);
       const slide = Math.max(1, Number(m[2] || 1)) - 1;
-      if (idx >= 0)
-      {
+      if (idx >= 0) {
         setActiveProject(idx, slide, false);
         return;
       }
@@ -540,21 +573,19 @@ document.addEventListener("DOMContentLoaded", () =>
   window.addEventListener("hashchange", readHash);
 
   // ---------- Mobile accordion ----------
-  function renderMobile()
-  {
+  function renderMobile() {
     mobileList.innerHTML = "";
 
-    projects.forEach((p, idx) =>
-    {
+    projects.forEach((p, idx) => {
       const item = create("div", "mobile-item");
       item.setAttribute("role", "listitem");
       item.setAttribute("aria-expanded", "false");
 
-      const head  = create("div", "mobile-head");
-      const num   = create("div", "mobile-num");
+      const head = create("div", "mobile-head");
+      const num = create("div", "mobile-num");
       const title = create("div", "mobile-title");
-      const mth   = create("div", "mobile-thumb");
-      const chev  = create("div", "mobile-chev");
+      const mth = create("div", "mobile-thumb");
+      const chev = create("div", "mobile-chev");
 
       num.textContent = z2(idx + 1);
       title.textContent = p.title;
@@ -569,7 +600,7 @@ document.addEventListener("DOMContentLoaded", () =>
       head.appendChild(mth);
       head.appendChild(chev);
 
-      const body  = create("div", "mobile-body");
+      const body = create("div", "mobile-body");
       const about = create("div", "mobile-about");
       about.textContent = p.description || "";
       body.appendChild(about);
@@ -584,8 +615,7 @@ document.addEventListener("DOMContentLoaded", () =>
       stage.appendChild(mn);
 
       const mStrip = create("div", "mobile-strip");
-      p.images.forEach((src, i) =>
-      {
+      p.images.forEach((src, i) => {
         const b = create("button", "strip-thumb");
         b.type = "button";
         b.dataset.num = z2(i + 1);
@@ -600,22 +630,19 @@ document.addEventListener("DOMContentLoaded", () =>
       body.appendChild(mStrip);
 
       let cur = 0;
-      function mSet(i)
-      {
+      function mSet(i) {
         cur = Math.max(0, Math.min(i, p.images.length - 1));
         img.src = p.images[cur];
       }
       mp.addEventListener("click", () => mSet(cur - 1));
       mn.addEventListener("click", () => mSet(cur + 1));
-      img.addEventListener("click", () =>
-      {
+      img.addEventListener("click", () => {
         activeProject = idx;
         activeSlide = cur;
         openLightbox();
       });
 
-      head.addEventListener("click", () =>
-      {
+      head.addEventListener("click", () => {
         const open = mobileList.querySelector('.mobile-item[aria-expanded="true"]');
         if (open && open !== item) { animateClose(open); }
         if (item.getAttribute("aria-expanded") === "true") { animateClose(item); }
@@ -628,8 +655,7 @@ document.addEventListener("DOMContentLoaded", () =>
     });
   }
 
-  function animateOpen(item)
-  {
+  function animateOpen(item) {
     const body = item.querySelector(".mobile-body");
     item.setAttribute("aria-expanded", "true");
     body.style.maxHeight = "0px";
@@ -637,8 +663,7 @@ document.addEventListener("DOMContentLoaded", () =>
     requestAnimationFrame(() => { body.style.maxHeight = `${h}px`; });
   }
 
-  function animateClose(item)
-  {
+  function animateClose(item) {
     const body = item.querySelector(".mobile-body");
     const h = body.scrollHeight;
     body.style.maxHeight = `${h}px`;
@@ -647,52 +672,48 @@ document.addEventListener("DOMContentLoaded", () =>
   }
 
   // ---------- Lightbox ----------
-  function openLightbox()
-  {
+  function openLightbox() {
     const proj = projects[activeProject];
     lb.classList.remove("hidden");
     lb.setAttribute("aria-hidden", "false");
     lbImg.src = proj.images[activeSlide];
   }
 
-  function closeLightbox()
-  {
+  function closeLightbox() {
     lb.classList.add("hidden");
     lb.setAttribute("aria-hidden", "true");
   }
 
-  lbPrev.addEventListener("click", () =>
-  {
+  lbPrev.addEventListener("click", () => {
     prev();
     lbImg.src = projects[activeProject].images[activeSlide];
   });
-  lbNext.addEventListener("click", () =>
-  {
+  lbNext.addEventListener("click", () => {
     next();
     lbImg.src = projects[activeProject].images[activeSlide];
   });
   lbClose.addEventListener("click", closeLightbox);
-  lb.addEventListener("click", (e) =>
-  {
+  lb.addEventListener("click", (e) => {
     if (e.target === lb) { closeLightbox(); }
   });
-  document.addEventListener("keydown", (e) =>
-  {
-    if (lb.classList.contains("hidden"))
-    {
-      if (e.key === "ArrowLeft")  { prev(); }
+  document.addEventListener("keydown", (e) => {
+    if (lb.classList.contains("hidden")) {
+      if (e.key === "ArrowLeft") { prev(); }
       if (e.key === "ArrowRight") { next(); }
     }
-    else
-    {
-      if (e.key === "Escape")     { closeLightbox(); }
-      if (e.key === "ArrowLeft")  { lbPrev.click(); }
+    else {
+      if (e.key === "Escape") { closeLightbox(); }
+      if (e.key === "ArrowLeft") { lbPrev.click(); }
       if (e.key === "ArrowRight") { lbNext.click(); }
     }
   });
 
   // ---------- Init ----------
-  renderRibbon();
-  renderMobile();
-  readHash();
+  function boot() {
+    renderRibbon();
+    renderMobile();
+    readHash();
+  }
+
+  boot();
 });
