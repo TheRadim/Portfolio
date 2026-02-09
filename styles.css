@@ -247,6 +247,7 @@ body {
 }
 
 .section-title {
+    font: 600 clamp(18px, 2.2vw, 28px) var(--font-heading);
   font-size: 36px;
   font-weight: 500;
   text-transform: uppercase;
@@ -1055,23 +1056,23 @@ body.dark-mode {
   .mobile-stage .next {
     right: 8px;
   }
-  /* >>> Mobile strip: THREE ROWS, NO SCROLL <<< */
-.mobile-strip
-{
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--gap);
-  overflow: hidden; /* no internal scrollbars */
-  /* 3 rows tall: 3 thumb heights + 2 vertical gaps between rows */
-  max-height: calc(var(--strip-thumb-m) * 3 + var(--gap) * 2);
-  padding: 0 0 8px 0;
-}
 
-.mobile-strip .strip-thumb
-{
-  width: var(--strip-thumb-m);
-  height: var(--strip-thumb-m);
-}
+  /* >>> Mobile strip: THREE ROWS, NO SCROLL <<< */
+  .mobile-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap);
+    overflow: hidden;
+    /* no internal scrollbars */
+    /* 3 rows tall: 3 thumb heights + 2 vertical gaps between rows */
+    max-height: calc(var(--strip-thumb-m) * 3 + var(--gap) * 2);
+    padding: 0 0 8px 0;
+  }
+
+  .mobile-strip .strip-thumb {
+    width: var(--strip-thumb-m);
+    height: var(--strip-thumb-m);
+  }
 }
 
 /* Micro: ~480px phones */
@@ -1162,4 +1163,33 @@ body.dark-mode {
   font-size: 22px;
   border-radius: 50%;
   cursor: pointer;
+}
+
+/* 1) Desktop: never create a scroll container inside PHOTO */
+@media (min-width: 1025px) {
+  .about-block {
+    overflow: visible !important;
+    max-height: none !important;
+  }
+
+  .gallery,
+  .gallery-main,
+  .viewer {
+    overflow: visible !important;
+    /* belt-and-suspenders */
+  }
+}
+
+/* 2) Short desktop viewports: disable sticky so wheel events never trap */
+@media (min-width: 1025px) and (max-height: 900px) {
+  .about-block {
+    position: static !important;
+    top: auto !important;
+    margin-top: 0 !important;
+  }
+
+  /* keep everything visible without inner scrollbars */
+  .stage-box {
+    height: min(60vh, 560px);
+  }
 }

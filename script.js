@@ -585,13 +585,33 @@ document.addEventListener("DOMContentLoaded", () => {
       item.appendChild(num);
       item.appendChild(thumb);
 
+      // --- inside renderRibbon(), replace the existing item.addEventListener("click", ...) ---
       item.addEventListener("click", () => {
+        const wasActive = (i === activeProject);
+
         setActiveProject(i, 0, true);
 
-        const header = document.querySelector(".sticky-header");
-        const headerH = header ? header.offsetHeight : 0;
-        const y = ribbonEl.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo({ top: Math.max(0, y - headerH), behavior: "smooth" });
+        if (wasActive) {
+          if (typeof window.scrollToPhotoSection === "function") {
+            window.scrollToPhotoSection();
+          }
+          else {
+            // Fallback: same math as the arrow uses
+            const header = document.querySelector(".sticky-header");
+            const headerH = header ? header.offsetHeight : 60;
+            const keepTitle = 20;
+            const photos = document.getElementById("photos");
+            const targetY = Math.max(0, (photos ? photos.offsetTop : 0) - headerH - keepTitle);
+            window.scrollTo({ top: targetY, behavior: "smooth" });
+          }
+        }
+        else {
+          // Preserve your current "scroll to ribbon" behavior when changing projects
+          const header = document.querySelector(".sticky-header");
+          const headerH = header ? header.offsetHeight : 0;
+          const y = ribbonEl.getBoundingClientRect().top + window.scrollY;
+          window.scrollTo({ top: Math.max(0, y - headerH), behavior: "smooth" });
+        }
       });
 
       ribbonEl.appendChild(item);
