@@ -1,38 +1,32 @@
-// ========== CORE UI ==========
-document.addEventListener("DOMContentLoaded", () => {
-  const contactBtn = document.getElementById("openContact");
-  const overlay = document.getElementById("contactOverlay");
-  const closeBtn = document.getElementById("closeOverlay");
-  const themeToggle = document.getElementById("themeToggle");
-  const nameWrapper = document.querySelector(".name-wrapper");
-  const arrow = document.getElementById("scrollArrow");
-  const photoSection = document.getElementById("photos");
-  const cursorOrb = document.getElementById("cursorOrb");
-  const cursorFlashlight = document.getElementById("cursorFlashlight");
-  const flashlight = document.getElementById("cursorFlashlight");
-  const biker = document.getElementById("bikerCircle");
+document.addEventListener('DOMContentLoaded', () => {
+  const contactBtn = document.getElementById('openContact');
+  const overlay = document.getElementById('contactOverlay');
+  const closeBtn = document.getElementById('closeOverlay');
+  const themeToggle = document.getElementById('themeToggle');
+  const nameWrapper = document.querySelector('.name-wrapper');
+  const arrow = document.getElementById('scrollArrow');
+  const photoSection = document.getElementById('photos');
+  const cursorOrb = document.getElementById('cursorOrb');
+  const cursorFlash = document.getElementById('cursorFlashlight');
+  const biker = document.getElementById('bikerCircle');
 
   // Theme from storage
-  if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark-mode");
+  if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
   }
 
-  // Theme toggle
   function toggleTheme() {
-    document.body.classList.toggle("dark-mode");
-    localStorage.setItem(
-      "theme",
-      document.body.classList.contains("dark-mode") ? "dark" : "light"
-    );
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
 
-    themeToggle.classList.remove("animate");
-    void themeToggle.offsetWidth;
-    themeToggle.classList.add("animate");
+    themeToggle?.classList.remove('animate');
+    void themeToggle?.offsetWidth;
+    themeToggle?.classList.add('animate');
   }
 
-  themeToggle?.addEventListener("click", toggleTheme);
-  themeToggle?.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
+  themeToggle?.addEventListener('click', toggleTheme);
+  themeToggle?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
       toggleTheme();
     }
@@ -40,29 +34,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Contact overlay
   function closeOverlay() {
-    overlay.classList.add("hidden");
+    overlay?.classList.add('hidden');
   }
 
-  contactBtn?.addEventListener("click", (e) => {
+  contactBtn?.addEventListener('click', (e) => {
     e.preventDefault();
-    overlay.classList.remove("hidden");
+    overlay?.classList.remove('hidden');
   });
 
-  closeBtn?.addEventListener("click", closeOverlay);
-
-  overlay?.addEventListener("click", (e) => {
-    if (!e.target.closest(".contact-box")) {
+  closeBtn?.addEventListener('click', closeOverlay);
+  overlay?.addEventListener('click', (e) => {
+    if (!e.target.closest('.contact-box')) {
+      closeOverlay();
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
       closeOverlay();
     }
   });
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      closeOverlay();
-    }
-  });
-
-  // Smooth scroll helper (shared)
+  // Smooth scroll helper (same feel as in reference)
   function smoothScrollTo(targetY, duration = 900) {
     const startY = window.scrollY;
     const distance = targetY - startY;
@@ -78,101 +70,108 @@ document.addEventListener("DOMContentLoaded", () => {
     requestAnimationFrame(step);
   }
 
-  // Scroll to PHOTO section (keeps the "PHOTO" title visible)
+  // Arrow → scroll to PHOTOS (keep the title visible)
   function scrollToPhotoSection() {
-    const header = document.querySelector(".sticky-header");
-    const headerH = header ? header.offsetHeight : 60;
+    const headerH = (document.querySelector('.sticky-header')?.offsetHeight) || 60;
     const keepTitle = 20;
-    const targetY = Math.max(0, photoSection.offsetTop - headerH - keepTitle);
-    smoothScrollTo(targetY, 900);
+    const top = (photoSection?.offsetTop || 0) - headerH - keepTitle;
+    smoothScrollTo(Math.max(0, top), 900);
   }
+  arrow?.addEventListener('click', scrollToPhotoSection);
 
-  window.scrollToPhotoSection = scrollToPhotoSection;
-  arrow?.addEventListener("click", scrollToPhotoSection);
+  // Intercept ALL hash links (footer "TO THE TOP", THE RAD, etc.) and smooth scroll
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+
+    const hash = a.getAttribute('href');
+    const headerH = (document.querySelector('.sticky-header')?.offsetHeight) || 60;
+
+    // Top shortcuts
+    if (hash === '#' || hash === '#top') {
+      e.preventDefault();
+      smoothScrollTo(0, 900);
+      return;
+    }
+
+    // Scroll to target id with header offset
+    const target = document.querySelector(hash);
+    if (target) {
+      e.preventDefault();
+      const y = target.getBoundingClientRect().top + window.scrollY - headerH - 10;
+      smoothScrollTo(y, 900);
+    }
+  });
 
   // Biker starts inside (3vh from right)
   function placeBikerInitial() {
-    if (!biker) {
-      return;
-    }
+    if (!biker) return;
+
     const vh = window.innerHeight;
     const bikerW = 100;
     const mr = Math.max(vh * 0.03, 8);
+
     biker.style.left = `${window.innerWidth - bikerW - mr}px`;
     biker.style.top = `${Math.max(vh * 0.4, 150)}px`;
-    biker.style.opacity = "1";
+    biker.style.opacity = '1';
   }
   placeBikerInitial();
-  window.addEventListener("resize", placeBikerInitial);
+  window.addEventListener('resize', placeBikerInitial);
 
   // Scroll effects
-  document.addEventListener("scroll", () => {
+  function onScroll() {
     const y = window.scrollY;
     const vh = window.innerHeight;
 
-    if (nameWrapper) {
-      nameWrapper.classList.toggle("name-scrolled", y > 50);
-    }
+    nameWrapper?.classList.toggle('name-scrolled', y > 50);
 
     if (biker) {
       const bikerW = 100;
       const mr = Math.max(vh * 0.03, 8);
-      const startLeft = window.innerWidth - bikerW - mr;
-      const endLeft = -bikerW;
+      const startL = window.innerWidth - bikerW - mr;
+      const endL = -bikerW;
       const p = Math.min(y / vh, 1);
 
-      biker.style.left = `${startLeft + p * (endLeft - startLeft)}px`;
+      biker.style.left = `${startL + p * (endL - startL)}px`;
       biker.style.top = `${Math.max(vh * 0.4, 150)}px`;
       biker.style.opacity = y > vh ? 0 : 1;
     }
-  });
+  }
+
+  onScroll();
+  document.addEventListener('scroll', onScroll, { passive: true });
 
   // Fancy cursor in dark mode
-  document.addEventListener("mousemove", (e) => {
-    if (document.body.classList.contains("dark-mode")) {
-      cursorOrb.style.left = `${e.clientX - 6}px`;
-      cursorOrb.style.top = `${e.clientY - 10}px`;
+  document.addEventListener('mousemove', (e) => {
+    if (!document.body.classList.contains('dark-mode')) return;
+    if (!cursorOrb || !cursorFlash) return;
 
-      cursorFlashlight.style.left = `${e.clientX}px`;
-      cursorFlashlight.style.top = `${e.clientY}px`;
-    }
-  });
-
-  document.querySelectorAll("a, .lightbulb-toggle").forEach((el) => {
-    el.addEventListener("mouseenter", () => {
-      if (document.body.classList.contains("dark-mode")) {
-        flashlight.style.transform = "translate(-50%, -45%)";
-      }
-    });
-    el.addEventListener("mouseleave", () => {
-      if (document.body.classList.contains("dark-mode")) {
-        flashlight.style.transform = "translate(-50%, -50%)";
-      }
-    });
+    cursorOrb.style.left = `${e.clientX - 6}px`;
+    cursorOrb.style.top = `${e.clientY - 10}px`;
+    cursorFlash.style.left = `${e.clientX}px`;
+    cursorFlash.style.top = `${e.clientY}px`;
   });
 });
 
 // ========== TYPEWRITER ==========
-document.addEventListener("DOMContentLoaded", () => {
-  const node = document.getElementById("typewriterText");
-  if (!node) {
-    return;
-  }
+document.addEventListener('DOMContentLoaded', () => {
+  const node = document.getElementById('typewriterText');
+  if (!node) return;
 
   const phrases =
     [
-      "SCROLL DOWN TO SEE MORE…",
-      "SCROLL SLOW — STORIES AHEAD",
-      "SCROLL DOWN AND RIDE THROUGH MY WORK",
-      "CREATIVE RIDES. DIGITAL SIDETRACKS.",
-      "CREATIVITY IN MOTION, ONE FRAME AT A TIME",
-      "EXPERIENCE THE JOURNEY",
-      "FROM STILLS TO MOTION",
-      "A CREATIVE JOURNEY ON TWO WHEELS",
-      "FOLLOW THE ROAD — EXPLORE THE WORK",
-      "WHERE DESIGN MEETS MOTION",
-      "EVERY PIXEL TELLS A STORY",
-      "CRAFTED ON THE ROAD, SHAPED BY CODE"
+      'SCROLL DOWN TO SEE MORE…',
+      'SCROLL SLOW — STORIES AHEAD',
+      'SCROLL DOWN AND RIDE THROUGH MY WORK',
+      'CREATIVE RIDES. DIGITAL SIDETRACKS.',
+      'CREATIVITY IN MOTION, ONE FRAME AT A TIME',
+      'EXPERIENCE THE JOURNEY',
+      'FROM STILLS TO MOTION',
+      'A CREATIVE JOURNEY ON TWO WHEELS',
+      'FOLLOW THE ROAD — EXPLORE THE WORK',
+      'WHERE DESIGN MEETS MOTION',
+      'EVERY PIXEL TELLS A STORY',
+      'CRAFTED ON THE ROAD, SHAPED BY CODE'
     ];
 
   let phrase = 0;
