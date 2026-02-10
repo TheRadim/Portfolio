@@ -1,6 +1,5 @@
 /* === Root tokens (stability, no visual change) === */
-:root
-{
+:root {
   --fg: #111;
   --muted: #b9b9b9;
   --font-heading: 'Inter', sans-serif;
@@ -8,29 +7,25 @@
 }
 
 /* === BASE === */
-html
-{
+html {
   scroll-behavior: auto !important;
   cursor: default;
 }
 
-@media (prefers-reduced-motion: no-preference)
-{
+@media (prefers-reduced-motion: no-preference) {
+
   .name-short .the,
-  .name-short .rad
-  {
+  .name-short .rad {
     transition: transform 0.4s ease, color 0.3s ease;
   }
 }
 
-.container
-{
+.container {
   max-width: 1600px;
   margin: 0 auto;
 }
 
-body
-{
+body {
   margin: 0;
   background: #fafafa;
   color: #111;
@@ -43,19 +38,16 @@ body
 }
 
 /* Cursor orb + flashlight */
-#cursorOrb
-{
+#cursorOrb {
   position: fixed;
   width: 100px;
   height: 100px;
-  background: radial-gradient(
-    circle,
-    rgba(249, 215, 28, 0.3) 0%,
-    rgba(249, 215, 28, 0.1) 30%,
-    rgba(249, 215, 28, 0.03) 60%,
-    rgba(249, 215, 28, 0.01) 85%,
-    transparent 100%
-  );
+  background: radial-gradient(circle,
+      rgba(249, 215, 28, 0.3) 0%,
+      rgba(249, 215, 28, 0.1) 30%,
+      rgba(249, 215, 28, 0.03) 60%,
+      rgba(249, 215, 28, 0.01) 85%,
+      transparent 100%);
   border-radius: 50%;
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -66,8 +58,7 @@ body
   will-change: transform;
 }
 
-#cursorFlashlight
-{
+#cursorFlashlight {
   position: fixed;
   width: 25px;
   height: 25px;
@@ -84,8 +75,7 @@ body
 }
 
 /* === HEADER === */
-.sticky-header
-{
+.sticky-header {
   position: fixed;
   top: 0;
   left: 0;
@@ -102,13 +92,11 @@ body
   font-family: 'Courier New', Courier, monospace;
 }
 
-.name-wrapper
-{
+.name-wrapper {
   position: relative;
 }
 
-.name
-{
+.name {
   font-size: clamp(2.4rem, 4vw + 0.2rem, 3.4rem);
   font-weight: 300;
   padding-left: 20px;
@@ -119,8 +107,7 @@ body
 }
 
 /* Full name */
-.name-full
-{
+.name-full {
   opacity: 1;
   transition: opacity 0.4s ease;
   position: relative;
@@ -129,8 +116,7 @@ body
 }
 
 /* Short name */
-.name-short
-{
+.name-short {
   position: absolute;
   top: 0;
   left: 0;
@@ -141,14 +127,12 @@ body
   display: inline-block;
 }
 
-.name-short .the
-{
+.name-short .the {
   color: var(--muted);
   margin-right: 0.2em;
 }
 
-.name-short .rad
-{
+.name-short .rad {
   color: #111;
   display: inline-block;
   transform: translateX(1.5em);
@@ -157,27 +141,23 @@ body
 }
 
 /* When scrolled */
-.name-scrolled .name-full
-{
+.name-scrolled .name-full {
   opacity: 0;
   pointer-events: none;
 }
 
-.name-scrolled .name-short
-{
+.name-scrolled .name-short {
   opacity: 1;
   pointer-events: auto;
 }
 
-.name-scrolled .name-short .rad
-{
+.name-scrolled .name-short .rad {
   opacity: 1;
   transform: translateX(0);
 }
 
 /* Right header group */
-.header-right
-{
+.header-right {
   display: flex;
   align-items: flex-end;
   gap: 1rem;
@@ -185,8 +165,7 @@ body
 }
 
 /* Contact link + socials */
-.contact-link
-{
+.contact-link {
   font-size: 17px;
   font-weight: 500;
   color: #111;
@@ -198,27 +177,23 @@ body
   font-family: 'Courier New', Courier, monospace;
 }
 
-.contact-link:hover
-{
+.contact-link:hover {
   color: #b9b9b9;
 }
 
-.social-link
-{
+.social-link {
   font-size: 14px;
   color: #111;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.social-link:hover
-{
+.social-link:hover {
   color: #b9b9b9;
 }
 
 /* Bulb */
-.bulb-wrapper
-{
+.bulb-wrapper {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -228,61 +203,51 @@ body
   padding-top: 0.1rem;
 }
 
-.bulb-rope
-{
+.bulb-rope {
   width: 2px;
   height: 80px;
   background-color: currentColor;
   margin-bottom: -8px;
 }
 
-.lightbulb-toggle
-{
+.lightbulb-toggle {
   color: #111;
   cursor: pointer;
 }
 
-.lightbulb-toggle svg
-{
+.lightbulb-toggle svg {
   width: 24px;
   height: 32px;
   margin-top: 2px;
   margin-bottom: -8px;
 }
 
-.lightbulb-toggle.animate
-{
+.lightbulb-toggle.animate {
   animation: pull-light 0.3s ease;
 }
 
-@keyframes pull-light
-{
-  0%
-  {
+@keyframes pull-light {
+  0% {
     transform: translateY(0px);
   }
 
-  50%
-  {
+  50% {
     transform: translateY(4px);
   }
 
-  100%
-  {
+  100% {
     transform: translateY(0px);
   }
 }
 
 /* === SECTIONS === */
-.section
-{
+.section {
   padding: 50px 0px;
   min-height: 70vh;
   line-height: 1;
 }
 
-.section-title
-{
+.section-title {
   font-family: var(--font-heading);
   font-weight: 800;
   font-size: clamp(28px, 3.2vw, 48px);
@@ -295,13 +260,11 @@ body
 }
 
 /* Intro */
-.intro-section
-{
+.intro-section {
   height: 130vh;
 }
 
-.intro-text
-{
+.intro-text {
   font-size: clamp(1.4rem, 3vw + 0.2rem, 2.6rem);
   font-weight: 300;
   text-transform: uppercase;
@@ -312,14 +275,12 @@ body
   max-width: 700px;
 }
 
-.intro-text p
-{
+.intro-text p {
   margin: 0 0 0.1rem 0;
 }
 
 /* Typewriter */
-.typewriter-container
-{
+.typewriter-container {
   width: 90%;
   position: absolute;
   top: 60vh;
@@ -335,28 +296,23 @@ body
   will-change: transform, opacity;
 }
 
-.typewriter-text-wrapper
-{
+.typewriter-text-wrapper {
   display: inline-block;
 }
 
-.cursor
-{
+.cursor {
   display: inline-block;
   animation: blink 1s step-end infinite;
 }
 
-@keyframes blink
-{
-  50%
-  {
+@keyframes blink {
+  50% {
     opacity: 0;
   }
 }
 
 /* Scroll arrow */
-#scrollArrow
-{
+#scrollArrow {
   position: absolute;
   top: 92vh;
   left: 30px;
@@ -371,15 +327,13 @@ body
   max-width: 1600px;
 }
 
-.arrow-wrapper
-{
+.arrow-wrapper {
   max-width: 1600px;
   margin: 0 auto;
   position: relative;
 }
 
-.scroll-text
-{
+.scroll-text {
   position: absolute;
   top: 1rem;
   left: 5rem;
@@ -394,29 +348,25 @@ body
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-#scrollArrow:hover .scroll-text
-{
+#scrollArrow:hover .scroll-text {
   opacity: 0.9;
   transform: translateX(-50%) translateY(0);
 }
 
-@keyframes arrowBlink
-{
+@keyframes arrowBlink {
+
   0%,
-  100%
-  {
+  100% {
     opacity: 0.9;
   }
 
-  50%
-  {
+  50% {
     opacity: 0.5;
   }
 }
 
 /* Footer */
-footer
-{
+footer {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -431,30 +381,26 @@ footer
 
 .footer-left,
 .footer-center,
-.footer-right
-{
+.footer-right {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
   color: #111;
 }
 
-.footer-center a
-{
+.footer-center a {
   font-weight: 500;
   color: #111;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.footer-center a:hover
-{
+.footer-center a:hover {
   color: #b9b9b9;
 }
 
 /* Contact overlay */
-.contact-overlay
-{
+.contact-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -471,14 +417,12 @@ footer
   color: #000;
 }
 
-.contact-overlay.hidden
-{
+.contact-overlay.hidden {
   opacity: 0;
   pointer-events: none;
 }
 
-.contact-box
-{
+.contact-box {
   text-align: center;
   font-size: 18px;
   font-weight: 400;
@@ -486,8 +430,7 @@ footer
   padding: 2rem;
 }
 
-.contact-box a
-{
+.contact-box a {
   display: block;
   font-size: 16px;
   margin: 10px 0;
@@ -496,13 +439,11 @@ footer
   transition: color 0.3s ease;
 }
 
-.contact-box a:hover
-{
+.contact-box a:hover {
   color: #b9b9b9;
 }
 
-.contact-overlay .close-btn
-{
+.contact-overlay .close-btn {
   position: absolute;
   top: 20px;
   right: 30px;
@@ -514,50 +455,42 @@ footer
   padding: 4px;
 }
 
-.close-btn:hover
-{
+.close-btn:hover {
   color: #3b7d8e;
 }
 
 /* Dark mode */
-body.dark-mode
-{
+body.dark-mode {
   background-color: #2c2c2c;
   color: #fafafa;
   cursor: none;
 }
 
-body.dark-mode #cursorOrb
-{
+body.dark-mode #cursorOrb {
   opacity: 0.6;
 }
 
-body.dark-mode #cursorFlashlight
-{
+body.dark-mode #cursorFlashlight {
   opacity: 1;
   animation: bobbing 2.5s ease-in-out infinite, flicker 0.15s infinite;
 }
 
-@keyframes bobbing
-{
-  0%
-  {
+@keyframes bobbing {
+  0% {
     transform: translate(-50%, -52%);
   }
 
-  50%
-  {
+  50% {
     transform: translate(-50%, -48%);
   }
 
-  100%
-  {
+  100% {
     transform: translate(-50%, -52%);
   }
 }
 
-@keyframes flicker
-{
+@keyframes flicker {
+
   0%,
   19%,
   21%,
@@ -565,24 +498,21 @@ body.dark-mode #cursorFlashlight
   25%,
   54%,
   56%,
-  100%
-  {
+  100% {
     opacity: 1;
   }
 
   20%,
   22%,
   24%,
-  55%
-  {
+  55% {
     opacity: 0.85;
   }
 }
 
 body.dark-mode .sticky-header,
 body.dark-mode footer,
-body.dark-mode .contact-overlay
-{
+body.dark-mode .contact-overlay {
   background-color: #2c2c2c;
 }
 
@@ -596,13 +526,11 @@ body.dark-mode .footer-left,
 body.dark-mode .footer-right,
 body.dark-mode .name-short .rad,
 body.dark-mode .footer-center a,
-body.dark-mode .close-btn
-{
+body.dark-mode .close-btn {
   color: #fafafa;
 }
 
-body.dark-mode .contact-box
-{
+body.dark-mode .contact-box {
   color: #fafafa;
 }
 
@@ -610,36 +538,30 @@ body.dark-mode .footer-center a:hover,
 body.dark-mode .social-link:hover,
 body.dark-mode .contact-link:hover,
 body.dark-mode .contact-box a:hover,
-body.dark-mode .close-btn:hover
-{
+body.dark-mode .close-btn:hover {
   color: #f9d71c;
 }
 
 body.dark-mode .lightbulb-toggle,
-body.dark-mode #scrollArrow
-{
+body.dark-mode #scrollArrow {
   color: #f9d71c;
 }
 
-body.dark-mode .typewriter-container
-{
+body.dark-mode .typewriter-container {
   opacity: 0.3;
   color: #fafafa;
 }
 
-body.dark-mode .lightbulb-toggle svg
-{
+body.dark-mode .lightbulb-toggle svg {
   filter: drop-shadow(0 0 6px #f9d71c88);
 }
 
-body.dark-mode .bulb-rope
-{
+body.dark-mode .bulb-rope {
   background-color: #f9d71c;
 }
 
 /* Biker */
-.sticky-intro
-{
+.sticky-intro {
   position: -webkit-sticky;
   position: relative;
   top: 60px;
@@ -647,8 +569,7 @@ body.dark-mode .bulb-rope
   background: inherit;
 }
 
-.sticky-intro-wrapper
-{
+.sticky-intro-wrapper {
   position: sticky;
   top: 80px;
   z-index: 10;
@@ -656,8 +577,7 @@ body.dark-mode .bulb-rope
   padding-bottom: 4rem;
 }
 
-#bikerCircle
-{
+#bikerCircle {
   width: 100px;
   height: 100px;
   background-image: url('assets/biker-dark.gif');
@@ -671,28 +591,24 @@ body.dark-mode .bulb-rope
   pointer-events: none;
 }
 
-body.dark-mode #bikerCircle
-{
+body.dark-mode #bikerCircle {
   background-image: url('assets/biker-light.gif');
 }
 
 /* Header uses Inter like the hero */
-.sticky-header
-{
+.sticky-header {
   font-family: var(--font-heading);
   letter-spacing: 0.05em;
 }
 
-.name
-{
+.name {
   font-family: var(--font-heading);
   font-weight: 800;
   letter-spacing: -0.01em;
 }
 
 /* Make THE RAD link behave like before */
-.name-short
-{
+.name-short {
   position: absolute;
   top: 0;
   left: 0;
@@ -705,8 +621,7 @@ body.dark-mode #bikerCircle
 }
 
 /* Bold hero headline */
-.hero-headline
-{
+.hero-headline {
   position: absolute;
   top: 28vh;
   left: 50px;
@@ -721,8 +636,7 @@ body.dark-mode #bikerCircle
 }
 
 /* Move the typewriter to bottom-right and format multiline */
-.typewriter-container
-{
+.typewriter-container {
   position: absolute;
   right: var(--edge);
   bottom: 8vh;
@@ -735,34 +649,29 @@ body.dark-mode #bikerCircle
   font-size: clamp(14px, 1.2vw + 0.2rem, 18px);
 }
 
-.typewriter-text-wrapper
-{
+.typewriter-text-wrapper {
   white-space: pre-line;
 }
 
 /* Optionally hide the old static block (we type it instead) */
-.intro-text
-{
+.intro-text {
   display: none;
 }
 
 /* Biker starts inside: 3vh from right edge */
-#bikerCircle
-{
+#bikerCircle {
   left: calc(100vw - 3vh - 100px);
   opacity: 1;
 }
 
 /* Dark mode keeps behavior */
 body.dark-mode .name,
-body.dark-mode .hero-headline
-{
+body.dark-mode .hero-headline {
   color: #fafafa;
 }
 
 /* Center the hero headline */
-.hero-headline
-{
+.hero-headline {
   position: absolute;
   top: 32vh;
   left: 50%;
@@ -779,8 +688,7 @@ body.dark-mode .hero-headline
 }
 
 /* Keep typewriter where it originally was (center, ~60vh) */
-.typewriter-container
-{
+.typewriter-container {
   width: 90%;
   position: absolute;
   top: 60vh;
@@ -797,18 +705,15 @@ body.dark-mode .hero-headline
 }
 
 /* Move the 'creative octopus' block to bottom-left */
-.intro-section
-{
+.intro-section {
   position: relative;
 }
 
-.sticky-intro-wrapper
-{
+.sticky-intro-wrapper {
   position: static;
 }
 
-.intro-text
-{
+.intro-text {
   position: absolute;
   left: 50px;
   bottom: 8vh;
@@ -823,18 +728,15 @@ body.dark-mode .hero-headline
 }
 
 /* HERO: place the “creative octopus…” block in the bottom-right (blue square) */
-.intro-section
-{
+.intro-section {
   position: relative;
 }
 
-.sticky-intro-wrapper
-{
+.sticky-intro-wrapper {
   position: static;
 }
 
-.intro-text
-{
+.intro-text {
   position: absolute;
   right: var(--edge);
   top: 80vh;
@@ -852,10 +754,8 @@ body.dark-mode .hero-headline
 }
 
 /* Responsive safeguard */
-@media (max-width: 768px)
-{
-  .intro-text
-  {
+@media (max-width: 768px) {
+  .intro-text {
     right: var(--edge);
     left: var(--edge);
     bottom: 6vh;
@@ -865,23 +765,25 @@ body.dark-mode .hero-headline
 }
 
 /* Make sure the section is the positioning context */
-.intro-section
-{
+.intro-section {
   position: relative;
 }
 
 /* Creative Octopus block — bottom-right, tighter to the edge */
-.intro-text
-{
+.intro-text {
   position: absolute;
-  top: 80vh; /* keep your current vertical position */
-  right: 0; /* anchor to the container's right edge */
-  padding-right: clamp(8px, 1vw, 18px); /* tiny breathing room */
+  top: 80vh;
+  /* keep your current vertical position */
+  right: 0;
+  /* anchor to the container's right edge */
+  padding-right: clamp(8px, 1vw, 18px);
+  /* tiny breathing room */
   left: auto;
   margin: 0;
   display: block;
   max-width: min(520px, 38vw);
-  text-align: right; /* align lines to the right */
+  text-align: right;
+  /* align lines to the right */
   font-size: 18px;
   font-weight: 400;
   text-transform: uppercase;
@@ -890,10 +792,8 @@ body.dark-mode .hero-headline
 }
 
 /* Optional: mobile safeguard (pull it in and left-align if space is tight) */
-@media (max-width: 768px)
-{
-  .intro-text
-  {
+@media (max-width: 768px) {
+  .intro-text {
     right: var(--edge);
     left: var(--edge);
     padding-right: 0;
@@ -902,25 +802,23 @@ body.dark-mode .hero-headline
   }
 }
 
-:root
-{
-  --container-max: 1600px; /* keep in sync with .container */
-  --hero-edge: 16px; /* gap from viewport right */
+:root {
+  --container-max: 1600px;
+  /* keep in sync with .container */
+  --hero-edge: 16px;
+  /* gap from viewport right */
 }
 
-.container
-{
+.container {
   max-width: var(--container-max);
 }
 
-.intro-section
-{
+.intro-section {
   position: relative;
   overflow: visible;
 }
 
-.intro-text
-{
+.intro-text {
   position: absolute;
   top: 80vh;
   left: auto;
@@ -941,10 +839,8 @@ body.dark-mode .hero-headline
 }
 
 /* mobile fallback: keep it inside and readable */
-@media (max-width: 768px)
-{
-  .intro-text
-  {
+@media (max-width: 768px) {
+  .intro-text {
     right: var(--hero-edge);
     left: var(--hero-edge);
     max-width: none;
@@ -953,55 +849,49 @@ body.dark-mode .hero-headline
 }
 
 /* keep these root vars from earlier */
-:root
-{
+:root {
   --container-max: 1600px;
   --hero-edge: 16px;
 }
 
-:root
-{
-  --container-max: 1600px; /* keep in sync with .container max-width */
+:root {
+  --container-max: 1600px;
+  /* keep in sync with .container max-width */
 }
 
 /* ... */
 
-.intro-text
-{
+.intro-text {
   /* 123px from the viewport right edge */
   right: calc(130px - max(0px, (100vw - var(--container-max)) / 2));
 }
 
 /* Mobile fallback: keep it inside the edges */
-@media (max-width: 768px)
-{
-  .intro-text
-  {
+@media (max-width: 768px) {
+  .intro-text {
     right: 16px;
     left: 16px;
   }
 }
 
 /* ===== Vars / Typo ===== */
-:root
-{
+:root {
   --fg: #111;
   --muted: #b9b9b9;
   --font-heading: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   --container-max: 1600px;
   --edge: 50px;
-  --octo-offset: 123px; /* distance of octopus block from viewport right */
+  --octo-offset: 123px;
+  /* distance of octopus block from viewport right */
 }
 
-.container
-{
+.container {
   max-width: var(--container-max);
   margin: 0 auto;
 }
 
 /* ===== Header (Inter, heavy like hero) ===== */
-.sticky-header
-{
+.sticky-header {
   position: fixed;
   top: 0;
   left: 0;
@@ -1017,13 +907,11 @@ body.dark-mode .hero-headline
   letter-spacing: 0;
 }
 
-.name-wrapper
-{
+.name-wrapper {
   position: relative;
 }
 
-.name
-{
+.name {
   font-family: var(--font-heading);
   font-weight: 900;
   letter-spacing: 0;
@@ -1034,8 +922,7 @@ body.dark-mode .hero-headline
   text-decoration: none;
 }
 
-.name-full
-{
+.name-full {
   opacity: 1;
   transition: opacity 0.4s ease;
   position: relative;
@@ -1043,8 +930,7 @@ body.dark-mode .hero-headline
   pointer-events: auto;
 }
 
-.name-short
-{
+.name-short {
   position: absolute;
   top: 0;
   left: 0;
@@ -1055,14 +941,12 @@ body.dark-mode .hero-headline
   text-decoration: none;
 }
 
-.name-short .the
-{
+.name-short .the {
   color: var(--muted);
   margin-right: 0.3em;
 }
 
-.name-short .rad
-{
+.name-short .rad {
   color: var(--fg);
   display: inline-block;
   transform: translateX(1.5em);
@@ -1070,34 +954,29 @@ body.dark-mode .hero-headline
   transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
-.name-scrolled .name-full
-{
+.name-scrolled .name-full {
   opacity: 0;
   pointer-events: none;
 }
 
-.name-scrolled .name-short
-{
+.name-scrolled .name-short {
   opacity: 1;
   pointer-events: auto;
 }
 
-.name-scrolled .name-short .rad
-{
+.name-scrolled .name-short .rad {
   opacity: 1;
   transform: translateX(0);
 }
 
 /* ===== Hero ===== */
-.intro-section
-{
+.intro-section {
   position: relative;
   height: 130vh;
 }
 
 /* Centered bold line; slightly higher; one-line on very large screens */
-.hero-headline
-{
+.hero-headline {
   position: absolute;
   top: 29vh;
   left: 50%;
@@ -1117,18 +996,15 @@ body.dark-mode .hero-headline
   text-rendering: optimizeLegibility;
 }
 
-@media (min-width: 1400px)
-{
-  .hero-headline
-  {
+@media (min-width: 1400px) {
+  .hero-headline {
     max-width: 1400px;
     white-space: nowrap;
   }
 }
 
 /* Typewriter stays centered ~60vh */
-.typewriter-container
-{
+.typewriter-container {
   position: absolute;
   top: 60vh;
   left: 50%;
@@ -1145,13 +1021,11 @@ body.dark-mode .hero-headline
 }
 
 /* ===== “Creative octopus …” block — bottom-right with fixed viewport offset ===== */
-.sticky-intro-wrapper
-{
+.sticky-intro-wrapper {
   position: static;
 }
 
-.intro-text
-{
+.intro-text {
   position: absolute;
   top: 80vh;
   left: auto;
@@ -1171,10 +1045,8 @@ body.dark-mode .hero-headline
   letter-spacing: 0.01em;
 }
 
-@media (max-width: 768px)
-{
-  .intro-text
-  {
+@media (max-width: 768px) {
+  .intro-text {
     right: 16px;
     left: 16px;
     max-width: none;
@@ -1183,8 +1055,7 @@ body.dark-mode .hero-headline
 }
 
 /* THEINER RADIM -> THE RAD colors & swap (lighter given, darker surname) */
-.name
-{
+.name {
   font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   font-weight: 900;
   letter-spacing: 0;
@@ -1195,8 +1066,7 @@ body.dark-mode .hero-headline
   text-decoration: none;
 }
 
-.name-full
-{
+.name-full {
   opacity: 1;
   transition: opacity 0.4s ease;
   position: relative;
@@ -1204,18 +1074,15 @@ body.dark-mode .hero-headline
   pointer-events: auto;
 }
 
-.name-full .surname
-{
+.name-full .surname {
   color: #111;
 }
 
-.name-full .given
-{
+.name-full .given {
   color: #b9b9b9;
 }
 
-.name-short
-{
+.name-short {
   position: absolute;
   top: 0;
   left: 0;
@@ -1226,14 +1093,12 @@ body.dark-mode .hero-headline
   transition: opacity 0.1s ease;
 }
 
-.name-short .the
-{
+.name-short .the {
   color: #b9b9b9;
   margin-right: 0.3em;
 }
 
-.name-short .rad
-{
+.name-short .rad {
   color: #111;
   display: inline-block;
   transform: translateX(1.5em);
@@ -1241,55 +1106,47 @@ body.dark-mode .hero-headline
   transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
-.name-scrolled .name-full
-{
+.name-scrolled .name-full {
   opacity: 0;
   pointer-events: none;
 }
 
-.name-scrolled .name-short
-{
+.name-scrolled .name-short {
   opacity: 1;
   pointer-events: auto;
 }
 
-.name-scrolled .name-short .rad
-{
+.name-scrolled .name-short .rad {
   opacity: 1;
   transform: translateX(0);
 }
 
 /* biker starts inside already (CSS baseline) */
-#bikerCircle
-{
+#bikerCircle {
   left: calc(100vw - 3vh - 100px);
   opacity: 1;
 }
 
 /* === Fixes: hero + octopus + name swap === */
-:root
-{
+:root {
   --container-max: 1600px;
   --octo-offset: 50px;
 }
 
-.container
-{
+.container {
   max-width: var(--container-max);
   margin: 0 auto;
   overflow: visible;
 }
 
-.intro-section
-{
+.intro-section {
   position: relative;
   height: 130vh;
   overflow: visible;
 }
 
 /* keep headline high, never break, auto-shrink */
-.hero-headline
-{
+.hero-headline {
   position: absolute;
   top: 25vh;
   left: 50%;
@@ -1306,36 +1163,34 @@ body.dark-mode .hero-headline
 }
 
 /* === Name tint: THEINER lighter, RADIM darker (short + long) === */
-.name-full .surname
-{
-  color: var(--muted) !important; /* THEINER */
+.name-full .surname {
+  color: var(--muted) !important;
+  /* THEINER */
 }
 
-.name-full .given
-{
-  color: var(--fg) !important; /* RADIM */
+.name-full .given {
+  color: var(--fg) !important;
+  /* RADIM */
 }
 
-.name-short .the
-{
-  color: var(--muted) !important; /* THE */
+.name-short .the {
+  color: var(--muted) !important;
+  /* THE */
 }
 
-.name-short .rad
-{
-  color: var(--fg) !important; /* RAD */
+.name-short .rad {
+  color: var(--fg) !important;
+  /* RAD */
 }
 
 /* Dark mode mapping */
 body.dark-mode .name-full .surname,
-body.dark-mode .name-short .the
-{
+body.dark-mode .name-short .the {
   color: #b9b9b9 !important;
 }
 
 body.dark-mode .name-full .given,
-body.dark-mode .name-short .rad
-{
+body.dark-mode .name-short .rad {
   color: #fafafa !important;
 }
 
@@ -1370,11 +1225,14 @@ body.dark-mode {
 .project-ribbon {
   display: flex;
   flex-wrap: wrap;
-  gap: clamp(10px, 1.6vw, 18px);
+  justify-content: space-between;
+  column-gap: clamp(10px, 1.6vw, 18px);
+  row-gap: clamp(10px, 1.6vw, 18px);
   align-items: flex-start;
 }
 
 .ribbon-item {
+  flex: 0 0 var(--ribbon-thumb);
   width: var(--ribbon-thumb);
   display: grid;
   gap: 6px;
@@ -1430,6 +1288,11 @@ body.dark-mode {
 .ribbon-item:hover .overlay {
   background: rgba(0, 0, 0, 0.42);
   opacity: 1;
+}
+
+.project-ribbon::after {
+  content: '';
+  flex: 0 0 var(--ribbon-thumb);
 }
 
 .ribbon-item[aria-current="true"] .num {
