@@ -283,14 +283,15 @@ body
 
 .section-title
 {
-  font: 600 clamp(18px, 2.2vw, 28px) var(--font-heading);
-  font-size: 36px;
-  font-weight: 500;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(28px, 3.2vw, 48px);
+  line-height: .95;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   margin-bottom: 2rem;
   padding-left: 50px;
-  color: #111;
+  color: var(--fg);
 }
 
 /* Intro */
