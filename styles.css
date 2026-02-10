@@ -1247,7 +1247,7 @@ body.dark-mode .hero-headline
 
 .intro-text {
   /* 123px from the viewport right edge */
-  right: calc(123px - max(0px, (100vw - var(--container-max)) / 2));
+  right: calc(100px - max(0px, (100vw - var(--container-max)) / 2));
 }
 
 /* Mobile fallback: keep it inside the edges */
@@ -1426,7 +1426,7 @@ body.dark-mode .hero-headline
 .intro-text
 {
   position: absolute;
-  top: 80vh;
+  top: 90vh;
   left: auto;
 
   /* exactly 123px from viewport edge, regardless of centered container */
@@ -1544,7 +1544,7 @@ body.dark-mode .hero-headline
 :root
 {
   --container-max: 1600px;
-  --octo-offset: 123px;
+  --octo-offset: 50px;
 }
 
 .container
@@ -1578,6 +1578,45 @@ body.dark-mode .hero-headline
   color: #111;
   white-space: nowrap;
 }
+
+/* === Name tint: THEINER lighter, RADIM darker (short + long) === */
+.name-full .surname
+{
+  color: var(--muted) !important;   /* THEINER */
+}
+.name-full .given
+{
+  color: var(--fg) !important;      /* RADIM */
+}
+
+.name-short .the
+{
+  color: var(--muted) !important;   /* THE */
+}
+.name-short .rad
+{
+  color: var(--fg) !important;      /* RAD */
+}
+
+/* Dark mode mapping */
+body.dark-mode .name-full .surname,
+body.dark-mode .name-short .the
+{
+  color: #b9b9b9 !important;
+}
+body.dark-mode .name-full .given,
+body.dark-mode .name-short .rad
+{
+  color: #fafafa !important;
+}
+
+
+
+
+
+
+
+
 
 
 
