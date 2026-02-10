@@ -174,6 +174,7 @@ body {
   padding-bottom: 2.3rem;
   display: flex;
   align-items: flex-end;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .contact-link:hover {
@@ -593,24 +594,1032 @@ body.dark-mode #bikerCircle {
   background-image: url('assets/biker-light.gif');
 }
 
+/* Header uses Inter like the hero */
+.sticky-header
+{
+  font-family: var(--font-heading);
+  letter-spacing: 0.05em;
+}
+
+.name
+{
+  font-family: var(--font-heading);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+/* Make THE RAD link behave like before */
+.name-short
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: translateX(0);
+  transition: opacity 0.1s ease;
+  pointer-events: none;
+  display: inline-block;
+  text-decoration: none;
+}
+
+/* Bold hero headline */
+.hero-headline
+{
+  position: absolute;
+  top: 28vh;
+  left: 50px;
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(40px, 10vw, 120px);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  max-width: min(92%, 1100px);
+  color: var(--fg);
+}
+
+/* Move the typewriter to bottom-right and format multiline */
+.typewriter-container
+{
+  position: absolute;
+  right: var(--edge);
+  bottom: 8vh;
+  left: auto;
+  top: auto;
+  transform: none;
+  width: min(540px, 40vw);
+  text-align: right;
+  opacity: 0.35;
+  font-size: clamp(14px, 1.2vw + 0.2rem, 18px);
+}
+
+.typewriter-text-wrapper
+{
+  white-space: pre-line;
+}
+
+/* Optionally hide the old static block (we type it instead) */
+.intro-text
+{
+  display: none;
+}
+
+/* Biker starts inside: 3vh from right edge */
+#bikerCircle
+{
+  left: calc(100vw - 3vh - 100px);
+  opacity: 1;
+}
+
+/* Dark mode keeps behavior */
+body.dark-mode .name,
+body.dark-mode .hero-headline
+{
+  color: #fafafa;
+}
+
+/* Center the hero headline */
+.hero-headline
+{
+  position: absolute;
+  top: 32vh;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(40px, 10vw, 120px);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  max-width: min(92%, 1100px);
+  color: var(--fg);
+}
+
+/* Keep typewriter where it originally was (center, ~60vh) */
+.typewriter-container
+{
+  width: 90%;
+  position: absolute;
+  top: 60vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(2rem, 2vw + 0.5rem, 2rem);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 5;
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
+  will-change: transform, opacity;
+}
+
+/* Move the 'creative octopus' block to bottom-left */
+.intro-section
+{
+  position: relative;
+}
+
+.sticky-intro-wrapper
+{
+  position: static;
+}
+
+.intro-text
+{
+  position: absolute;
+  left: 50px;
+  bottom: 8vh;
+  margin: 0;
+  display: block;
+  max-width: 560px;
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+/* HERO: place the “creative octopus…” block in the bottom-right (blue square) */
+.intro-section
+{
+  position: relative;
+}
+
+.sticky-intro-wrapper
+{
+  position: static;
+}
+
+.intro-text
+{
+  position: absolute;
+  right: var(--edge);
+  top: 80vh;
+  right: 0vw;
+  left: auto;
+  margin: 0;
+  display: block;
+  max-width: min(560px, 42vw);
+  text-align: right;
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+/* Responsive safeguard */
+@media (max-width: 768px)
+{
+  .intro-text
+  {
+    right: var(--edge);
+    left: var(--edge);
+    bottom: 6vh;
+    max-width: none;
+    text-align: left;
+  }
+}
+
+
+/* Make sure the section is the positioning context */
+.intro-section {
+  position: relative;
+}
+
+/* Creative Octopus block — bottom-right, tighter to the edge */
+.intro-text {
+  position: absolute;
+  top: 80vh;              /* keep your current vertical position */
+  right: 0;               /* anchor to the container's right edge */
+  padding-right: clamp(8px, 1vw, 18px);  /* tiny breathing room */
+  left: auto;
+  margin: 0;
+  display: block;
+  max-width: min(520px, 38vw);
+  text-align: right;      /* align lines to the right */
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+/* Optional: mobile safeguard (pull it in and left-align if space is tight) */
+@media (max-width: 768px) {
+  .intro-text {
+    right: var(--edge);
+    left: var(--edge);
+    padding-right: 0;
+    max-width: none;
+    text-align: left;
+  }
+}
+
+:root
+{
+  --container-max: 1600px;   /* keep in sync with .container */
+  --hero-edge: 16px;          /* gap from viewport right */
+}
+
+.container
+{
+  max-width: var(--container-max);
+}
+
+.intro-section
+{
+  position: relative;
+  overflow: visible;
+}
+
+.intro-text
+{
+  position: absolute;
+  top: 80vh;
+  left: auto;
+  right: 10;
+  margin: 0;
+  display: block;
+
+  /* push outside the container into the viewport gutter */
+  right: calc(var(--hero-edge) - max(0px, (100vw - var(--container-max)) / 2));
+
+  max-width: min(520px, 38vw);
+  text-align: right;
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+/* mobile fallback: keep it inside and readable */
+@media (max-width: 768px)
+{
+  .intro-text
+  {
+    right: var(--hero-edge);
+    left: var(--hero-edge);
+    max-width: none;
+    text-align: left;
+  }
+}
+
+/* keep these root vars from earlier */
+:root
+{
+  --container-max: 1600px;
+  --hero-edge: 16px;
+}
+
+
+:root {
+  --container-max: 1600px; /* keep in sync with .container max-width */
+}
+
+/* ... */
+
+.intro-text {
+  /* 123px from the viewport right edge */
+  right: calc(130px - max(0px, (100vw - var(--container-max)) / 2));
+}
+
+/* Mobile fallback: keep it inside the edges */
+@media (max-width: 768px) {
+  .intro-text {
+    right: 16px;
+    left: 16px;
+  }
+}
+
+/* ===== Vars / Typo ===== */
+:root
+{
+  --fg: #111;
+  --muted: #b9b9b9;
+  --font-heading: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --container-max: 1600px;
+  --edge: 50px;
+  --octo-offset: 123px; /* distance of octopus block from viewport right */
+}
+
+.container
+{
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+/* ===== Header (Inter, heavy like hero) ===== */
+.sticky-header
+{
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 2rem 0 30px;
+  height: 60px;
+  background: #fafafa;
+  font-family: var(--font-heading);
+  letter-spacing: 0;
+}
+
+.name-wrapper
+{
+  position: relative;
+}
+
+.name
+{
+  font-family: var(--font-heading);
+  font-weight: 900;
+  letter-spacing: 0;
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1;
+  padding-left: 20px;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.name-full
+{
+  opacity: 1;
+  transition: opacity 0.4s ease;
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.name-short
+{
+  position: absolute;
+  top: 0; left: 0;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+  pointer-events: none;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.name-short .the
+{
+  color: var(--muted);
+  margin-right: .3em;
+}
+
+.name-short .rad
+{
+  color: var(--fg);
+  display: inline-block;
+  transform: translateX(1.5em);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.name-scrolled .name-full
+{
+  opacity: 0;
+  pointer-events: none;
+}
+
+.name-scrolled .name-short
+{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.name-scrolled .name-short .rad
+{
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ===== Hero ===== */
+.intro-section
+{
+  position: relative;
+  height: 130vh;
+}
+
+/* Centered bold line; slightly higher; one-line on very large screens */
+.hero-headline
+{
+  position: absolute;
+  top: 29vh;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  text-align: center;
+
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(44px, 9.2vw, 128px);
+  line-height: .95;
+  letter-spacing: 0;
+  max-width: min(92%, 1200px);
+  color: var(--fg);
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (min-width: 1400px)
+{
+  .hero-headline
+  {
+    max-width: 1400px;
+    white-space: nowrap;
+  }
+}
+
+/* Typewriter stays centered ~60vh */
+.typewriter-container
+{
+  position: absolute;
+  top: 60vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  text-align: center;
+  font-size: clamp(18px, 2vw, 22px);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 5;
+  white-space: normal;
+  word-break: break-word;
+  will-change: transform, opacity;
+}
+
+/* ===== “Creative octopus …” block — bottom-right with fixed viewport offset ===== */
+.sticky-intro-wrapper
+{
+  position: static;
+}
+
+.intro-text
+{
+  position: absolute;
+  top: 80vh;
+  left: auto;
+
+  /* exactly 123px from viewport edge, regardless of centered container */
+  right: calc(var(--octo-offset) - max(0px, (100vw - var(--container-max)) / 2));
+
+  margin: 0;
+  display: block;
+  max-width: min(520px, 38vw);
+  text-align: right;
+
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 768px)
+{
+  .intro-text
+  {
+    right: 16px;
+    left: 16px;
+    max-width: none;
+    text-align: left;
+  }
+}
+
+
+
+/* Make sure the section is the positioning context */
+.intro-section {
+  position: relative;
+}
+
+/* Creative Octopus block — bottom-right, tighter to the edge */
+.intro-text {
+  position: absolute;
+  top: 80vh;              /* keep your current vertical position */
+  right: 0;               /* anchor to the container's right edge */
+  padding-right: clamp(8px, 1vw, 18px);  /* tiny breathing room */
+  left: auto;
+  margin: 0;
+  display: block;
+  max-width: min(520px, 38vw);
+  text-align: right;      /* align lines to the right */
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+/* Optional: mobile safeguard (pull it in and left-align if space is tight) */
+@media (max-width: 768px) {
+  .intro-text {
+    right: var(--edge);
+    left: var(--edge);
+    padding-right: 0;
+    max-width: none;
+    text-align: left;
+  }
+}
+
+/* Center the hero headline */
+.hero-headline
+{
+  position: absolute;
+  top: 32vh;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(40px, 10vw, 120px);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  max-width: min(92%, 1100px);
+  color: var(--fg);
+}
+
+/* Keep typewriter where it originally was (center, ~60vh) */
+.typewriter-container
+{
+  width: 90%;
+  position: absolute;
+  top: 60vh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(2rem, 2vw + 0.5rem, 2rem);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 5;
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
+  will-change: transform, opacity;
+}
+
+/* Move the 'creative octopus' block to bottom-left */
+.intro-section
+{
+  position: relative;
+}
+
+.sticky-intro-wrapper
+{
+  position: static;
+}
+
+.intro-text
+{
+  position: absolute;
+  left: 50px;
+  bottom: 8vh;
+  margin: 0;
+  display: block;
+  max-width: 560px;
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+:root
+{
+  --container-max: 1600px;   /* keep in sync with .container */
+  --hero-edge: 16px;          /* gap from viewport right */
+}
+
+.container
+{
+  max-width: var(--container-max);
+}
+
+.intro-section
+{
+  position: relative;
+  overflow: visible;
+}
+
+.intro-text
+{
+  position: absolute;
+  top: 80vh;
+  left: auto;
+  margin: 0;
+  display: block;
+
+  /* push outside the container into the viewport gutter */
+  right: calc(var(--hero-edge) - max(0px, (100vw - var(--container-max)) / 2));
+
+  max-width: min(520px, 38vw);
+  text-align: right;
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+/* mobile fallback: keep it inside and readable */
+@media (max-width: 768px)
+{
+  .intro-text
+  {
+    right: var(--hero-edge);
+    left: var(--hero-edge);
+    max-width: none;
+    text-align: left;
+  }
+}
+
+
+:root {
+  --container-max: 1600px; /* keep in sync with .container max-width */
+}
+
+/* ... */
+
+.intro-text {
+  /* 123px from the viewport right edge */
+  right: calc(123px - max(0px, (100vw - var(--container-max)) / 2));
+}
+
+/* Mobile fallback: keep it inside the edges */
+@media (max-width: 768px) {
+  .intro-text {
+    right: 16px;
+    left: 16px;
+  }
+}
+
+/* ===== Vars / Typo ===== */
+:root
+{
+  --fg: #111;
+  --muted: #b9b9b9;
+  --font-heading: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --container-max: 1600px;
+  --edge: 50px;
+  --octo-offset: 123px; /* distance of octopus block from viewport right */
+}
+
+.container
+{
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
+
+/* ===== Header (Inter, heavy like hero) ===== */
+.sticky-header
+{
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 2rem 0 30px;
+  height: 60px;
+  background: #fafafa;
+  font-family: var(--font-heading);
+  letter-spacing: 0;
+}
+
+.name-wrapper
+{
+  position: relative;
+}
+
+.name
+{
+  font-family: var(--font-heading);
+  font-weight: 900;
+  letter-spacing: 0;
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1;
+  padding-left: 20px;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.name-full
+{
+  opacity: 1;
+  transition: opacity 0.4s ease;
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.name-short
+{
+  position: absolute;
+  top: 0; left: 0;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+  pointer-events: none;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.name-short .the
+{
+  color: var(--muted);
+  margin-right: .3em;
+}
+
+.name-short .rad
+{
+  color: var(--fg);
+  display: inline-block;
+  transform: translateX(1.5em);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+
+.name-scrolled .name-full
+{
+  opacity: 0;
+  pointer-events: none;
+}
+
+.name-scrolled .name-short
+{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.name-scrolled .name-short .rad
+{
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ===== Hero ===== */
+.intro-section
+{
+  position: relative;
+  height: 130vh;
+}
+
+/* Centered bold line; slightly higher; one-line on very large screens */
+.hero-headline
+{
+  position: absolute;
+  top: 29vh;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  text-align: center;
+
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: clamp(44px, 9.2vw, 128px);
+  line-height: .95;
+  letter-spacing: 0;
+  max-width: min(92%, 1200px);
+  color: var(--fg);
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (min-width: 1400px)
+{
+  .hero-headline
+  {
+    max-width: 1400px;
+    white-space: nowrap;
+  }
+}
+
+/* Typewriter stays centered ~60vh */
+.typewriter-container
+{
+  position: absolute;
+  top: 60vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  text-align: center;
+  font-size: clamp(18px, 2vw, 22px);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 5;
+  white-space: normal;
+  word-break: break-word;
+  will-change: transform, opacity;
+}
+
+/* ===== “Creative octopus …” block — bottom-right with fixed viewport offset ===== */
+.sticky-intro-wrapper
+{
+  position: static;
+}
+
+.intro-text
+{
+  position: absolute;
+  top: 80vh;
+  left: auto;
+
+  /* exactly 123px from viewport edge, regardless of centered container */
+  right: calc(var(--octo-offset) - max(0px, (100vw - var(--container-max)) / 2));
+
+  margin: 0;
+  display: block;
+  max-width: min(520px, 38vw);
+  text-align: right;
+
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 768px)
+{
+  .intro-text
+  {
+    right: 16px;
+    left: 16px;
+    max-width: none;
+    text-align: left;
+  }
+}
+
+/* THEINER RADIM -> THE RAD colors & swap (lighter given, darker surname) */
+.name
+{
+  font-family: 'IBM Plex Sans','Inter',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  font-weight: 900;
+  letter-spacing: 0;
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1;
+  padding-left: 20px;
+  color: #111;
+  text-decoration: none;
+}
+
+.name-full
+{
+  opacity: 1;
+  transition: opacity .4s ease;
+  position: relative;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.name-full .surname
+{
+  color: #111;
+}
+
+.name-full .given
+{
+  color: #b9b9b9;
+}
+
+.name-short
+{
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+  display: inline-block;
+  text-decoration: none;
+  transition: opacity .1s ease;
+}
+
+.name-short .the
+{
+  color: #b9b9b9;
+  margin-right: .3em;
+}
+
+.name-short .rad
+{
+  color: #111;
+  display: inline-block;
+  transform: translateX(1.5em);
+  opacity: 0;
+  transition: transform .4s ease, opacity .4s ease;
+}
+
+.name-scrolled .name-full
+{
+  opacity: 0;
+  pointer-events: none;
+}
+
+.name-scrolled .name-short
+{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.name-scrolled .name-short .rad
+{
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* biker starts inside already (CSS baseline) */
+#bikerCircle
+{
+  left: calc(100vw - 3vh - 100px);
+  opacity: 1;
+}
+
+/* === Fixes: hero + octopus + name swap === */
+
+:root
+{
+  --container-max: 1600px;
+  --octo-offset: 123px;
+}
+
+.container
+{
+  max-width: var(--container-max);
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.intro-section
+{
+  position: relative;
+  height: 130vh;
+  overflow: visible;
+}
+
+/* keep headline high, never break, auto-shrink */
+.hero-headline
+{
+  position: absolute;
+  top: 25vh;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  text-align: center;
+  font-family: 'IBM Plex Sans','Inter',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  font-weight: 900;
+  font-size: clamp(32px, 7.8vw, 128px);
+  line-height: .92;
+  letter-spacing: 0;
+  color: #111;
+  white-space: nowrap;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* =================================================================== */
 /* =================== PHOTO GALLERY (Desktop + Phone) =============== */
 /* =================================================================== */
 
 :root {
-  --fg: #111;
-  --muted: #777;
-  --font-heading: 'Inter', sans-serif;
-  --ease: cubic-bezier(.2, .8, .2, 1);
-
   --ribbon-thumb: clamp(96px, 9vw, 140px);
-
-  /* Desktop strip thumbs under the stage */
   --strip-thumb: clamp(44px, 5.4vw, 70px);
-
-  /* Mobile strip thumbs (two rows) */
   --strip-thumb-m: clamp(28px, 10.5vw, 40px);
-
   --edge: clamp(12px, 2.6vw, 32px);
   --gap: 10px;
 }
@@ -628,10 +1637,9 @@ body.dark-mode {
   padding-inline: var(--edge);
   align-items: start;
   overflow-x: hidden;
-  /* safety */
 }
 
-/* ===== Ribbon (desktop) ===== */
+/* Ribbon */
 .project-ribbon {
   display: flex;
   flex-wrap: wrap;
@@ -655,7 +1663,7 @@ body.dark-mode {
 
 .ribbon-item .num {
   font: 600 12px var(--font-heading);
-  letter-spacing: .06em;
+  letter-spacing: 0.06em;
   color: var(--muted);
   padding-left: 2px;
   text-align: left;
@@ -674,7 +1682,7 @@ body.dark-mode {
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: filter .45s var(--ease);
+  transition: filter 0.45s var(--ease);
 }
 
 .ribbon-item .overlay {
@@ -685,15 +1693,15 @@ body.dark-mode {
   text-align: center;
   padding: 10px;
   font: 800 clamp(12px, 1.2vw, 16px) var(--font-heading);
-  letter-spacing: .06em;
+  letter-spacing: 0.06em;
   color: #fff;
   background: rgba(0, 0, 0, 0);
   opacity: 0;
-  transition: opacity .45s var(--ease), background .45s var(--ease);
+  transition: opacity 0.45s var(--ease), background 0.45s var(--ease);
 }
 
 .ribbon-item:hover .overlay {
-  background: rgba(0, 0, 0, .42);
+  background: rgba(0, 0, 0, 0.42);
   opacity: 1;
 }
 
@@ -701,7 +1709,7 @@ body.dark-mode {
   color: var(--fg);
 }
 
-/* ===== Main (desktop) ===== */
+/* Main */
 .gallery-main {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -727,11 +1735,10 @@ body.dark-mode {
 
 .about-text {
   margin-top: 30px;
-  opacity: .9;
+  opacity: 0.9;
   line-height: 1.35;
 }
 
-/* Right: viewer */
 .viewer {
   min-height: 60vh;
 }
@@ -754,11 +1761,10 @@ body.dark-mode {
   max-height: 100%;
   object-fit: contain;
   display: block;
-  transition: opacity .25s var(--ease);
   opacity: 0;
   z-index: 1;
   cursor: zoom-in;
-  transition: opacity .6s var(--ease), filter .6s var(--ease), transform .6s var(--ease);
+  transition: opacity 0.6s var(--ease), filter 0.6s var(--ease), transform 0.6s var(--ease);
   will-change: opacity, filter, transform;
 }
 
@@ -767,7 +1773,7 @@ body.dark-mode {
   top: 0;
   left: 0;
   font: 800 clamp(28px, 4.2vw, 60px) var(--font-heading);
-  letter-spacing: .04em;
+  letter-spacing: 0.04em;
   padding: 2px 10px;
   pointer-events: none;
   z-index: 3;
@@ -776,7 +1782,7 @@ body.dark-mode {
   border: 0;
   text-shadow: none;
   -webkit-text-stroke: 0;
-  transition: color .18s var(--ease);
+  transition: color 0.18s var(--ease);
 }
 
 .stage-index.index--dark {
@@ -796,11 +1802,11 @@ body.dark-mode {
   border: 0;
   font-size: clamp(22px, 2.6vw, 30px);
   color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, .5);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   background: transparent;
   cursor: pointer;
   opacity: 0;
-  transition: opacity .35s var(--ease);
+  transition: opacity 0.35s var(--ease);
   z-index: 2;
   outline: none;
 }
@@ -817,7 +1823,7 @@ body.dark-mode {
   right: 8px;
 }
 
-/* Desktop strip — exactly two rows, wraps */
+/* Desktop strip */
 .strip {
   display: flex;
   flex-wrap: wrap;
@@ -858,9 +1864,9 @@ body.dark-mode {
   place-items: center;
   font: 800 clamp(16px, 2.8vw, 26px) var(--font-heading);
   color: #fff;
-  background: rgba(0, 0, 0, .35);
+  background: rgba(0, 0, 0, 0.35);
   opacity: 0;
-  transition: opacity .38s var(--ease);
+  transition: opacity 0.38s var(--ease);
 }
 
 .strip-thumb:hover::after,
@@ -873,20 +1879,19 @@ body.dark-mode {
   transform: scale(1.01);
 }
 
-/* Stage caption above image & arrows */
+/* Stage caption */
 .stage-caption {
   position: absolute;
   left: 8px;
   bottom: 8px;
   padding: 2px 6px;
   font: 600 11px/1.2 var(--font-heading);
-  letter-spacing: .03em;
+  letter-spacing: 0.03em;
   color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, .6);
-  opacity: .95;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  opacity: 0.95;
   pointer-events: none;
   z-index: 3;
-  /* <<< add this */
 }
 
 .stage-caption:not(.has-caption) {
@@ -905,7 +1910,6 @@ body.dark-mode {
     opacity: .95;
     pointer-events: none;
     z-index: 3;
-    /* <<< add this */
   }
 
   .mobile-caption:not(.has-caption) {

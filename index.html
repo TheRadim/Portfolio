@@ -10,12 +10,17 @@
 </head>
 
 <body>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;800;900&display=swap" rel="stylesheet">
+
   <header class="sticky-header">
     <div class="name-wrapper">
-      <a class="name name-full" href="#">Theiner Radim</a>
-      <div class="name name-short">
+      <a class="name name-full" href="#">
+        <span class="surname">Theiner</span> <span class="given">Radim</span>
+      </a>
+      <a class="name name-short" href="#">
         <span class="the">THE</span><span class="rad">RAD</span>
-      </div>
+      </a>
+    </div>
     </div>
 
     <div class="header-right">
@@ -47,6 +52,10 @@
     </div>
 
     <section id="intro" class="section intro-section">
+      <!-- NEW: bold hero headline -->
+      <h1 class="hero-headline" id="heroHeadline">Hi, I’m Radim. I create.</h1>
+
+      <!-- (optional) keep the old block but we’ll hide it in CSS -->
       <div class="sticky-intro-wrapper">
         <div class="intro-text">
           <p>CREATIVE OCTOPUS —</p>
@@ -55,6 +64,7 @@
         </div>
       </div>
 
+      <!-- Typewriter stays; we’ll move it bottom-right + use the “creative octopus” text -->
       <div class="typewriter-container" aria-hidden="true">
         <div class="typewriter-text-wrapper">
           <span id="typewriterText"></span><span class="cursor">|</span>

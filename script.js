@@ -82,17 +82,30 @@ document.addEventListener("DOMContentLoaded", () => {
   function scrollToPhotoSection() {
     const header = document.querySelector(".sticky-header");
     const headerH = header ? header.offsetHeight : 60;
-    const keepTitle = 20; // extra space so the section title stays visible
+    const keepTitle = 20;
     const targetY = Math.max(0, photoSection.offsetTop - headerH - keepTitle);
     smoothScrollTo(targetY, 900);
   }
 
-  // expose for gallery ribbon clicks
   window.scrollToPhotoSection = scrollToPhotoSection;
-
   arrow?.addEventListener("click", scrollToPhotoSection);
 
-  // Biker + sticky name
+  // Biker starts inside (3vh from right)
+  function placeBikerInitial() {
+    if (!biker) {
+      return;
+    }
+    const vh = window.innerHeight;
+    const bikerW = 100;
+    const mr = Math.max(vh * 0.03, 8);
+    biker.style.left = `${window.innerWidth - bikerW - mr}px`;
+    biker.style.top = `${Math.max(vh * 0.4, 150)}px`;
+    biker.style.opacity = "1";
+  }
+  placeBikerInitial();
+  window.addEventListener("resize", placeBikerInitial);
+
+  // Scroll effects
   document.addEventListener("scroll", () => {
     const y = window.scrollY;
     const vh = window.innerHeight;
@@ -102,9 +115,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (biker) {
-      const startLeft = window.innerWidth;
-      const endLeft = -100;
+      const bikerW = 100;
+      const mr = Math.max(vh * 0.03, 8);
+      const startLeft = window.innerWidth - bikerW - mr;
+      const endLeft = -bikerW;
       const p = Math.min(y / vh, 1);
+
       biker.style.left = `${startLeft + p * (endLeft - startLeft)}px`;
       biker.style.top = `${Math.max(vh * 0.4, 150)}px`;
       biker.style.opacity = y > vh ? 0 : 1;
@@ -143,20 +159,21 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  const phrases = [
-    "SCROLL DOWN TO SEE MORE…",
-    "SCROLL SLOW — STORIES AHEAD",
-    "SCROLL DOWN AND RIDE THROUGH MY WORK",
-    "CREATIVE RIDES. DIGITAL SIDETRACKS.",
-    "CREATIVITY IN MOTION, ONE FRAME AT A TIME",
-    "EXPERIENCE THE JOURNEY",
-    "FROM STILLS TO MOTION",
-    "A CREATIVE JOURNEY ON TWO WHEELS",
-    "FOLLOW THE ROAD — EXPLORE THE WORK",
-    "WHERE DESIGN MEETS MOTION",
-    "EVERY PIXEL TELLS A STORY",
-    "CRAFTED ON THE ROAD, SHAPED BY CODE"
-  ];
+  const phrases =
+    [
+      "SCROLL DOWN TO SEE MORE…",
+      "SCROLL SLOW — STORIES AHEAD",
+      "SCROLL DOWN AND RIDE THROUGH MY WORK",
+      "CREATIVE RIDES. DIGITAL SIDETRACKS.",
+      "CREATIVITY IN MOTION, ONE FRAME AT A TIME",
+      "EXPERIENCE THE JOURNEY",
+      "FROM STILLS TO MOTION",
+      "A CREATIVE JOURNEY ON TWO WHEELS",
+      "FOLLOW THE ROAD — EXPLORE THE WORK",
+      "WHERE DESIGN MEETS MOTION",
+      "EVERY PIXEL TELLS A STORY",
+      "CRAFTED ON THE ROAD, SHAPED BY CODE"
+    ];
 
   let phrase = 0;
   let i = 0;
