@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: "pas-normal",
         title: "PAS NORMAL STUDIOS",
         description:
-          "Shooting for a lovebrand: team ride through Copenhagen’s Indian summer and a social evening where racers and brand designers talked about their bond with Pas Normal.",
+          "Late-summer roll with the Pas Normal Studios crew in Copenhagen’s late summer. \n\n Snapping fast-paced action and laid-back evening hangs with the Panormal crew. Just good vibes, cool people, and a brand that loves its racers.",
         count: 10,
         ext: "webp",
         thumbExt: "webp",
@@ -316,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: "gravity-snowboards",
         title: "GRAVITY SNB",
         description:
-          "Snowboarding is a lifelong habit. Pre-season product work on their tuning line — edges and bases getting ready for winter.",
+          "Prepping boards for winter with Gravity’s tools. \n\nWaxing, tuning, and getting everything sharp and ready. It’s all about that pre-season ritual for the love of snowboarding.",
         count: 9,
         ext: "webp",
         thumbExt: "webp",
@@ -328,7 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: "happy-socks",
         title: "HAPPY SOCKS",
         description:
-          "Editorial at the university with Matija Max Vidović. Playful, a little absurd — still one of my favorites.",
+          "Funky, colorful, and playful vibes shooting for Fizzymag wit Matija Max Vidovic.  \n\nBold color, graphic shapes, a little absurd on purpose.\n\nEven after years, one of my favourite outcomes.",
         count: 9,
         ext: "webp",
         thumbExt: "webp",
@@ -340,23 +340,36 @@ document.addEventListener("DOMContentLoaded", () => {
         id: "studio-pyntet",
         title: "STUDIO PYNTET",
         description:
-          "Small jewels and art pieces. A project close to my heart — I handled visuals end-to-end: photos, video, and website for a brand living between Prague and Copenhagen.",
+          "Inspired by coastal nature. \n\nThis project for a small studio between Prague and Copenhagen covers everything from photography to videography and web design. \n\nShot on Danish beaches, it highlights the elegance of jewelry and art pieces like the “Waterdrop” stand, blending natural beauty with minimalist design.",
         count: 16,
         ext: "webp",
         thumbExt: "webp",
         captions:
-          []
+          [
+            "Waterdrop Stand",
+            "Silver Ring Macro",
+            "Beach Light",
+            "Driftwood Set",
+            "Sand & Steel",
+            "Minimal Display",
+            "Hands & Metal",
+            "Earrings in Breeze",
+            "Necklace on Linen",
+            "Workbench",
+            "Sketch to Object",
+            "Polish & Shine",
+            "Blue-Hour Set",
+            "On the Rocks",
+            "Danish Dunes",
+            "Web Detail"
+          ]
       },
       {
         dir: "5",
         id: "bikes",
         title: "BIKES",
         description:
-          "Did I mention I love bikes? Here are a few projects I enjoyed shooting.\n\n" +
-          "Downhill in Town — Urban DH threaded through city streets. Fast lines, alley sprints, and that echo of freehubs between buildings.\n\n" +
-          "Sunshine Criterium — Fixed-gear crit meets running in Copenhagen. Hot corners, ringing cowbells, salt in the air, and smiles you can hear.\n\n" +
-          "Jinglecross — Pre-Christmas cyclocross where mud, bells, and winter light mix into a beautiful mess; cold fingers, warm hearts.\n\n" +
-          "Stevens Bikes — Product portraits and quick spins. The chameleon paint sings in daylight while the bikes feel eager to launch.",
+          "I love bikes. Riding, racing, and telling the stories around them. \n\nI shoot across disciplines—from gritty race days to clean product work—delivering both speed and detail. \n\nDownhill in Town’s freehub echo in narrow streets, Copenhagen’s Sunshine Crit at city-lap pace, the muddy joy of Jinglecross, and crisp product portraits of Stevens’ chameleon-paint builds.",
         count: 24,
         ext: "webp",
         thumbExt: "webp",
@@ -390,10 +403,10 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       {
         dir: "6",
-        id: "fragaria-coffee",
-        title: "FRAGARIA COFFEE",
+        id: "kmen-coffee",
+        title: "KMEN COFFEE",
         description:
-          "Specialty coffee by special people — good friends. Texture first, people always.",
+          "Specialty coffee by friends. Shots of the daily grind at Kemn Coffee, from roasting to brewing. \n\nIt’s all about the aroma, the community, and the love of a good cup shared with friends.",
         count: 8,
         ext: "webp",
         thumbExt: "webp",
@@ -405,7 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: "portraits",
         title: "FACES",
         description:
-          "People first — portraits, moments, sometimes on film, sometimes digital. Always about the person in front of me.",
+          "People first\n\n Portraits, moments and snaps. \n\nSometimes on film, sometimes digital. Always about the person in front of the lens.\n\nSmall gestures say the most.",
         count: 14,
         ext: "webp",
         thumbExt: "webp",
@@ -417,26 +430,72 @@ document.addEventListener("DOMContentLoaded", () => {
         id: "arch",
         title: "ARCH",
         description:
-          "Lines, light, materials — and how spaces are actually used.",
+          "A minimalist ode to lines, light, and materials. \n\nFrom the clean aesthetics of Danish design to architectural marvels across Europe, these photos celebrate the simplicity of architectural forms. \n\nIt’s all about the vibe of places and spaces.",
         count: 19,
         ext: "webp",
         thumbExt: "webp",
         captions:
-          []
+          [
+            "Denmark",
+            "Denmark",
+            "Portugal",
+            "Denmark",
+            "Portugal",
+            "Switzerland",
+            "Denmark",
+            "Portugal",
+            "Denmark",
+            "Italy",
+            "Denmark",
+            "Italy",
+            "Denmark",
+            "Czechia",
+            "Denmark",
+            "Denmark",
+            "Denmark",
+            "Denmark",
+            "Denmark",
+          ]
       },
       {
         dir: "9",
         id: "nature",
         title: "NATURE",
         description:
-          "Quiet frames outdoors — textures, weather, patience.",
+          "Quiet frames outside. Weather, texture, patience. \n\nLong walks and short shutters.\n\nThis is personal: I love time outdoors, and with a camera in hand. \n\nI collect what I see - thin light, quiet color, space to breathe.",
         count: 24,
         ext: "webp",
         thumbExt: "webp",
         captions:
-          []
+          [
+            "Switzerland",
+            "Spain",
+            "France",
+            "Portugal",
+            "Sweden",
+            "Czechia",
+            "Denmark",
+            "Austria",
+            "Czechia",
+            "Czechia",
+            "Portugal",
+            "Norway",
+            "Czechia",
+            "Germany",
+            "Austria",
+            "Slovenia",
+            "Czechia",
+            "Austria",
+            "Czechia",
+            "Slovenia",
+            "Austria",
+            "Denmark",
+            "Germany",
+            "Portugal"
+          ]
       }
     ];
+
   const projects = buildProjects(projectDefs);
 
   // ---------- Utils ----------
