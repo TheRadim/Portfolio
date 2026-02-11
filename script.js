@@ -427,8 +427,8 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       {
         dir: "8",
-        id: "arch",
-        title: "ARCH",
+        id: "urban",
+        title: "URBAN",
         description:
           "A minimalist ode to lines, light, and materials. \n\nFrom the clean aesthetics of Danish design to architectural marvels across Europe, these photos celebrate the simplicity of architectural forms. \n\nIt’s all about the vibe of places and spaces.",
         count: 19,
@@ -1097,13 +1097,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const rows = Array.from(lines.querySelectorAll('.video-row'));
   const isTouch = window.matchMedia('(hover: none)').matches;
 
+  function sanitizeVimeoUrl(url) {
+    if (!url) {
+      return '';
+    }
+
+    try {
+      const u = new URL(url);
+      return `${u.origin}${u.pathname}`;
+    }
+    catch {
+      return url;
+    }
+  }
+
   function setActive(row) {
     rows.forEach(r => {
       r.classList.toggle('is-active', r === row);
     });
 
     const thumb = row.getAttribute('data-thumb');
-    const url = row.getAttribute('data-vimeo-url');
+    const url = sanitizeVimeoUrl(row.getAttribute('data-vimeo-url'));
     const title = row.getAttribute('data-title') || 'Video';
 
     if (thumb) {
@@ -1134,7 +1148,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const url = row.getAttribute('data-vimeo-url');
+      const url = sanitizeVimeoUrl(row.getAttribute('data-vimeo-url'));
       if (url) {
         window.open(url, '_blank', 'noopener,noreferrer');
       }
