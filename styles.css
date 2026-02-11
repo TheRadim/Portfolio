@@ -1794,8 +1794,6 @@ body.dark-mode {
 
 
 
-
-/* ===== VIDEO SECTION ===== */
 /* ===== VIDEO SECTION ===== */
 .videos-section {
   --line: rgba(0, 0, 0, .10);
@@ -1810,9 +1808,44 @@ body.dark-mode .videos-section {
 .videos-wrap {
   position: relative;
   padding: clamp(30px, 6vh, 60px) 0;
-  margin-top: 15vh;
 }
 
+/* Dynamic title block */
+.videos-head {
+  margin-left: 5vw;
+  margin-right: 5vw;
+  margin-bottom: clamp(14px, 2vh, 22px);
+  max-width: 72ch;
+  margin-bottom: 18vh;
+}
+
+.videos-kicker {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 600;
+  opacity: .35;
+  font-size: 12px;
+}
+
+.videos-dynamic-title {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  font-weight: 700;
+  font-size: clamp(22px, 2.6vw, 34px);
+  line-height: 1.05;
+  margin-top: 8px;
+}
+
+.videos-dynamic-bio {
+  margin-top: 10px;
+  opacity: .55;
+  font-size: clamp(14px, 1.3vw, 16px);
+  line-height: 1.45;
+}
+
+/* Lines */
 .videos-lines {
   border-top: 1px solid var(--line-strong);
   border-bottom: 1px solid var(--line);
@@ -1871,12 +1904,16 @@ body.dark-mode .videos-section {
   margin-right: 5vw;
 }
 
+/* Stage overlay (desktop) */
 .videos-stage {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 56%;
   transform: translate(-50%, -50%);
   z-index: 2;
+  margin-top: 9vh;
+
+  /* IMPORTANT: stage must allow clicking the link */
   pointer-events: none;
 }
 
@@ -1887,6 +1924,8 @@ body.dark-mode .videos-section {
   background: rgba(0, 0, 0, .06);
   box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
   overflow: hidden;
+
+  /* click is here */
   pointer-events: auto;
 }
 
@@ -1905,7 +1944,7 @@ body.dark-mode .videos-section {
   object-fit: cover;
   display: block;
   opacity: 1;
-  transition: opacity .2s var(--ease), transform .25s var(--ease);
+  transform: scale(1.001);
 }
 
 .player-badge {
@@ -1932,7 +1971,7 @@ body.dark-mode .player-badge {
   color: #fff;
 }
 
-/* Mobile */
+/* Tablet */
 @media (max-width: 1024px) {
   .videos-stage .player-box {
     width: min(680px, 92vw);
@@ -1950,7 +1989,7 @@ body.dark-mode .player-badge {
   }
 }
 
-/* Phone: stage becomes its own block */
+/* Phone: make it functional (no overlay, preview under title) */
 @media (max-width: 760px) {
   .videos-wrap {
     display: grid;
@@ -1962,11 +2001,17 @@ body.dark-mode .player-badge {
     left: auto;
     top: auto;
     transform: none;
+    pointer-events: auto;
   }
 
   .player-box {
     width: calc(100% - 10vw);
     margin-left: 5vw;
     margin-right: 5vw;
+  }
+
+  /* Keep it clean: stage above, list below */
+  .videos-lines {
+    margin-top: 6px;
   }
 }

@@ -1082,81 +1082,114 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
-// ===== VIDEO SECTION (thumbnails + click-through to Vimeo) =====
-document.addEventListener('DOMContentLoaded', () => {
-  const lines = document.querySelector('.videos-lines');
-  const stage = document.querySelector('.videos-stage');
+// ===== VIDEO SECTION (thumbnails + click-through to Vimeo + dynamic title/bio) =====
+document.addEventListener('DOMContentLoaded', () =>
+{
+  const lines  = document.querySelector('.videos-lines');
   const poster = document.querySelector('.player-poster');
-  const link = document.querySelector('.player-link');
+  const link   = document.querySelector('.player-link');
+  const titleEl = document.querySelector('#videosTitle');
+  const bioEl   = document.querySelector('#videosBio');
 
-  if (!lines || !stage || !poster || !link) {
+  if (!lines || !poster || !link || !titleEl || !bioEl)
+  {
     return;
   }
 
-  const rows = Array.from(lines.querySelectorAll('.video-row'));
+  const rows    = Array.from(lines.querySelectorAll('.video-row'));
   const isTouch = window.matchMedia('(hover: none)').matches;
 
-  function sanitizeVimeoUrl(url) {
-    if (!url) {
+  function sanitizeVimeoUrl(url)
+  {
+    if (!url)
+    {
       return '';
     }
 
-    try {
+    try
+    {
       const u = new URL(url);
       return `${u.origin}${u.pathname}`;
     }
-    catch {
+    catch
+    {
       return url;
     }
   }
 
-  function setActive(row) {
-    rows.forEach(r => {
+  function setActive(row)
+  {
+    rows.forEach(r =>
+    {
       r.classList.toggle('is-active', r === row);
     });
 
     const thumb = row.getAttribute('data-thumb');
-    const url = sanitizeVimeoUrl(row.getAttribute('data-vimeo-url'));
+    const url   = sanitizeVimeoUrl(row.getAttribute('data-vimeo-url'));
     const title = row.getAttribute('data-title') || 'Video';
+    const bio   = row.getAttribute('data-bio') || '';
 
-    if (thumb) {
+    if (thumb)
+    {
       poster.src = thumb;
     }
 
-    if (url) {
+    if (url)
+    {
       link.href = url;
     }
+
+    titleEl.textContent = title;
+    bioEl.textContent   = bio;
 
     link.setAttribute('aria-label', `Open “${title}” on Vimeo`);
   }
 
-  rows.forEach(row => {
-    row.addEventListener('mouseenter', () => {
-      if (!isTouch) {
+  function openRow(row)
+  {
+    const url = sanitizeVimeoUrl(row.getAttribute('data-vimeo-url'));
+    if (url)
+    {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  }
+
+  // Debug helper: if thumbs fail to load, you’ll SEE it immediately
+  poster.addEventListener('error', () =>
+  {
+    poster.removeAttribute('src');
+    poster.style.background = 'rgba(0,0,0,.08)';
+  });
+
+  rows.forEach(row =>
+  {
+    row.addEventListener('mouseenter', () =>
+    {
+      if (!isTouch)
+      {
         setActive(row);
       }
     });
 
-    row.addEventListener('click', (e) => {
+    row.addEventListener('click', (e) =>
+    {
       e.preventDefault();
 
       const alreadyActive = row.classList.contains('is-active');
 
-      if (isTouch && !alreadyActive) {
+      if (isTouch && !alreadyActive)
+      {
         setActive(row);
         return;
       }
 
-      const url = sanitizeVimeoUrl(row.getAttribute('data-vimeo-url'));
-      if (url) {
-        window.open(url, '_blank', 'noopener,noreferrer');
-      }
+      openRow(row);
     });
   });
 
   const first = lines.querySelector('.video-row.is-active') || rows[0];
-  if (first) {
+  if (first)
+  {
     setActive(first);
   }
 });
