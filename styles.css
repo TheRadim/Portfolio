@@ -2015,3 +2015,214 @@ body.dark-mode .player-badge {
     margin-top: 6px;
   }
 }
+
+/* ===== VIDEO SECTION ===== */
+/* (your latest CSS) */
+
+/* ADD ONLY these changes at the end of your current CSS */
+
+/* Keep phone rows: name only, full width line */
+@media (max-width: 760px) {
+  .video-row {
+    grid-template-columns: 1fr;
+  }
+
+  .row-title {
+    margin-right: 5vw;
+    margin-left: 5vw;
+  }
+}
+
+/* Make stage clickable even though wrapper is pointer-events:none */
+.player-box {
+  pointer-events: auto;
+}
+
+/* Motion iframe sits above poster when enabled */
+.player-iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: none; /* JS turns on for desktop */
+  z-index: 1;
+}
+
+.player-poster {
+  z-index: 0;
+  transition: opacity .2s var(--ease), transform .25s var(--ease);
+}
+
+.player-link {
+  z-index: 3;
+}
+
+.player-badge {
+  z-index: 4;
+}
+
+/* Phone layout you asked for:
+   - lines left->right (name only)
+   - stage under the lines (NOT overlay)
+*/
+@media (max-width: 760px) {
+  .videos-wrap {
+    display: grid;
+    gap: 18px;
+  }
+
+  /* Put lines first */
+  .videos-lines {
+    order: 1;
+  }
+
+  /* Put stage under them */
+  .videos-stage {
+    order: 2;
+    margin-top: 0;
+  }
+
+  /* Kill overlay positioning on phone */
+  .videos-stage {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  /* On phone we don’t show motion iframe (JS also disables it) */
+  .player-iframe {
+    display: none !important;
+  }
+}
+
+/* ADD THIS AT THE END of your latest CSS */
+
+/* Desktop: keep right-side meta visible */
+.row-meta {
+  display: grid;
+}
+
+/* Phone layout (matches your screenshot):
+   1) lines
+   2) dynamic title/bio
+   3) preview box
+*/
+@media (max-width: 760px) {
+  .videos-wrap {
+    display: grid;
+    gap: 18px;
+  }
+
+  .videos-lines { order: 1; }
+  .videos-head  { order: 2; }
+  .videos-stage { order: 3; }
+
+  /* Hide the right-side labels on phone */
+  .row-meta {
+    display: none !important;
+  }
+
+  /* Make rows full width, clean */
+  .video-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Your head spacing is huge on desktop; tighten on phone */
+  .videos-head {
+    margin-bottom: 0;
+  }
+
+  /* Stage becomes normal block on phone */
+  .videos-stage {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    margin-top: 0;
+    pointer-events: auto;
+  }
+
+  .player-box {
+    width: calc(100% - 10vw);
+    margin-left: 5vw;
+    margin-right: 5vw;
+  }
+
+  /* Keep motion off on phone (clean + fast) */
+  .player-iframe {
+    display: none !important;
+  }
+
+  .player-poster {
+    opacity: 1 !important;
+  }
+}
+
+/* ADD THIS AT THE VERY END (only phone overrides, desktop stays untouched) */
+@media (max-width: 1025px)
+{
+  /* Order like your screenshot:
+     1) lines
+     2) title+bio
+     3) video box
+  */
+  .videos-wrap
+  {
+    display: grid;
+    gap: 18px;
+  }
+
+  .videos-lines { order: 1; }
+  .videos-head  { order: 2; }
+  .videos-stage { order: 3; }
+
+  /* Hide right-side meta ONLY on phone (desktop untouched) */
+  .row-meta
+  {
+    display: none !important;
+  }
+
+  /* Ensure rows are full-width lines */
+  .video-row
+  {
+    grid-template-columns: 1fr;
+  }
+
+  /* Your desktop head has huge bottom spacing; tighten only on phone */
+  .videos-head
+  {
+    margin-bottom: 0;
+  }
+
+  /* Stage becomes normal block on phone (no overlay) */
+  .videos-stage
+  {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    margin-top: 0;
+    pointer-events: auto;
+  }
+
+  .player-box
+  {
+    width: calc(100% - 10vw);
+    margin-left: 5vw;
+    margin-right: 5vw;
+  }
+
+  /* No motion iframe on phone (fast + no weirdness) */
+  .player-iframe
+  {
+    display: none !important;
+  }
+
+  .player-poster
+  {
+    opacity: 1 !important;
+  }
+}

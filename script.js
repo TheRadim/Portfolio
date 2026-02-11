@@ -337,32 +337,15 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       {
         dir: "4",
-        id: "studio-pyntet",
-        title: "STUDIO PYNTET",
+        id: "atelier-pyntet",
+        title: "ATELIER PYNTET",
         description:
           "Inspired by coastal nature. \n\nThis project for a small studio between Prague and Copenhagen covers everything from photography to videography and web design. \n\nShot on Danish beaches, it highlights the elegance of jewelry and art pieces like the “Waterdrop” stand, blending natural beauty with minimalist design.",
         count: 16,
         ext: "webp",
         thumbExt: "webp",
         captions:
-          [
-            "Waterdrop Stand",
-            "Silver Ring Macro",
-            "Beach Light",
-            "Driftwood Set",
-            "Sand & Steel",
-            "Minimal Display",
-            "Hands & Metal",
-            "Earrings in Breeze",
-            "Necklace on Linen",
-            "Workbench",
-            "Sketch to Object",
-            "Polish & Shine",
-            "Blue-Hour Set",
-            "On the Rocks",
-            "Danish Dunes",
-            "Web Detail"
-          ]
+          []
       },
       {
         dir: "5",
@@ -1082,22 +1065,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-// ===== VIDEO SECTION (thumbnails + click-through to Vimeo + dynamic title/bio) =====
+// ===== VIDEO SECTION (desktop hover = motion preview, phone tap = select only) =====
 document.addEventListener('DOMContentLoaded', () =>
 {
-  const lines  = document.querySelector('.videos-lines');
-  const poster = document.querySelector('.player-poster');
-  const link   = document.querySelector('.player-link');
+  const lines   = document.querySelector('.videos-lines');
   const titleEl = document.querySelector('#videosTitle');
   const bioEl   = document.querySelector('#videosBio');
 
-  if (!lines || !poster || !link || !titleEl || !bioEl)
+  const poster = document.querySelector('.player-poster');
+  const iframe = document.querySelector('.player-iframe');
+  const link   = document.querySelector('.player-link');
+
+  if (!lines || !titleEl || !bioEl || !poster || !iframe || !link)
   {
     return;
   }
 
-  const rows    = Array.from(lines.querySelectorAll('.video-row'));
-  const isTouch = window.matchMedia('(hover: none)').matches;
+  const rows      = Array.from(lines.querySelectorAll('.video-row'));
+  const isTouch   = window.matchMedia('(hover: none)').matches;
+  const mobileMQ  = window.matchMedia('(max-width: 760px)');
+
+  function isMobile()
+  {
+    return mobileMQ.matches;
+  }
+
+  function getVimeoIdFromUrl(url)
+  {
+    if (!url)
+    {
+      return '';
+    }
+
+    try
+    {
+      const u = new URL(url);
+      const m = u.pathname.match(/\/(\d+)(?:$|\/)/);
+      return m ? m[1] : '';
+    }
+    catch
+    {
+      const m = String(url).match(/vimeo\.com\/(\d+)/);
+      return m ? m[1] : '';
+    }
+  }
 
   function sanitizeVimeoUrl(url)
   {
@@ -1117,6 +1128,45 @@ document.addEventListener('DOMContentLoaded', () =>
     }
   }
 
+  function buildPreviewSrc(vimeoUrl)
+  {
+    const id = getVimeoIdFromUrl(vimeoUrl);
+    if (!id)
+    {
+      return '';
+    }
+
+    return `https://player.vimeo.com/video/${id}?background=1&muted=1&autoplay=1&loop=1&title=0&byline=0&portrait=0`;
+  }
+
+  function applyDesktopPreview(url)
+  {
+    const previewSrc = buildPreviewSrc(url);
+
+    if (!previewSrc)
+    {
+      iframe.removeAttribute('src');
+      iframe.style.display = 'none';
+      poster.style.opacity = '1';
+      return;
+    }
+
+    if (iframe.getAttribute('src') !== previewSrc)
+    {
+      iframe.setAttribute('src', previewSrc);
+    }
+
+    iframe.style.display = 'block';
+    poster.style.opacity = '0';
+  }
+
+  function disablePreview()
+  {
+    iframe.removeAttribute('src');
+    iframe.style.display = 'none';
+    poster.style.opacity = '1';
+  }
+
   function setActive(row)
   {
     rows.forEach(r =>
@@ -1124,10 +1174,13 @@ document.addEventListener('DOMContentLoaded', () =>
       r.classList.toggle('is-active', r === row);
     });
 
-    const thumb = row.getAttribute('data-thumb');
-    const url   = sanitizeVimeoUrl(row.getAttribute('data-vimeo-url'));
     const title = row.getAttribute('data-title') || 'Video';
     const bio   = row.getAttribute('data-bio') || '';
+    const thumb = row.getAttribute('data-thumb') || '';
+    const url   = sanitizeVimeoUrl(row.getAttribute('data-vimeo-url'));
+
+    titleEl.textContent = title;
+    bioEl.textContent   = bio;
 
     if (thumb)
     {
@@ -1137,54 +1190,86 @@ document.addEventListener('DOMContentLoaded', () =>
     if (url)
     {
       link.href = url;
+      link.setAttribute('aria-label', `Open “${title}” on Vimeo`);
     }
 
-    titleEl.textContent = title;
-    bioEl.textContent   = bio;
-
-    link.setAttribute('aria-label', `Open “${title}” on Vimeo`);
+    if (isMobile())
+    {
+      disablePreview();
+    }
+    else
+    {
+      applyDesktopPreview(url);
+    }
   }
 
-  function openRow(row)
+  function openActive()
   {
-    const url = sanitizeVimeoUrl(row.getAttribute('data-vimeo-url'));
+    const active = lines.querySelector('.video-row.is-active') || rows[0];
+    if (!active)
+    {
+      return;
+    }
+
+    const url = sanitizeVimeoUrl(active.getAttribute('data-vimeo-url'));
     if (url)
     {
       window.open(url, '_blank', 'noopener,noreferrer');
     }
   }
 
-  // Debug helper: if thumbs fail to load, you’ll SEE it immediately
-  poster.addEventListener('error', () =>
-  {
-    poster.removeAttribute('src');
-    poster.style.background = 'rgba(0,0,0,.08)';
-  });
-
+  // Phone behaviour:
+  // - tap on a row = select ONLY (updates title/bio + thumb)
+  // - tap on the video box = open Vimeo
   rows.forEach(row =>
   {
     row.addEventListener('mouseenter', () =>
     {
-      if (!isTouch)
+      if (!isTouch && !isMobile())
       {
         setActive(row);
       }
+    });
+
+    row.addEventListener('focus', () =>
+    {
+      setActive(row);
     });
 
     row.addEventListener('click', (e) =>
     {
       e.preventDefault();
 
-      const alreadyActive = row.classList.contains('is-active');
-
-      if (isTouch && !alreadyActive)
+      if (isMobile())
       {
         setActive(row);
         return;
       }
 
-      openRow(row);
+      // Desktop: click opens immediately
+      const url = sanitizeVimeoUrl(row.getAttribute('data-vimeo-url'));
+      if (url)
+      {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
     });
+  });
+
+  // Stage click always opens Vimeo (desktop + phone)
+  link.addEventListener('click', (e) =>
+  {
+    e.preventDefault();
+    openActive();
+  });
+
+  // If you resize across breakpoint, ensure preview state is correct
+  mobileMQ.addEventListener('change', () =>
+  {
+    const active = lines.querySelector('.video-row.is-active') || rows[0];
+    if (active)
+    {
+      setActive(active);
+    }
   });
 
   const first = lines.querySelector('.video-row.is-active') || rows[0];

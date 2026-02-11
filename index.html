@@ -109,7 +109,7 @@
       <h2 class="section-title">VIDEO</h2>
 
       <div class="videos-wrap">
-        <!-- Dynamic title + short bio (updates on hover) -->
+        <!-- Dynamic title + bio -->
         <div class="videos-head" aria-live="polite">
           <div class="videos-kicker">Selected project</div>
           <div class="videos-dynamic-title" id="videosTitle">Atelier Pyntet</div>
@@ -117,14 +117,18 @@
           </div>
         </div>
 
-        <!-- Thumb stage (click opens Vimeo) -->
+        <!-- Stage (desktop overlays lines, phone sits under the lines) -->
         <div class="videos-stage" aria-label="Selected video">
           <div class="player-box">
             <a class="player-link" href="https://vimeo.com/1091832381" target="_blank" rel="noopener noreferrer"></a>
 
-            <!-- Important: keep the img visible even if the file fails -->
+            <!-- Fallback still thumbnail -->
             <img class="player-poster" src="assets/video/thumbs/atelier-pyntet.webp" alt="Atelier Pyntet thumbnail"
               loading="eager" decoding="async">
+
+            <!-- Motion preview (desktop) -->
+            <iframe class="player-iframe" title="Video preview" allow="autoplay; fullscreen; picture-in-picture"
+              loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
             <div class="player-badge">Watch on Vimeo</div>
           </div>
@@ -132,32 +136,28 @@
 
         <!-- Lines -->
         <div class="videos-lines" role="list" aria-label="Selected Films">
-          <button class="video-row is-active" role="listitem" data-title="Atelier Pyntet" data-role="BRAND"
+          <button class="video-row is-active" role="listitem" data-title="Atelier Pyntet"
             data-bio="Brand visuals & web — jewelry, product shots, clean motion."
             data-thumb="assets/video/thumbs/atelier-pyntet.webp" data-vimeo-url="https://vimeo.com/1091832381">
             <span class="row-title">Atelier Pyntet</span>
-            <span class="row-meta"><span class="role">BRAND</span></span>
           </button>
 
-          <button class="video-row" role="listitem" data-title="Selling WW Golf" data-role="COMMERCIAL"
+          <button class="video-row" role="listitem" data-title="Selling WW Golf"
             data-bio="Sales-driven piece — crisp pacing, product/people, straight to the point."
             data-thumb="assets/video/thumbs/selling-ww-golf.webp" data-vimeo-url="https://vimeo.com/1091832381">
             <span class="row-title">Selling WW Golf</span>
-            <span class="row-meta"><span class="role">COMMERCIAL</span></span>
           </button>
 
-          <button class="video-row" role="listitem" data-title="HAY Ad Concept" data-role="CONCEPT"
+          <button class="video-row" role="listitem" data-title="HAY Ad Concept"
             data-bio="Concept work — design energy, mood, and those ‘HAY’ clean lines."
             data-thumb="assets/video/thumbs/hay-ad-concept.webp" data-vimeo-url="https://vimeo.com/1091832381">
             <span class="row-title">HAY Ad Concept</span>
-            <span class="row-meta"><span class="role">CONCEPT</span></span>
           </button>
 
-          <button class="video-row" role="listitem" data-title="Silent Disco Aftermovie" data-role="AFTERMOVIE"
+          <button class="video-row" role="listitem" data-title="Silent Disco Aftermovie"
             data-bio="Night chaos in the best way — rhythm cuts, faces, lights, vibe."
             data-thumb="assets/video/thumbs/silent-disco-aftermovie.webp" data-vimeo-url="https://vimeo.com/1091832381">
             <span class="row-title">Silent Disco Aftermovie</span>
-            <span class="row-meta"><span class="role">AFTERMOVIE</span></span>
           </button>
         </div>
       </div>
