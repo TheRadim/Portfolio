@@ -1076,3 +1076,73 @@ document.addEventListener("DOMContentLoaded", () => {
 
   boot();
 });
+
+
+
+
+
+
+
+// ===== VIDEO SECTION (thumbnails + click-through to Vimeo) =====
+document.addEventListener('DOMContentLoaded', () => {
+  const lines = document.querySelector('.videos-lines');
+  const stage = document.querySelector('.videos-stage');
+  const poster = document.querySelector('.player-poster');
+  const link = document.querySelector('.player-link');
+
+  if (!lines || !stage || !poster || !link) {
+    return;
+  }
+
+  const rows = Array.from(lines.querySelectorAll('.video-row'));
+  const isTouch = window.matchMedia('(hover: none)').matches;
+
+  function setActive(row) {
+    rows.forEach(r => {
+      r.classList.toggle('is-active', r === row);
+    });
+
+    const thumb = row.getAttribute('data-thumb');
+    const url = row.getAttribute('data-vimeo-url');
+    const title = row.getAttribute('data-title') || 'Video';
+
+    if (thumb) {
+      poster.src = thumb;
+    }
+
+    if (url) {
+      link.href = url;
+    }
+
+    link.setAttribute('aria-label', `Open “${title}” on Vimeo`);
+  }
+
+  rows.forEach(row => {
+    row.addEventListener('mouseenter', () => {
+      if (!isTouch) {
+        setActive(row);
+      }
+    });
+
+    row.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      const alreadyActive = row.classList.contains('is-active');
+
+      if (isTouch && !alreadyActive) {
+        setActive(row);
+        return;
+      }
+
+      const url = row.getAttribute('data-vimeo-url');
+      if (url) {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
+    });
+  });
+
+  const first = lines.querySelector('.video-row.is-active') || rows[0];
+  if (first) {
+    setActive(first);
+  }
+});
