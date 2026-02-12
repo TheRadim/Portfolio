@@ -113,22 +113,19 @@
         <div class="videos-head" aria-live="polite">
           <div class="videos-kicker">Selected project</div>
           <div class="videos-dynamic-title" id="videosTitle">Atelier Pyntet</div>
-          <div class="videos-dynamic-bio" id="videosBio">Brand visuals & web — jewelry, product shots, clean motion.
-          </div>
+          <div class="videos-dynamic-bio" id="videosBio">Brand video.</div>
         </div>
 
-        <!-- Stage (desktop overlays lines, phone sits under the lines) -->
+        <!-- Stage (ONE preview video only) -->
         <div class="videos-stage" aria-label="Selected video">
           <div class="player-box">
-            <a class="player-link" href="https://vimeo.com/1091832381" target="_blank" rel="noopener noreferrer"></a>
+            <!-- Whole video is a link to Vimeo -->
+            <a class="player-link" id="videosOpen" href="https://vimeo.com/1091832381" target="_blank"
+              rel="noopener noreferrer" aria-label="Open “Atelier Pyntet” on Vimeo"></a>
 
-            <!-- Fallback still thumbnail -->
-            <img class="player-poster" src="assets/video/thumbs/atelier-pyntet.webp" alt="Atelier Pyntet thumbnail"
-              loading="eager" decoding="async">
-
-            <!-- Motion preview (desktop) -->
-            <iframe class="player-iframe" title="Video preview" allow="autoplay; fullscreen; picture-in-picture"
-              loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            <video id="videosPreview" class="player-preview" muted autoplay loop playsinline preload="metadata">
+              <source src="assets/video/projects/atelier-pyntet-preview.mp4" type="video/mp4">
+            </video>
 
             <div class="player-badge">Watch on Vimeo</div>
           </div>
@@ -136,32 +133,44 @@
 
         <!-- Lines -->
         <div class="videos-lines" role="list" aria-label="Selected Films">
-          <button class="video-row is-active" role="listitem" data-title="Atelier Pyntet"
-            data-bio="Brand visuals & web — jewelry, product shots, clean motion."
-            data-thumb="assets/video/thumbs/atelier-pyntet.webp" data-vimeo-url="https://vimeo.com/1091832381">
+          <button class="video-row is-active" type="button" data-title="Atelier Pyntet" data-bio="Brand video."
+            data-preview="assets/video/projects/atelier-pyntet-preview.mp4"
+            data-vimeo-url="https://vimeo.com/1091832381?share=copy&fl=sv&fe=ci">
             <span class="row-title">Atelier Pyntet</span>
+            <span class="row-meta"><span class="role">brand video</span></span>
           </button>
 
-          <button class="video-row" role="listitem" data-title="Selling WW Golf"
-            data-bio="Sales-driven piece — crisp pacing, product/people, straight to the point."
-            data-thumb="assets/video/thumbs/selling-ww-golf.webp" data-vimeo-url="https://vimeo.com/1091832381">
-            <span class="row-title">Selling WW Golf</span>
+          <button class="video-row" type="button" data-title="VW Polo" data-bio="Fun project."
+            data-preview="assets/video/projects/vw-polo-preview.mp4"
+            data-vimeo-url="https://vimeo.com/1164309543?share=copy&fl=sv&fe=ci">
+            <span class="row-title">VW Polo</span>
+            <span class="row-meta"><span class="role">fun project</span></span>
           </button>
 
-          <button class="video-row" role="listitem" data-title="HAY Ad Concept"
-            data-bio="Concept work — design energy, mood, and those ‘HAY’ clean lines."
-            data-thumb="assets/video/thumbs/hay-ad-concept.webp" data-vimeo-url="https://vimeo.com/1091832381">
-            <span class="row-title">HAY Ad Concept</span>
+          <button class="video-row" type="button" data-title="HAY" data-bio="Ad concept."
+            data-preview="assets/video/projects/hay-preview.mp4"
+            data-vimeo-url="https://vimeo.com/1164310600?share=copy&fl=sv&fe=ci">
+            <span class="row-title">HAY</span>
+            <span class="row-meta"><span class="role">ad concept</span></span>
           </button>
 
-          <button class="video-row" role="listitem" data-title="Silent Disco Aftermovie"
-            data-bio="Night chaos in the best way — rhythm cuts, faces, lights, vibe."
-            data-thumb="assets/video/thumbs/silent-disco-aftermovie.webp" data-vimeo-url="https://vimeo.com/1091832381">
-            <span class="row-title">Silent Disco Aftermovie</span>
+          <button class="video-row" type="button" data-title="Silent Events" data-bio="Student project aftermovie."
+            data-preview="assets/video/projects/silent-events-preview.mp4"
+            data-vimeo-url="https://vimeo.com/1164310799?share=copy&fl=sv&fe=ci">
+            <span class="row-title">Silent Events</span>
+            <span class="row-meta"><span class="role">student project</span></span>
+          </button>
+
+          <button class="video-row" type="button" data-title="Seeking talents" data-bio="Recruiting peeps."
+            data-preview="assets/video/projects/seeking-talents-preview.mp4"
+            data-vimeo-url="https://vimeo.com/1164310216?share=copy&fl=sv&fe=ci">
+            <span class="row-title">Seeking talents</span>
+            <span class="row-meta"><span class="role">recruiting peeps</span></span>
           </button>
         </div>
       </div>
     </section>
+
 
     <section id="web-projects" class="section">
       <h2 class="section-title">CODING</h2>

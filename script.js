@@ -1064,53 +1064,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
-// ===== VIDEO SECTION (desktop hover = motion preview, phone tap = select only) =====
+// ===== VIDEO SECTION (ONE PREVIEW VIDEO, CLICK OPENS VIMEO) =====
 document.addEventListener('DOMContentLoaded', () =>
 {
   const lines   = document.querySelector('.videos-lines');
   const titleEl = document.querySelector('#videosTitle');
   const bioEl   = document.querySelector('#videosBio');
 
-  const poster = document.querySelector('.player-poster');
-  const iframe = document.querySelector('.player-iframe');
-  const link   = document.querySelector('.player-link');
+  const video   = document.querySelector('#videosPreview');
+  const openBtn = document.querySelector('#videosOpen');
 
-  if (!lines || !titleEl || !bioEl || !poster || !iframe || !link)
+  if (!lines || !titleEl || !bioEl || !video || !openBtn)
   {
     return;
   }
 
-  const rows      = Array.from(lines.querySelectorAll('.video-row'));
-  const isTouch   = window.matchMedia('(hover: none)').matches;
-  const mobileMQ  = window.matchMedia('(max-width: 760px)');
+  const rows   = Array.from(lines.querySelectorAll('.video-row'));
+  const bp1024 = window.matchMedia('(max-width: 1024px)');
+  const isTouch = window.matchMedia('(hover: none)').matches;
 
-  function isMobile()
+  function isSmall()
   {
-    return mobileMQ.matches;
+    return bp1024.matches;
   }
 
-  function getVimeoIdFromUrl(url)
-  {
-    if (!url)
-    {
-      return '';
-    }
-
-    try
-    {
-      const u = new URL(url);
-      const m = u.pathname.match(/\/(\d+)(?:$|\/)/);
-      return m ? m[1] : '';
-    }
-    catch
-    {
-      const m = String(url).match(/vimeo\.com\/(\d+)/);
-      return m ? m[1] : '';
-    }
-  }
-
-  function sanitizeVimeoUrl(url)
+  function sanitizeVimeoPageUrl(url)
   {
     if (!url)
     {
@@ -1128,43 +1106,38 @@ document.addEventListener('DOMContentLoaded', () =>
     }
   }
 
-  function buildPreviewSrc(vimeoUrl)
+  function setVideoSrc(src)
   {
-    const id = getVimeoIdFromUrl(vimeoUrl);
-    if (!id)
+    if (!src)
     {
-      return '';
-    }
-
-    return `https://player.vimeo.com/video/${id}?background=1&muted=1&autoplay=1&loop=1&title=0&byline=0&portrait=0`;
-  }
-
-  function applyDesktopPreview(url)
-  {
-    const previewSrc = buildPreviewSrc(url);
-
-    if (!previewSrc)
-    {
-      iframe.removeAttribute('src');
-      iframe.style.display = 'none';
-      poster.style.opacity = '1';
       return;
     }
 
-    if (iframe.getAttribute('src') !== previewSrc)
+    const current = video.currentSrc || '';
+    if (current.includes(src))
     {
-      iframe.setAttribute('src', previewSrc);
+      return;
     }
 
-    iframe.style.display = 'block';
-    poster.style.opacity = '0';
-  }
+    video.pause();
 
-  function disablePreview()
-  {
-    iframe.removeAttribute('src');
-    iframe.style.display = 'none';
-    poster.style.opacity = '1';
+    while (video.firstChild)
+    {
+      video.removeChild(video.firstChild);
+    }
+
+    const source = document.createElement('source');
+    source.src = src;
+    source.type = 'video/mp4';
+    video.appendChild(source);
+
+    video.load();
+
+    const play = video.play();
+    if (play && typeof play.catch === 'function')
+    {
+      play.catch(() => {});
+    }
   }
 
   function setActive(row)
@@ -1174,61 +1147,42 @@ document.addEventListener('DOMContentLoaded', () =>
       r.classList.toggle('is-active', r === row);
     });
 
-    const title = row.getAttribute('data-title') || 'Video';
-    const bio   = row.getAttribute('data-bio') || '';
-    const thumb = row.getAttribute('data-thumb') || '';
-    const url   = sanitizeVimeoUrl(row.getAttribute('data-vimeo-url'));
+    const title   = row.getAttribute('data-title') || 'Video';
+    const bio     = row.getAttribute('data-bio') || '';
+    const preview = row.getAttribute('data-preview') || '';
+    const vimeo   = sanitizeVimeoPageUrl(row.getAttribute('data-vimeo-url'));
 
     titleEl.textContent = title;
     bioEl.textContent   = bio;
 
-    if (thumb)
+    if (preview)
     {
-      poster.src = thumb;
+      setVideoSrc(preview);
     }
 
-    if (url)
+    if (vimeo)
     {
-      link.href = url;
-      link.setAttribute('aria-label', `Open “${title}” on Vimeo`);
-    }
-
-    if (isMobile())
-    {
-      disablePreview();
-    }
-    else
-    {
-      applyDesktopPreview(url);
+      openBtn.href = vimeo;
+      openBtn.setAttribute('aria-label', `Open “${title}” on Vimeo`);
     }
   }
 
-  function openActive()
+  function maybeHoverSelect(row)
   {
-    const active = lines.querySelector('.video-row.is-active') || rows[0];
-    if (!active)
+    // Disable hover selection on <=1024 AND on touch devices
+    if (isTouch || isSmall())
     {
       return;
     }
 
-    const url = sanitizeVimeoUrl(active.getAttribute('data-vimeo-url'));
-    if (url)
-    {
-      window.open(url, '_blank', 'noopener,noreferrer');
-    }
+    setActive(row);
   }
 
-  // Phone behaviour:
-  // - tap on a row = select ONLY (updates title/bio + thumb)
-  // - tap on the video box = open Vimeo
   rows.forEach(row =>
   {
     row.addEventListener('mouseenter', () =>
     {
-      if (!isTouch && !isMobile())
-      {
-        setActive(row);
-      }
+      maybeHoverSelect(row);
     });
 
     row.addEventListener('focus', () =>
@@ -1236,34 +1190,16 @@ document.addEventListener('DOMContentLoaded', () =>
       setActive(row);
     });
 
+    // Click ALWAYS selects only (all breakpoints)
     row.addEventListener('click', (e) =>
     {
       e.preventDefault();
-
-      if (isMobile())
-      {
-        setActive(row);
-        return;
-      }
-
-      // Desktop: click opens immediately
-      const url = sanitizeVimeoUrl(row.getAttribute('data-vimeo-url'));
-      if (url)
-      {
-        window.open(url, '_blank', 'noopener,noreferrer');
-      }
+      setActive(row);
     });
   });
 
-  // Stage click always opens Vimeo (desktop + phone)
-  link.addEventListener('click', (e) =>
-  {
-    e.preventDefault();
-    openActive();
-  });
-
-  // If you resize across breakpoint, ensure preview state is correct
-  mobileMQ.addEventListener('change', () =>
+  // When crossing <=1024 breakpoint, lock state (no hover weirdness)
+  bp1024.addEventListener('change', () =>
   {
     const active = lines.querySelector('.video-row.is-active') || rows[0];
     if (active)

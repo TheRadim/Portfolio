@@ -859,8 +859,6 @@ body.dark-mode .hero-headline {
   /* keep in sync with .container max-width */
 }
 
-/* ... */
-
 .intro-text {
   /* 123px from the viewport right edge */
   right: calc(130px - max(0px, (100vw - var(--container-max)) / 2));
@@ -1760,7 +1758,7 @@ body.dark-mode {
 }
 
 /* 1) Desktop: never create a scroll container inside PHOTO */
-@media (min-width: 1025px) {
+@media (min-width: 1024px) {
   .about-block {
     overflow: visible !important;
     max-height: none !important;
@@ -1775,7 +1773,7 @@ body.dark-mode {
 }
 
 /* 2) Short desktop viewports: disable sticky so wheel events never trap */
-@media (min-width: 1025px) and (max-height: 900px) {
+@media (min-width: 1024px) and (max-height: 900px) {
   .about-block {
     position: static !important;
     top: auto !important;
@@ -1794,32 +1792,36 @@ body.dark-mode {
 
 
 
-/* ===== VIDEO SECTION ===== */
-.videos-section {
+/* ===== VIDEO SECTION (SINGLE PLAYER) ===== */
+.videos-section
+{
   --line: rgba(0, 0, 0, .10);
   --line-strong: rgba(0, 0, 0, .18);
 }
 
-body.dark-mode .videos-section {
+body.dark-mode .videos-section
+{
   --line: rgba(255, 255, 255, .14);
   --line-strong: rgba(255, 255, 255, .22);
 }
 
-.videos-wrap {
+.videos-wrap
+{
   position: relative;
   padding: clamp(30px, 6vh, 60px) 0;
 }
 
 /* Dynamic title block */
-.videos-head {
+.videos-head
+{
   margin-left: 5vw;
   margin-right: 5vw;
-  margin-bottom: clamp(14px, 2vh, 22px);
   max-width: 72ch;
   margin-bottom: 18vh;
 }
 
-.videos-kicker {
+.videos-kicker
+{
   font-family: var(--font-heading);
   text-transform: uppercase;
   letter-spacing: .08em;
@@ -1828,7 +1830,8 @@ body.dark-mode .videos-section {
   font-size: 12px;
 }
 
-.videos-dynamic-title {
+.videos-dynamic-title
+{
   font-family: var(--font-heading);
   text-transform: uppercase;
   letter-spacing: .02em;
@@ -1838,7 +1841,8 @@ body.dark-mode .videos-section {
   margin-top: 8px;
 }
 
-.videos-dynamic-bio {
+.videos-dynamic-bio
+{
   margin-top: 10px;
   opacity: .55;
   font-size: clamp(14px, 1.3vw, 16px);
@@ -1846,7 +1850,8 @@ body.dark-mode .videos-section {
 }
 
 /* Lines */
-.videos-lines {
+.videos-lines
+{
   border-top: 1px solid var(--line-strong);
   border-bottom: 1px solid var(--line);
   display: grid;
@@ -1854,7 +1859,8 @@ body.dark-mode .videos-section {
   gap: 0;
 }
 
-.video-row {
+.video-row
+{
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1868,11 +1874,13 @@ body.dark-mode .videos-section {
   cursor: pointer;
 }
 
-.video-row:last-child {
+.video-row:last-child
+{
   border-bottom: 0;
 }
 
-.row-title {
+.row-title
+{
   padding: 12px 0;
   margin-right: 5vw;
   margin-left: 5vw;
@@ -1886,11 +1894,13 @@ body.dark-mode .videos-section {
 }
 
 .video-row:hover .row-title,
-.video-row.is-active .row-title {
+.video-row.is-active .row-title
+{
   opacity: 1;
 }
 
-.row-meta {
+.row-meta
+{
   justify-self: end;
   display: grid;
   grid-auto-flow: column;
@@ -1904,8 +1914,9 @@ body.dark-mode .videos-section {
   margin-right: 5vw;
 }
 
-/* Stage overlay (desktop) */
-.videos-stage {
+/* Overlay player (desktop) */
+.videos-stage
+{
   position: absolute;
   left: 50%;
   top: 56%;
@@ -1913,11 +1924,12 @@ body.dark-mode .videos-section {
   z-index: 2;
   margin-top: 9vh;
 
-  /* IMPORTANT: stage must allow clicking the link */
+  /* Keep lines hoverable behind it */
   pointer-events: none;
 }
 
-.player-box {
+.player-box
+{
   width: min(760px, 48vw);
   aspect-ratio: 16 / 9;
   position: relative;
@@ -1925,33 +1937,34 @@ body.dark-mode .videos-section {
   box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
   overflow: hidden;
 
-  /* click is here */
+  /* Re-enable clicking for the video/link only */
   pointer-events: auto;
 }
 
-.player-link {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: block;
-}
-
-.player-poster {
+.player-preview
+{
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  opacity: 1;
-  transform: scale(1.001);
 }
 
-.player-badge {
+.player-link
+{
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: block;
+}
+
+.player-badge
+{
   position: absolute;
   right: 14px;
   bottom: 14px;
-  z-index: 3;
+  z-index: 4;
   font-family: var(--font-heading);
   text-transform: uppercase;
   letter-spacing: .02em;
@@ -1965,264 +1978,73 @@ body.dark-mode .videos-section {
   backdrop-filter: blur(10px);
 }
 
-body.dark-mode .player-badge {
+body.dark-mode .player-badge
+{
   background: rgba(0, 0, 0, .45);
   border-color: rgba(255, 255, 255, .22);
   color: #fff;
 }
 
-/* Tablet */
-@media (max-width: 1024px) {
-  .videos-stage .player-box {
-    width: min(680px, 92vw);
-  }
-
-  .video-row {
-    grid-template-columns: 1fr;
-  }
-
-  .row-meta {
-    justify-self: start;
-    opacity: .5;
-    margin-left: 5vw;
-    margin-right: 5vw;
-  }
-}
-
-/* Phone: make it functional (no overlay, preview under title) */
-@media (max-width: 760px) {
-  .videos-wrap {
-    display: grid;
-    gap: 18px;
-  }
-
-  .videos-stage {
-    position: relative;
-    left: auto;
-    top: auto;
-    transform: none;
-    pointer-events: auto;
-  }
-
-  .player-box {
-    width: calc(100% - 10vw);
-    margin-left: 5vw;
-    margin-right: 5vw;
-  }
-
-  /* Keep it clean: stage above, list below */
-  .videos-lines {
-    margin-top: 6px;
-  }
-}
-
-/* ===== VIDEO SECTION ===== */
-/* (your latest CSS) */
-
-/* ADD ONLY these changes at the end of your current CSS */
-
-/* Keep phone rows: name only, full width line */
-@media (max-width: 760px) {
-  .video-row {
-    grid-template-columns: 1fr;
-  }
-
-  .row-title {
-    margin-right: 5vw;
-    margin-left: 5vw;
-  }
-}
-
-/* Make stage clickable even though wrapper is pointer-events:none */
-.player-box {
-  pointer-events: auto;
-}
-
-/* Motion iframe sits above poster when enabled */
-.player-iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: none; /* JS turns on for desktop */
-  z-index: 1;
-}
-
-.player-poster {
-  z-index: 0;
-  transition: opacity .2s var(--ease), transform .25s var(--ease);
-}
-
-.player-link {
-  z-index: 3;
-}
-
-.player-badge {
-  z-index: 4;
-}
-
-/* Phone layout you asked for:
-   - lines left->right (name only)
-   - stage under the lines (NOT overlay)
-*/
-@media (max-width: 760px) {
-  .videos-wrap {
-    display: grid;
-    gap: 18px;
-  }
-
-  /* Put lines first */
-  .videos-lines {
-    order: 1;
-  }
-
-  /* Put stage under them */
-  .videos-stage {
-    order: 2;
-    margin-top: 0;
-  }
-
-  /* Kill overlay positioning on phone */
-  .videos-stage {
-    position: relative;
-    left: auto;
-    top: auto;
-    transform: none;
-    pointer-events: auto;
-  }
-
-  /* On phone we don’t show motion iframe (JS also disables it) */
-  .player-iframe {
-    display: none !important;
-  }
-}
-
-/* ADD THIS AT THE END of your latest CSS */
-
-/* Desktop: keep right-side meta visible */
-.row-meta {
-  display: grid;
-}
-
-/* Phone layout (matches your screenshot):
-   1) lines
-   2) dynamic title/bio
-   3) preview box
-*/
-@media (max-width: 760px) {
-  .videos-wrap {
-    display: grid;
-    gap: 18px;
-  }
-
-  .videos-lines { order: 1; }
-  .videos-head  { order: 2; }
-  .videos-stage { order: 3; }
-
-  /* Hide the right-side labels on phone */
-  .row-meta {
-    display: none !important;
-  }
-
-  /* Make rows full width, clean */
-  .video-row {
-    grid-template-columns: 1fr;
-  }
-
-  /* Your head spacing is huge on desktop; tighten on phone */
-  .videos-head {
-    margin-bottom: 0;
-  }
-
-  /* Stage becomes normal block on phone */
-  .videos-stage {
-    position: relative;
-    left: auto;
-    top: auto;
-    transform: none;
-    margin-top: 0;
-    pointer-events: auto;
-  }
-
-  .player-box {
-    width: calc(100% - 10vw);
-    margin-left: 5vw;
-    margin-right: 5vw;
-  }
-
-  /* Keep motion off on phone (clean + fast) */
-  .player-iframe {
-    display: none !important;
-  }
-
-  .player-poster {
-    opacity: 1 !important;
-  }
-}
-
-/* ADD THIS AT THE VERY END (only phone overrides, desktop stays untouched) */
-@media (max-width: 1025px)
+/* <=1024: stack layout + show meta under title */
+@media (max-width: 1024px)
 {
-  /* Order like your screenshot:
-     1) lines
-     2) title+bio
-     3) video box
-  */
   .videos-wrap
   {
     display: grid;
-    gap: 18px;
+    gap: 26px;
   }
 
   .videos-lines { order: 1; }
   .videos-head  { order: 2; }
   .videos-stage { order: 3; }
 
-  /* Hide right-side meta ONLY on phone (desktop untouched) */
-  .row-meta
-  {
-    display: none !important;
-  }
-
-  /* Ensure rows are full-width lines */
-  .video-row
-  {
-    grid-template-columns: 1fr;
-  }
-
-  /* Your desktop head has huge bottom spacing; tighten only on phone */
   .videos-head
   {
     margin-bottom: 0;
+    margin-top: 10px;
   }
 
-  /* Stage becomes normal block on phone (no overlay) */
   .videos-stage
   {
     position: relative;
     left: auto;
     top: auto;
     transform: none;
-    margin-top: 0;
+    margin-top: 18px;
     pointer-events: auto;
   }
 
   .player-box
   {
-    width: calc(100% - 10vw);
+    width: min(680px, 92vw);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .video-row
+  {
+    grid-template-columns: 1fr;
+  }
+
+  .row-title
+  {
+    padding: 14px 0 4px 0;
+  }
+
+  .row-meta
+  {
+    justify-self: start;
     margin-left: 5vw;
     margin-right: 5vw;
+    padding: 0 0 12px 0;
+    opacity: .5;
   }
+}
 
-  /* No motion iframe on phone (fast + no weirdness) */
-  .player-iframe
+@media (max-width: 760px)
+{
+  .player-box
   {
-    display: none !important;
-  }
-
-  .player-poster
-  {
-    opacity: 1 !important;
+    width: min(92vw, 680px);
   }
 }
