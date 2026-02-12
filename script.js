@@ -401,7 +401,7 @@ document.addEventListener("DOMContentLoaded", () => {
         id: "portraits",
         title: "FACES",
         description:
-          "People first\n\n Portraits, moments and snaps. \n\nSometimes on film, sometimes digital. Always about the person in front of the lens.\n\nSmall gestures say the most.",
+          "People first.\n\n Portraits, moments and snaps. \n\nSometimes on film, sometimes digital. Always about the person in front of the lens.\n\nSmall gestures say the most.",
         count: 14,
         ext: "webp",
         thumbExt: "webp",
@@ -1065,64 +1065,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 // ===== VIDEO SECTION (ONE PREVIEW VIDEO, CLICK OPENS VIMEO) =====
-document.addEventListener('DOMContentLoaded', () =>
-{
-  const lines   = document.querySelector('.videos-lines');
+document.addEventListener('DOMContentLoaded', () => {
+  const lines = document.querySelector('.videos-lines');
   const titleEl = document.querySelector('#videosTitle');
-  const bioEl   = document.querySelector('#videosBio');
+  const bioEl = document.querySelector('#videosBio');
 
-  const video   = document.querySelector('#videosPreview');
+  const video = document.querySelector('#videosPreview');
   const openBtn = document.querySelector('#videosOpen');
 
-  if (!lines || !titleEl || !bioEl || !video || !openBtn)
-  {
+  if (!lines || !titleEl || !bioEl || !video || !openBtn) {
     return;
   }
 
-  const rows   = Array.from(lines.querySelectorAll('.video-row'));
+  const rows = Array.from(lines.querySelectorAll('.video-row'));
   const bp1024 = window.matchMedia('(max-width: 1024px)');
   const isTouch = window.matchMedia('(hover: none)').matches;
 
-  function isSmall()
-  {
+  function isSmall() {
     return bp1024.matches;
   }
 
-  function sanitizeVimeoPageUrl(url)
-  {
-    if (!url)
-    {
+  function sanitizeVimeoPageUrl(url) {
+    if (!url) {
       return '';
     }
 
-    try
-    {
+    try {
       const u = new URL(url);
       return `${u.origin}${u.pathname}`;
     }
-    catch
-    {
+    catch {
       return url;
     }
   }
 
-  function setVideoSrc(src)
-  {
-    if (!src)
-    {
+  function setVideoSrc(src) {
+    if (!src) {
       return;
     }
 
     const current = video.currentSrc || '';
-    if (current.includes(src))
-    {
+    if (current.includes(src)) {
       return;
     }
 
     video.pause();
 
-    while (video.firstChild)
-    {
+    while (video.firstChild) {
       video.removeChild(video.firstChild);
     }
 
@@ -1134,83 +1123,95 @@ document.addEventListener('DOMContentLoaded', () =>
     video.load();
 
     const play = video.play();
-    if (play && typeof play.catch === 'function')
-    {
-      play.catch(() => {});
+    if (play && typeof play.catch === 'function') {
+      play.catch(() => { });
     }
   }
 
-  function setActive(row)
-  {
-    rows.forEach(r =>
-    {
+  function setParagraphs(el, raw) {
+    const text = String(raw || '');
+
+    // Support:
+    // 1) literal "\n" sequences in attributes
+    // 2) real newline characters
+    // 3) "|" separators if you ever use them
+    const normalized = text
+      .replace(/\\r\\n/g, '\n')
+      .replace(/\\n/g, '\n')
+      .replace(/\r\n/g, '\n')
+      .replace(/\r/g, '\n')
+      .replace(/\|/g, '\n\n');
+
+    const parts = normalized
+      .split(/\n\s*\n+/)
+      .map(s => s.trim())
+      .filter(Boolean);
+
+    el.innerHTML = parts.map(p => {
+      const safe = p
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      return `<p>${safe}</p>`;
+    }).join('');
+  }
+
+  function setActive(row) {
+    rows.forEach(r => {
       r.classList.toggle('is-active', r === row);
     });
 
-    const title   = row.getAttribute('data-title') || 'Video';
-    const bio     = row.getAttribute('data-bio') || '';
+    const title = row.getAttribute('data-title') || 'Video';
+    const desc = row.getAttribute('data-description') || row.getAttribute('data-bio') || '';
     const preview = row.getAttribute('data-preview') || '';
-    const vimeo   = sanitizeVimeoPageUrl(row.getAttribute('data-vimeo-url'));
+    const vimeo = sanitizeVimeoPageUrl(row.getAttribute('data-vimeo-url'));
 
     titleEl.textContent = title;
-    bioEl.textContent   = bio;
+    setParagraphs(bioEl, desc);
 
-    if (preview)
-    {
+    if (preview) {
       setVideoSrc(preview);
     }
 
-    if (vimeo)
-    {
+    if (vimeo) {
       openBtn.href = vimeo;
       openBtn.setAttribute('aria-label', `Open “${title}” on Vimeo`);
     }
   }
 
-  function maybeHoverSelect(row)
-  {
-    // Disable hover selection on <=1024 AND on touch devices
-    if (isTouch || isSmall())
-    {
+  function maybeHoverSelect(row) {
+    if (isTouch || isSmall()) {
       return;
     }
 
     setActive(row);
   }
 
-  rows.forEach(row =>
-  {
-    row.addEventListener('mouseenter', () =>
-    {
+  rows.forEach(row => {
+    row.addEventListener('mouseenter', () => {
       maybeHoverSelect(row);
     });
 
-    row.addEventListener('focus', () =>
-    {
+    row.addEventListener('focus', () => {
       setActive(row);
     });
 
-    // Click ALWAYS selects only (all breakpoints)
-    row.addEventListener('click', (e) =>
-    {
+    row.addEventListener('click', (e) => {
       e.preventDefault();
       setActive(row);
     });
   });
 
-  // When crossing <=1024 breakpoint, lock state (no hover weirdness)
-  bp1024.addEventListener('change', () =>
-  {
+  bp1024.addEventListener('change', () => {
     const active = lines.querySelector('.video-row.is-active') || rows[0];
-    if (active)
-    {
+    if (active) {
       setActive(active);
     }
   });
 
   const first = lines.querySelector('.video-row.is-active') || rows[0];
-  if (first)
-  {
+  if (first) {
     setActive(first);
   }
 });

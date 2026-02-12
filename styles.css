@@ -1832,13 +1832,14 @@ body.dark-mode .videos-section
 
 .videos-dynamic-title
 {
-  font-family: var(--font-heading);
-  text-transform: uppercase;
   letter-spacing: .02em;
   font-weight: 700;
   font-size: clamp(22px, 2.6vw, 34px);
   line-height: 1.05;
   margin-top: 8px;
+  margin-bottom: clamp(10px, 3vh, 20px);
+  font: 600 clamp(18px, 2.2vw, 28px) var(--font-heading);
+  text-transform: uppercase;
 }
 
 .videos-dynamic-bio
@@ -1846,7 +1847,7 @@ body.dark-mode .videos-section
   margin-top: 10px;
   opacity: .55;
   font-size: clamp(14px, 1.3vw, 16px);
-  line-height: 1.45;
+  line-height: 1.35;
 }
 
 /* Lines */
@@ -1922,7 +1923,7 @@ body.dark-mode .videos-section
   top: 56%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  margin-top: 9vh;
+  margin-top: 12vh;
 
   /* Keep lines hoverable behind it */
   pointer-events: none;
@@ -2047,4 +2048,13 @@ body.dark-mode .player-badge
   {
     width: min(92vw, 680px);
   }
+}
+.videos-dynamic-bio p
+{
+  margin: 0 0 10px 0;
+}
+
+.videos-dynamic-bio p:last-child
+{
+  margin-bottom: 0;
 }
