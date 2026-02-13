@@ -1808,7 +1808,8 @@ body.dark-mode .videos-section
 .videos-wrap
 {
   position: relative;
-  padding: clamp(30px, 6vh, 60px) 0;
+  padding: clamp(30px, 1vh, 60px) 0;
+  margin-bottom: 13vh;
 }
 
 /* Dynamic title block */
@@ -1817,7 +1818,10 @@ body.dark-mode .videos-section
   margin-left: 5vw;
   margin-right: 5vw;
   max-width: 72ch;
-  margin-bottom: 18vh;
+  min-height: 280px;
+  margin-bottom: 10vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .videos-kicker
@@ -1832,22 +1836,32 @@ body.dark-mode .videos-section
 
 .videos-dynamic-title
 {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
   letter-spacing: .02em;
-  font-weight: 700;
-  font-size: clamp(22px, 2.6vw, 34px);
+  font-weight: 600;
+  font-size: clamp(18px, 2.2vw, 28px);
   line-height: 1.05;
   margin-top: 8px;
   margin-bottom: clamp(10px, 3vh, 20px);
-  font: 600 clamp(18px, 2.2vw, 28px) var(--font-heading);
-  text-transform: uppercase;
 }
 
 .videos-dynamic-bio
 {
-  margin-top: 10px;
-  opacity: .55;
-  font-size: clamp(14px, 1.3vw, 16px);
+  opacity: .9;
+  font-size: inherit;
   line-height: 1.35;
+  margin-top: 10px;
+}
+
+.videos-dynamic-bio p
+{
+  margin: 0 0 10px 0;
+}
+
+.videos-dynamic-bio p:last-child
+{
+  margin-bottom: 0;
 }
 
 /* Lines */
@@ -1924,8 +1938,6 @@ body.dark-mode .videos-section
   transform: translate(-50%, -50%);
   z-index: 2;
   margin-top: 12vh;
-
-  /* Keep lines hoverable behind it */
   pointer-events: none;
 }
 
@@ -1937,8 +1949,6 @@ body.dark-mode .videos-section
   background: rgba(0, 0, 0, .06);
   box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
   overflow: hidden;
-
-  /* Re-enable clicking for the video/link only */
   pointer-events: auto;
 }
 
@@ -1986,13 +1996,15 @@ body.dark-mode .player-badge
   color: #fff;
 }
 
-/* <=1024: stack layout + show meta under title */
+/* <=1024: stack layout */
 @media (max-width: 1024px)
 {
   .videos-wrap
   {
     display: grid;
     gap: 26px;
+    margin-bottom: 4vh;
+    padding: 20px 0;
   }
 
   .videos-lines { order: 1; }
@@ -2001,8 +2013,9 @@ body.dark-mode .player-badge
 
   .videos-head
   {
-    margin-bottom: 0;
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    min-height: 0;
   }
 
   .videos-stage
@@ -2040,6 +2053,11 @@ body.dark-mode .player-badge
     padding: 0 0 12px 0;
     opacity: .5;
   }
+
+  .videos-dynamic-bio
+  {
+    margin-top: 15px;
+  }
 }
 
 @media (max-width: 760px)
@@ -2048,13 +2066,4 @@ body.dark-mode .player-badge
   {
     width: min(92vw, 680px);
   }
-}
-.videos-dynamic-bio p
-{
-  margin: 0 0 10px 0;
-}
-
-.videos-dynamic-bio p:last-child
-{
-  margin-bottom: 0;
 }
