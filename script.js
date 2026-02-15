@@ -1267,65 +1267,65 @@ document.addEventListener('DOMContentLoaded', () => {
         title: 'Insights',
         tech: 'Angular',
         description: 'Data visualisation platform. Product strategy, UX decisions and feature roadmap leadership.',
-        thumb: 'insights.jpg',
+        thumb: 'papp_t.png',
         mockup: 'insights.png'
       },
       {
         title: 'Simona Černá',
         tech: 'Webflow / HTML / CSS',
         description: 'Personal portfolio for a designer. Focus on elegance, typography and storytelling.',
-        thumb: 'simona.jpg',
+        thumb: 'simona_t.png',
         mockup: 'simona.png'
       },
       {
         title: '3D Tic Tac Toe',
         tech: 'Angular',
         description: 'Browser game experiment. 3D logic implementation and interactive state management.',
-        thumb: 'tictactoe.png',
+        thumb: 'tictactoe_t.png',
         mockup: 'tictactoe.png'
       },
       {
         title: 'Papp iOS App',
         tech: 'Swift',
         description: 'Native iOS application for mobility data. UX collaboration and product direction.',
-        thumb: 'papp-ios.png',
+        thumb: 'papp-ios_t.png',
         mockup: 'papp-ios.png'
       },
       {
         title: 'Pyntet Studio',
         tech: 'HTML / CSS / JavaScript',
         description: 'Simple handcrafted website built from scratch. Clean layout, no frameworks. Just structure, typography and control.',
-        thumb: 'pyntet.jpg',
+        thumb: 'pyntet_t.png',
         mockup: 'pyntet.png'
       },
       {
         title: 'Jeezis Portal',
         tech: 'Angular',
         description: 'Family gift exchange app. Dynamic wishlists, mission system, authentication.',
-        thumb: 'jeezis.jpg',
+        thumb: 'jeezis_t.png',
         mockup: 'jeezis.png'
       },
       {
         title: 'Loop24',
         tech: 'HTML / CSS',
         description: 'Minimal event landing page for a 24h cycling race. Fast, simple, focused.',
-        thumb: 'loop24.jpg',
+        thumb: 'loop24_t.png',
         mockup: 'loop24.png'
       },
       {
         title: 'Papp Mobility',
         tech: 'WIX Studio',
         description: 'Company website redesign. Structured messaging and product presentation.',
-        thumb: 'papp-web.png',
+        thumb: 'papp-web_t.png',
         mockup: 'papp-web.png'
-      },
-      {
+      }
+/*       {
         title: 'Countdown',
         tech: 'Swift (WIP)',
         description: 'Minimal countdown app currently in development. Clean UI, native animations.',
-        thumb: 'countdown.jpg',
-        mockup: 'countdown.jpg'
-      }
+        thumb: 'countdown_t.png',
+        mockup: 'countdown.png'
+      } */
     ];
 
   function setActive(index) {

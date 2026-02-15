@@ -1900,18 +1900,26 @@ body.dark-mode .videos-section {
   opacity: 1;
 }
 
+/* FIXED: Meta text visibility */
 .row-meta {
   justify-self: end;
   display: grid;
   grid-auto-flow: column;
   gap: clamp(10px, 3vw, 40px);
   padding: 12px 0;
-  opacity: .35;
+  margin-right: 5vw;
   font-family: var(--font-heading);
   text-transform: uppercase;
-  letter-spacing: .02em;
   font-weight: 500;
-  margin-right: 5vw;
+  color: var(--fg); /* Follows theme color */
+  opacity: .35; /* Subtle in light mode */
+  transition: opacity .2s var(--ease);
+}
+
+body.dark-mode .row-meta {
+  color: rgba(255, 255, 255, .55); /* Greyish vibe like coding section */
+  opacity: 1;
+  cursor: none;
 }
 
 /* Overlay player (desktop) */
@@ -2084,41 +2092,52 @@ body.dark-mode .player-badge {
 
 /* ================= CODING SECTION ================= */
 
-.coding-section {
+.coding-section
+{
   margin-top: 10vh;
 }
 
 /* Desktop-only extra breathing room under CODING */
-@media (min-width: 1025px) {
-  .coding-section {
+@media (min-width: 1025px)
+{
+  .coding-section
+  {
     padding-bottom: 10vh;
+  }
+
+  /* small spacer under CODING title */
+  .coding-wrap
+  {
+    margin-top: 2vh;
   }
 }
 
-.coding-wrap {
+.coding-wrap
+{
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: clamp(20px, 4vw, 60px);
   padding: 0 var(--edge);
-
-  /* make left + right end flush at the bottom */
-  align-items: stretch;
+  align-items: stretch; /* keep both sides flush */
 }
 
 /* ---------- LEFT LIST ---------- */
 
-.coding-list {
+.coding-list
+{
   display: flex;
   flex-direction: column;
   gap: 0;
   border-top: 1px solid rgba(0, 0, 0, .10);
 }
 
-body.dark-mode .coding-list {
+body.dark-mode .coding-list
+{
   border-top-color: rgba(255, 255, 255, .14);
 }
 
-.coding-item {
+.coding-item
+{
   display: grid;
   grid-template-columns: 34px 1fr 38px 20px;
   align-items: center;
@@ -2134,25 +2153,35 @@ body.dark-mode .coding-list {
   text-transform: uppercase;
   font-family: var(--font-heading);
   cursor: pointer;
+
   opacity: .55;
-  transition: opacity .2s var(--ease);
+  transition: opacity .2s var(--ease), color .2s var(--ease);
 }
 
-body.dark-mode .coding-item {
+body.dark-mode .coding-item
+{
   border-bottom-color: rgba(255, 255, 255, .14);
 }
 
 .coding-item:hover,
-.coding-item.is-active {
+.coding-item.is-active
+{
   opacity: 1;
 }
 
-.coding-num {
+.coding-num
+{
   font-size: .85rem;
   color: var(--muted);
 }
 
-.coding-item-title {
+body.dark-mode .coding-num
+{
+  color: rgba(255, 255, 255, .45); /* light grey like Video section vibe */
+}
+
+.coding-item-title
+{
   font-weight: 600;
   letter-spacing: .02em;
   overflow: hidden;
@@ -2160,185 +2189,31 @@ body.dark-mode .coding-item {
   text-overflow: ellipsis;
 }
 
-.coding-thumb {
+body.dark-mode .coding-item-title
+{
+  color: rgba(255, 255, 255, .65); /* light grey in dark mode */
+}
+
+.coding-thumb
+{
   width: 38px;
   height: 38px;
   border-radius: 6px;
   overflow: hidden;
 }
 
-.coding-thumb img {
+.coding-thumb img
+{
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-.coding-chev {
+.coding-chev
+{
   opacity: .7;
   text-align: right;
-}
-
-/* ---------- RIGHT PREVIEW ---------- */
-
-.coding-preview {
-  max-width: 700px;
-
-  /* match left side height + flush bottom edge */
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.coding-dynamic-title {
-  font-family: var(--font-heading);
-  text-transform: uppercase;
-  font-weight: 700;
-  font-size: clamp(22px, 2.4vw, 32px);
-  margin-bottom: 8px;
-}
-
-.coding-tech {
-  font-size: 14px;
-  opacity: .5;
-  margin-bottom: 18px;
-}
-
-/* mockup takes limited vertical space, never taller than the list */
-.coding-stage {
-  flex: 1 1 auto;
-  min-height: 0;
-  display: flex;
-}
-
-.coding-stage img {
-  width: 100%;
-  height: 100%;
-  max-height: 52vh;
-  /* cap vertical size */
-  object-fit: contain;
-  /* keep full mockup visible */
-  display: block;
-  border-radius: 8px;
-  margin-bottom: 18px;
-}
-
-/* reserve 2–3 lines, clamp overflow */
-.coding-dynamic-bio {
-  max-width: 60ch;
-  line-height: 1.45;
-  opacity: .85;
-
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-}
-
-/* ---------- MOBILE ---------- */
-
-.coding-mobile {
-  display: none;
-}
-
-@media (max-width: 1024px) {
-  .coding-wrap {
-    display: none;
-  }
-
-  .coding-mobile {
-    display: block;
-    padding: 0 var(--edge);
-  }
-
-  .coding-mobile-item {
-    border-top: 1px solid rgba(0, 0, 0, .1);
-  }
-
-  body.dark-mode .coding-mobile-item {
-    border-top-color: rgba(255, 255, 255, .15);
-  }
-
-  /* Header row: [num][title][thumb][chev] */
-  .coding-mobile-head {
-    display: grid;
-    grid-template-columns: 34px minmax(0, 1fr) 38px 20px;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 8px;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-family: var(--font-heading);
-    width: 100%;
-  }
-
-  .coding-mobile-num {
-    font-size: .85rem;
-    color: var(--muted);
-    width: 34px;
-  }
-
-  .coding-mobile-title {
-    font-weight: 600;
-    letter-spacing: .02em;
-    min-width: 0;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  .coding-mobile-thumb {
-    width: 38px;
-    height: 38px;
-    overflow: hidden;
-    justify-self: end;
-    border-radius: 6px;
-  }
-
-  .coding-mobile-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .coding-mobile-chev {
-    opacity: .7;
-    justify-self: end;
-    width: 20px;
-    text-align: right;
-    transform: rotate(0deg);
-    transition: transform .2s var(--ease);
-  }
-
-  .coding-mobile-item[aria-expanded="true"] .coding-mobile-chev {
-    transform: rotate(90deg);
-  }
-
-  .coding-mobile-body {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height .26s var(--ease);
-    padding: 0 8px;
-  }
-
-  .coding-mobile-tech {
-    font-size: 13px;
-    opacity: .6;
-    margin: 10px 0 12px;
-  }
-
-  .coding-mobile-body img {
-    width: 100%;
-    border-radius: 8px;
-    margin-bottom: 12px;
-    display: block;
-  }
-
-  .coding-mobile-body p {
-    margin: 0 0 14px 0;
-    line-height: 1.45;
-    opacity: .85;
-  }
 }
 
 /* ---------- RIGHT PREVIEW ---------- */
@@ -2351,35 +2226,34 @@ body.dark-mode .coding-item {
   flex-direction: column;
 }
 
-/* Title */
 .coding-dynamic-title
 {
   font-family: var(--font-heading);
   text-transform: uppercase;
   font-weight: 700;
   font-size: clamp(22px, 2.4vw, 32px);
-  margin-bottom: 8px;
+  margin: 0 0 8px 0;
 }
 
-/* Tech */
 .coding-tech
 {
   font-size: 14px;
   opacity: .5;
-  margin-bottom: 16px;
+  margin: 0 0 16px 0;
 }
 
-/* === CRITICAL FIX === */
-/* Limit mockup vertical space */
+/* Fixed px mockup box so preview height is stable (prevents right side growing) */
 .coding-stage
 {
   flex: 0 0 auto;
-  max-height: 430px;      /* HARD LIMIT */
+  height: 360px;           /* tweak: 340–420px depending on taste */
   overflow: hidden;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 18px;
+
+  margin: 0 0 16px 0;
 }
 
 .coding-stage img
@@ -2392,7 +2266,7 @@ body.dark-mode .coding-item {
   display: block;
 }
 
-/* Description stays stable */
+/* reserve 2–3 lines, clamp overflow */
 .coding-dynamic-bio
 {
   max-width: 60ch;
@@ -2401,12 +2275,123 @@ body.dark-mode .coding-item {
 
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3; 
+  -webkit-line-clamp: 3;
   overflow: hidden;
+
+  margin: 0;
+}
+
+/* ---------- MOBILE ---------- */
+
+.coding-mobile
+{
+  display: none;
 }
 
 @media (max-width: 1024px)
 {
+  .coding-wrap
+  {
+    display: none;
+  }
+
+  .coding-mobile
+  {
+    display: block;
+    padding: 0 var(--edge);
+  }
+
+  .coding-mobile-item
+  {
+    border-top: 1px solid rgba(0, 0, 0, .10);
+  }
+
+  body.dark-mode .coding-mobile-item
+  {
+    border-top-color: rgba(255, 255, 255, .15);
+  }
+
+  .coding-mobile-head
+  {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr) 38px 20px;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 8px;
+
+    cursor: pointer;
+    text-transform: uppercase;
+    font-family: var(--font-heading);
+    width: 100%;
+  }
+
+  .coding-mobile-num
+  {
+    font-size: .85rem;
+    color: var(--muted);
+    width: 34px;
+  }
+
+  body.dark-mode .coding-mobile-num
+  {
+    color: rgba(255, 255, 255, .45);
+  }
+
+  .coding-mobile-title
+  {
+    font-weight: 600;
+    letter-spacing: .02em;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  body.dark-mode .coding-mobile-title
+  {
+    color: rgba(255, 255, 255, .65);
+  }
+
+  .coding-mobile-thumb
+  {
+    width: 38px;
+    height: 38px;
+    overflow: hidden;
+    justify-self: end;
+    border-radius: 6px;
+  }
+
+  .coding-mobile-thumb img
+  {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .coding-mobile-chev
+  {
+    opacity: .7;
+    justify-self: end;
+    width: 20px;
+    text-align: right;
+    transform: rotate(0deg);
+    transition: transform .2s var(--ease);
+  }
+
+  .coding-mobile-item[aria-expanded="true"] .coding-mobile-chev
+  {
+    transform: rotate(90deg);
+  }
+
+  .coding-mobile-body
+  {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .26s var(--ease);
+    padding: 0 8px;
+  }
+
   .coding-mobile-tech
   {
     font-size: clamp(14px, 2.2vw, 16px);
@@ -2416,6 +2401,7 @@ body.dark-mode .coding-item {
 
     opacity: 1;
     margin: 10px 0 12px;
+
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -2423,14 +2409,22 @@ body.dark-mode .coding-item {
 
   .coding-mobile-body img
   {
-    width: 100%;
-    max-height: 40vh;
-    max-width: 70vw;
-    height: auto;
-    object-fit: contain;
-    border-radius: 8px;
-    margin-bottom: 12px;
     display: block;
-    margin: 0 auto 12px auto;
+    width: auto;
+    max-width: 70vw;
+    max-height: 40vh;
+    height: auto;
+
+    object-fit: contain;
+    margin: 0 auto 12px auto; /* centered */
+  }
+
+  .coding-mobile-body p
+  {
+    margin: 0 0 14px 0;
+    line-height: 1.45;
+    opacity: .85;
   }
 }
+
+.coding-stage { height: 360px; }
