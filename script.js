@@ -1268,14 +1268,14 @@ document.addEventListener('DOMContentLoaded', () => {
         tech: 'Angular',
         description: 'Data visualisation platform. Product strategy, UX decisions and feature roadmap leadership.',
         thumb: 'insights.jpg',
-        mockup: 'insights.jpg'
+        mockup: 'insights.png'
       },
       {
         title: 'Simona Černá',
         tech: 'Webflow / HTML / CSS',
         description: 'Personal portfolio for a designer. Focus on elegance, typography and storytelling.',
         thumb: 'simona.jpg',
-        mockup: 'simona.jpg'
+        mockup: 'simona.png'
       },
       {
         title: '3D Tic Tac Toe',
@@ -1288,36 +1288,36 @@ document.addEventListener('DOMContentLoaded', () => {
         title: 'Papp iOS App',
         tech: 'Swift',
         description: 'Native iOS application for mobility data. UX collaboration and product direction.',
-        thumb: 'papp-ios.jpg',
-        mockup: 'papp-ios.jpg'
+        thumb: 'papp-ios.png',
+        mockup: 'papp-ios.png'
       },
       {
         title: 'Pyntet Studio',
         tech: 'HTML / CSS / JavaScript',
         description: 'Simple handcrafted website built from scratch. Clean layout, no frameworks. Just structure, typography and control.',
         thumb: 'pyntet.jpg',
-        mockup: 'pyntet.jpg'
+        mockup: 'pyntet.png'
       },
       {
         title: 'Jeezis Portal',
         tech: 'Angular',
         description: 'Family gift exchange app. Dynamic wishlists, mission system, authentication.',
         thumb: 'jeezis.jpg',
-        mockup: 'jeezis.jpg'
+        mockup: 'jeezis.png'
       },
       {
         title: 'Loop24',
         tech: 'HTML / CSS',
         description: 'Minimal event landing page for a 24h cycling race. Fast, simple, focused.',
         thumb: 'loop24.jpg',
-        mockup: 'loop24.jpg'
+        mockup: 'loop24.png'
       },
       {
         title: 'Papp Mobility',
         tech: 'WIX Studio',
         description: 'Company website redesign. Structured messaging and product presentation.',
-        thumb: 'papp-web.jpg',
-        mockup: 'papp-web.jpg'
+        thumb: 'papp-web.png',
+        mockup: 'papp-web.png'
       },
       {
         title: 'Countdown',
