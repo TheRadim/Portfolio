@@ -547,6 +547,28 @@ body.dark-mode #scrollArrow {
   color: #f9d71c;
 }
 
+body.dark-mode .name:hover,
+body.dark-mode .name-full:hover,
+body.dark-mode .name-short:hover,
+body.dark-mode .name:hover span
+{
+  color: #f9d71c;
+}
+
+/* Dark mode – header name turns yellow on hover */
+body.dark-mode .sticky-header .name:hover,
+body.dark-mode .sticky-header .name:hover span,
+body.dark-mode .sticky-header .name-full:hover,
+body.dark-mode .sticky-header .name-short:hover
+{
+  color: #f9d71c !important;
+}
+
+.sticky-header .name
+{
+  transition: color .2s ease;
+}
+
 body.dark-mode .typewriter-container {
   opacity: 0.3;
   color: #fafafa;
@@ -1786,6 +1808,28 @@ body.dark-mode {
   }
 }
 
+/* ===== Dark mode: hide cursor on header + ribbons + video list + coding list ===== */
+body.dark-mode .sticky-header,
+body.dark-mode .sticky-header *,
+
+body.dark-mode .project-ribbon,
+body.dark-mode .project-ribbon *,
+
+body.dark-mode .videos-lines,
+body.dark-mode .videos-lines *,
+
+body.dark-mode .coding-list,
+body.dark-mode .coding-list *
+{
+  cursor: none !important;
+}
+
+body.dark-mode .mobile-list,
+body.dark-mode .mobile-list *
+{
+  cursor: none !important;
+}
+
 
 
 
@@ -2051,6 +2095,12 @@ body.dark-mode .player-badge {
   }
 }
 
+/* Dark mode – hide pointer cursor in Video section */
+body.dark-mode .videos-section .video-row
+{
+  cursor: none;
+}
+
 
 
 
@@ -2097,7 +2147,7 @@ body.dark-mode .player-badge {
   margin-top: 10vh;
 }
 
-/* Desktop-only extra breathing room under CODING */
+/* Desktop-only extra breathing room + spacer under CODING title */
 @media (min-width: 1025px)
 {
   .coding-section
@@ -2105,10 +2155,9 @@ body.dark-mode .player-badge {
     padding-bottom: 10vh;
   }
 
-  /* small spacer under CODING title */
   .coding-wrap
   {
-    margin-top: 2vh;
+    margin-top: clamp(16px, 2.5vh, 34px);
   }
 }
 
@@ -2121,6 +2170,16 @@ body.dark-mode .player-badge {
   align-items: stretch; /* keep both sides flush */
 }
 
+/* More centered feel on wide screens + flexible column gap */
+@media (min-width: 1280px)
+{
+  .coding-wrap
+  {
+    grid-template-columns: minmax(340px, 520px) minmax(560px, 700px);
+    gap: clamp(28px, 6vw, 110px);
+  }
+}
+
 /* ---------- LEFT LIST ---------- */
 
 .coding-list
@@ -2129,6 +2188,15 @@ body.dark-mode .player-badge {
   flex-direction: column;
   gap: 0;
   border-top: 1px solid rgba(0, 0, 0, .10);
+}
+
+/* Push list down to visually align with reserved description space (desktop only) */
+@media (min-width: 1025px)
+{
+  .coding-list
+  {
+    margin-top: calc(1.45em * 4);
+  }
 }
 
 body.dark-mode .coding-list
@@ -2161,6 +2229,7 @@ body.dark-mode .coding-list
 body.dark-mode .coding-item
 {
   border-bottom-color: rgba(255, 255, 255, .14);
+  cursor: none;
 }
 
 .coding-item:hover,
@@ -2177,7 +2246,7 @@ body.dark-mode .coding-item
 
 body.dark-mode .coding-num
 {
-  color: rgba(255, 255, 255, .45); /* light grey like Video section vibe */
+  color: rgba(255, 255, 255, .45);
 }
 
 .coding-item-title
@@ -2191,7 +2260,7 @@ body.dark-mode .coding-num
 
 body.dark-mode .coding-item-title
 {
-  color: rgba(255, 255, 255, .65); /* light grey in dark mode */
+  color: rgba(255, 255, 255, .65);
 }
 
 .coding-thumb
@@ -2214,6 +2283,13 @@ body.dark-mode .coding-item-title
 {
   opacity: .7;
   text-align: right;
+  color: inherit; /* allow dark-mode to affect it */
+}
+
+body.dark-mode .coding-chev
+{
+  color: rgba(255, 255, 255, .65);
+  opacity: 1;
 }
 
 /* ---------- RIGHT PREVIEW ---------- */
@@ -2242,18 +2318,25 @@ body.dark-mode .coding-item-title
   margin: 0 0 16px 0;
 }
 
-/* Fixed px mockup box so preview height is stable (prevents right side growing) */
+/* Flexible gap (so tech-to-stage space adapts to bio line count) */
+.coding-spacer
+{
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* Fixed mockup size (never grows/shrinks with text) */
 .coding-stage
 {
-  flex: 0 0 auto;
-  height: 360px;           /* tweak: 340–420px depending on taste */
+  flex: 0 0 380px;
+  height: 380px;
   overflow: hidden;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  margin: 0 0 16px 0;
+  margin: 0 0 14px 0;
 }
 
 .coding-stage img
@@ -2266,19 +2349,21 @@ body.dark-mode .coding-item-title
   display: block;
 }
 
-/* reserve 2–3 lines, clamp overflow */
+/* Reserve 4 lines + clamp to 4 */
 .coding-dynamic-bio
 {
   max-width: 60ch;
   line-height: 1.45;
   opacity: .85;
 
+  min-height: calc(1.45em * 4);
+  margin: 0;
+
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
   overflow: hidden;
-
-  margin: 0;
 }
 
 /* ---------- MOBILE ---------- */
@@ -2377,6 +2462,7 @@ body.dark-mode .coding-item-title
     text-align: right;
     transform: rotate(0deg);
     transition: transform .2s var(--ease);
+    color: inherit;
   }
 
   .coding-mobile-item[aria-expanded="true"] .coding-mobile-chev
@@ -2416,7 +2502,7 @@ body.dark-mode .coding-item-title
     height: auto;
 
     object-fit: contain;
-    margin: 0 auto 12px auto; /* centered */
+    margin: 0 auto 12px auto;
   }
 
   .coding-mobile-body p
@@ -2427,4 +2513,20 @@ body.dark-mode .coding-item-title
   }
 }
 
-.coding-stage { height: 360px; }
+/* Center the CODING grid within the container */
+.coding-wrap
+{
+  justify-content: center;     /* centers the grid tracks (your two columns) */
+  width: 100%;
+}
+
+/* Optional: prevent the section from feeling too wide on huge screens */
+@media (min-width: 1280px)
+{
+  .coding-wrap
+  {
+    max-width: 1400px;         /* tweak: 1320–1500 */
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
