@@ -1251,267 +1251,174 @@ document.addEventListener('DOMContentLoaded', () => {
   const list = document.querySelector('.coding-list');
   const preview = document.querySelector('.coding-preview');
   const mobile = document.querySelector('.coding-mobile');
+  const infoMsg = document.getElementById('codingInfoMessage');
 
-  if (!list || !preview || !mobile) {
-    return;
+  if (!list || !preview || !mobile) return;
+
+  const projects = [
+    {
+      title: 'Insights',
+      tech: 'Angular',
+      description: 'Data visualisation platform. Product strategy, UX decisions and feature roadmap leadership.',
+      thumb: 'papp_t_s.png',
+      mockup: 'insights.png',
+      private: true
+    },
+    {
+      title: 'Simona Černá',
+      tech: 'Webflow / HTML / CSS',
+      description: 'Personal portfolio for a designer. Focus on elegance, typography and storytelling.',
+      thumb: 'simona_t_s.png',
+      mockup: 'simona.png',
+      link: 'https://simona-cerna.com'
+    },
+    {
+      title: '3D Tic Tac Toe',
+      tech: 'Angular',
+      description: 'Browser game experiment. 3D logic implementation and interactive state management.',
+      thumb: 'tictactoe_t.png',
+      mockup: 'tictactoe.png',
+      link: 'https://threedttt.web.app/'
+    },
+    {
+      title: 'Papp iOS App',
+      tech: 'Swift',
+      description: 'Native iOS application for mobility data. UX collaboration and product direction.',
+      thumb: 'papp-ios_t_s.png',
+      mockup: 'papp-ios.png',
+      link: 'https://apps.apple.com/dk/app/papp-mobility/id1600485051'
+    },
+    {
+      title: 'Pyntet Studio',
+      tech: 'HTML / CSS / JavaScript',
+      description: 'Simple handcrafted website built from scratch.',
+      thumb: 'pyntet_t_s.png',
+      mockup: 'pyntet.png',
+      link: 'https://simona-cerna.com/pyntet'
+    },
+    {
+      title: 'Jeezis Portal',
+      tech: 'Angular',
+      description: 'Family gift exchange app.',
+      thumb: 'jeezis_t_s.png',
+      mockup: 'jeezis.png',
+      private: true
+    },
+    {
+      title: 'Loop24',
+      tech: 'HTML / CSS',
+      description: 'Minimal event landing page for a 24h cycling race.',
+      thumb: 'loop24_t_s.png',
+      mockup: 'loop24.png',
+      link: 'https://loop24.cz/'
+    },
+    {
+      title: 'Papp Mobility',
+      tech: 'WIX Studio',
+      description: 'Company website redesign.',
+      thumb: 'papp-web_t_s.png',
+      mockup: 'papp-web.png',
+      link: 'https://www.pappmobility.com/'
+    }
+  ];
+
+  // Helper to show the subtle overlay message
+  function showInfoMessage() {
+    infoMsg.classList.remove('hidden');
+    setTimeout(() => infoMsg.classList.add('show'), 10);
+
+    // Auto-hide after 3 seconds
+    setTimeout(() => {
+      infoMsg.classList.remove('show');
+      setTimeout(() => infoMsg.classList.add('hidden'), 400);
+    }, 3000);
   }
 
-  const titleEl = document.getElementById('codingTitle');
-  const techEl = document.getElementById('codingTech');
-  const descEl = document.getElementById('codingBio');
-  const imgEl = document.getElementById('codingImage');
-
-  const projects =
-    [
-      {
-        title: 'Insights',
-        tech: 'Angular',
-        description: 'Data visualisation platform. Product strategy, UX decisions and feature roadmap leadership.',
-        thumb: 'papp_t_s.png',
-        mockup: 'insights.png',
-        private: true
-      },
-      {
-        title: 'Simona Černá',
-        tech: 'Webflow / HTML / CSS',
-        description: 'Personal portfolio for a designer. Focus on elegance, typography and storytelling.',
-        thumb: 'simona_t_s.png',
-        mockup: 'simona.png',
-        link: 'https://simona-cerna.com'
-      },
-      {
-        title: '3D Tic Tac Toe',
-        tech: 'Angular',
-        description: 'Browser game experiment. 3D logic implementation and interactive state management.',
-        thumb: 'tictactoe_t.png',
-        mockup: 'tictactoe.png',
-        link: 'https://threedttt.web.app/'
-      },
-      {
-        title: 'Papp iOS App',
-        tech: 'Swift',
-        description: 'Native iOS application for mobility data. UX collaboration and product direction.',
-        thumb: 'papp-ios_t_s.png',
-        mockup: 'papp-ios.png',
-        link: 'https://apps.apple.com/dk/app/papp-mobility/id1600485051'
-      },
-      {
-        title: 'Pyntet Studio',
-        tech: 'HTML / CSS / JavaScript',
-        description: 'Simple handcrafted website built from scratch.',
-        thumb: 'pyntet_t_s.png',
-        mockup: 'pyntet.png',
-        link: 'https://simona-cerna.com/pyntet'
-      },
-      {
-        title: 'Jeezis Portal',
-        tech: 'Angular',
-        description: 'Family gift exchange app.',
-        thumb: 'jeezis_t_s.png',
-        mockup: 'jeezis.png',
-        private: true
-      },
-      {
-        title: 'Loop24',
-        tech: 'HTML / CSS',
-        description: 'Minimal event landing page for a 24h cycling race.',
-        thumb: 'loop24_t_s.png',
-        mockup: 'loop24.png',
-        link: 'https://loop24.cz/'
-      },
-      {
-        title: 'Papp Mobility',
-        tech: 'WIX Studio',
-        description: 'Company website redesign.',
-        thumb: 'papp-web_t_s.png',
-        mockup: 'papp-web.png',
-        link: 'https://www.pappmobility.com/'
-      }
-      /*       {
-              title: 'Countdown',
-              tech: 'Swift (WIP)',
-              description: 'Minimal countdown app currently in development. Clean UI, native animations.',
-              thumb: 'countdown_t.png',
-              mockup: 'countdown.png'
-            } */
-    ];
+  function handleProjectClick(project) {
+    if (project.private) {
+      showInfoMessage();
+    } else if (project.link) {
+      window.open(project.link, '_blank', 'noopener');
+    }
+  }
 
   function setActive(index) {
     const project = projects[index];
+    document.getElementById('codingTitle').textContent = project.title;
+    document.getElementById('codingTech').textContent = project.tech;
+    document.getElementById('codingBio').textContent = project.description;
 
-    titleEl.textContent = project.title;
-    techEl.textContent = project.tech;
-    descEl.textContent = project.description;
-
+    const imgEl = document.getElementById('codingImage');
     imgEl.src = `assets/coding/projects/${project.mockup}`;
     imgEl.alt = project.title;
 
     list.querySelectorAll('.coding-item').forEach((el, i) => {
-      const active = i === index;
-      el.classList.toggle('is-active', active);
-      el.setAttribute('aria-current', active ? 'true' : 'false');
+      el.classList.toggle('is-active', i === index);
     });
 
+    // Update desktop stage click
     const stage = document.querySelector('.coding-stage');
-
-    stage.style.cursor = 'pointer';
-
-    stage.onclick = () => {
-      if (project.private) {
-        alert('This is a private project.\n\nDrop me a message if you would like to get access or know more.');
-        return;
-      }
-
-      if (project.link) {
-        window.open(project.link, '_blank', 'noopener');
-      }
-    };
+    stage.onclick = () => handleProjectClick(project);
   }
 
-  function z2(n) {
-    return n < 10 ? `0${n}` : String(n);
-  }
-
-  // Desktop list
+  // Generate Desktop List
   projects.forEach((p, i) => {
     const btn = document.createElement('button');
     btn.className = 'coding-item';
-    btn.type = 'button';
-    btn.setAttribute('role', 'listitem');
-    btn.setAttribute('aria-current', i === 0 ? 'true' : 'false');
-
-    const num = document.createElement('div');
-    num.className = 'coding-num';
-    num.textContent = z2(i + 1);
-
-    const title = document.createElement('div');
-    title.className = 'coding-item-title';
-    title.textContent = p.title;
-
-    const thumb = document.createElement('div');
-    thumb.className = 'coding-thumb';
-
-    const img = new Image();
-    img.src = `assets/coding/thumbs/${p.thumb}`;
-    img.alt = '';
-    img.loading = 'lazy';
-    img.decoding = 'async';
-
-    thumb.appendChild(img);
-
-    const chev = document.createElement('div');
-    chev.className = 'coding-chev';
-    chev.textContent = '›';
-
-    btn.appendChild(num);
-    btn.appendChild(title);
-    btn.appendChild(thumb);
-    btn.appendChild(chev);
-
+    btn.innerHTML = `
+      <div class="coding-num">${(i + 1).toString().padStart(2, '0')}</div>
+      <div class="coding-item-title">${p.title}</div>
+      <div class="coding-thumb"><img src="assets/coding/thumbs/${p.thumb}" alt=""></div>
+      <div class="coding-chev">›</div>
+    `;
     btn.addEventListener('mouseenter', () => setActive(i));
     btn.addEventListener('click', () => setActive(i));
-
     list.appendChild(btn);
   });
 
-  // Mobile
-  // Mobile (PHOTO-mobile accordion behavior: one open at a time + smooth close/open)
-  mobile.innerHTML = "";
-
+  // Generate Mobile Accordion
   projects.forEach((p, i) => {
     const item = document.createElement("div");
     item.className = "coding-mobile-item";
-    item.setAttribute("role", "listitem");
-    item.setAttribute("aria-expanded", "false");
+    item.innerHTML = `
+      <div class="coding-mobile-head">
+        <div class="coding-mobile-num">${(i + 1).toString().padStart(2, '0')}</div>
+        <div class="coding-mobile-title">${p.title}</div>
+        <div class="coding-mobile-thumb"><img src="assets/coding/thumbs/${p.thumb}" alt=""></div>
+        <div class="coding-mobile-chev">›</div>
+      </div>
+      <div class="coding-mobile-body">
+        <div class="coding-mobile-tech">${p.tech}</div>
+        <img src="assets/coding/projects/${p.mockup}" alt="${p.title}" class="mobile-mockup-trigger">
+        <p>${p.description}</p>
+      </div>
+    `;
 
-    const head = document.createElement("div");
-    head.className = "coding-mobile-head";
+    // Make mobile image clickable
+    const mobileImg = item.querySelector('.mobile-mockup-trigger');
+    mobileImg.addEventListener('click', (e) => {
+      e.stopPropagation(); // Don't close the accordion when clicking image
+      handleProjectClick(p);
+    });
 
-    const num = document.createElement("div");
-    num.className = "coding-mobile-num";
-    num.textContent = z2(i + 1);
-
-    const title = document.createElement("div");
-    title.className = "coding-mobile-title";
-    title.textContent = p.title;
-
-    const thumb = document.createElement("div");
-    thumb.className = "coding-mobile-thumb";
-
-    const timg = new Image();
-    timg.alt = "";
-    timg.decoding = "async";
-    timg.loading = "lazy";
-    timg.src = `assets/coding/thumbs/${p.thumb}`;
-    thumb.appendChild(timg);
-
-    const chev = document.createElement("div");
-    chev.className = "coding-mobile-chev";
-    chev.textContent = "›";
-
-    head.appendChild(num);
-    head.appendChild(title);
-    head.appendChild(thumb);
-    head.appendChild(chev);
-
-    const body = document.createElement("div");
-    body.className = "coding-mobile-body";
-
-    const tech = document.createElement("div");
-    tech.className = "coding-mobile-tech";
-    tech.textContent = p.tech;
-
-    const img = new Image();
-    img.src = `assets/coding/projects/${p.mockup}`;
-    img.alt = p.title;
-    img.decoding = "async";
-    img.loading = "lazy";
-
-    const desc = document.createElement("p");
-    desc.textContent = p.description;
-
-    body.appendChild(tech);
-    body.appendChild(img);
-    body.appendChild(desc);
-
-    item.appendChild(head);
-    item.appendChild(body);
-    mobile.appendChild(item);
-
-    function animateOpen(target) {
-      const b = target.querySelector(".coding-mobile-body");
-      target.setAttribute("aria-expanded", "true");
-      b.style.maxHeight = "0px";
-      const h = b.scrollHeight;
-      requestAnimationFrame(() => {
-        b.style.maxHeight = `${h}px`;
-      });
-    }
-
-    function animateClose(target) {
-      const b = target.querySelector(".coding-mobile-body");
-      const h = b.scrollHeight;
-      b.style.maxHeight = `${h}px`;
-      requestAnimationFrame(() => {
-        b.style.maxHeight = "0px";
-      });
-      target.setAttribute("aria-expanded", "false");
-    }
-
+    const head = item.querySelector(".coding-mobile-head");
     head.addEventListener("click", () => {
-      const open = mobile.querySelector('.coding-mobile-item[aria-expanded="true"]');
+      const isExpanded = item.getAttribute("aria-expanded") === "true";
 
-      if (open && open !== item) {
-        animateClose(open);
-      }
+      // Close others
+      mobile.querySelectorAll('.coding-mobile-item').forEach(other => {
+        other.setAttribute("aria-expanded", "false");
+        other.querySelector(".coding-mobile-body").style.maxHeight = null;
+      });
 
-      if (item.getAttribute("aria-expanded") === "true") {
-        animateClose(item);
-      }
-      else {
-        animateOpen(item);
+      if (!isExpanded) {
+        item.setAttribute("aria-expanded", "true");
+        const body = item.querySelector(".coding-mobile-body");
+        body.style.maxHeight = body.scrollHeight + "px";
       }
     });
+
+    mobile.appendChild(item);
   });
 
   setActive(0);
