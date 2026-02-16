@@ -2656,7 +2656,7 @@ body.dark-mode .coding-popup-close:hover {
 
 .coding-info-message {
   position: fixed;
-  bottom: 40px;
+  bottom: 40vh;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
   z-index: 10000;
