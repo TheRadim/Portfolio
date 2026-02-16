@@ -1267,14 +1267,14 @@ document.addEventListener('DOMContentLoaded', () => {
         title: 'Insights',
         tech: 'Angular',
         description: 'Data visualisation platform. Product strategy, UX decisions and feature roadmap leadership.',
-        thumb: 'papp_t.png',
+        thumb: 'papp_t_s.png',
         mockup: 'insights.png'
       },
       {
         title: 'Simona Černá',
         tech: 'Webflow / HTML / CSS',
         description: 'Personal portfolio for a designer. Focus on elegance, typography and storytelling.',
-        thumb: 'simona_t.png',
+        thumb: 'simona_t_s.png',
         mockup: 'simona.png'
       },
       {
@@ -1288,35 +1288,35 @@ document.addEventListener('DOMContentLoaded', () => {
         title: 'Papp iOS App',
         tech: 'Swift',
         description: 'Native iOS application for mobility data. UX collaboration and product direction.',
-        thumb: 'papp-ios_t.png',
+        thumb: 'papp-ios_t_s.png',
         mockup: 'papp-ios.png'
       },
       {
         title: 'Pyntet Studio',
         tech: 'HTML / CSS / JavaScript',
         description: 'Simple handcrafted website built from scratch. Clean layout, no frameworks. Just structure, typography and control.',
-        thumb: 'pyntet_t.png',
+        thumb: 'pyntet_t_s.png',
         mockup: 'pyntet.png'
       },
       {
         title: 'Jeezis Portal',
         tech: 'Angular',
         description: 'Family gift exchange app. Dynamic wishlists, mission system, authentication.',
-        thumb: 'jeezis_t.png',
+        thumb: 'jeezis_t_s.png',
         mockup: 'jeezis.png'
       },
       {
         title: 'Loop24',
         tech: 'HTML / CSS',
         description: 'Minimal event landing page for a 24h cycling race. Fast, simple, focused.',
-        thumb: 'loop24_t.png',
+        thumb: 'loop24_t_s.png',
         mockup: 'loop24.png'
       },
       {
         title: 'Papp Mobility',
         tech: 'WIX Studio',
         description: 'Company website redesign. Structured messaging and product presentation.',
-        thumb: 'papp-web_t.png',
+        thumb: 'papp-web_t_s.png',
         mockup: 'papp-web.png'
       }
 /*       {

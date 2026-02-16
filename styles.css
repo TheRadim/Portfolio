@@ -2530,3 +2530,23 @@ body.dark-mode .coding-chev
     margin-right: auto;
   }
 }
+
+/* Coding list icons – default light mode */
+.coding-thumb img
+{
+  filter: grayscale(100%) brightness(0.2) contrast(1.1);
+  transition: filter .2s var(--ease);
+}
+
+/* Coding list icons – dark mode default */
+body.dark-mode .coding-thumb img
+{
+  filter: grayscale(100%) brightness(1.8) contrast(1.1);
+}
+
+/* Restore original color on hover or active */
+.coding-item:hover .coding-thumb img,
+.coding-item.is-active .coding-thumb img
+{
+  filter: none;
+}
