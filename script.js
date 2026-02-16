@@ -1268,64 +1268,72 @@ document.addEventListener('DOMContentLoaded', () => {
         tech: 'Angular',
         description: 'Data visualisation platform. Product strategy, UX decisions and feature roadmap leadership.',
         thumb: 'papp_t_s.png',
-        mockup: 'insights.png'
+        mockup: 'insights.png',
+        private: true
       },
       {
         title: 'Simona Černá',
         tech: 'Webflow / HTML / CSS',
         description: 'Personal portfolio for a designer. Focus on elegance, typography and storytelling.',
         thumb: 'simona_t_s.png',
-        mockup: 'simona.png'
+        mockup: 'simona.png',
+        link: 'https://simona-cerna.com'
       },
       {
         title: '3D Tic Tac Toe',
         tech: 'Angular',
         description: 'Browser game experiment. 3D logic implementation and interactive state management.',
         thumb: 'tictactoe_t.png',
-        mockup: 'tictactoe.png'
+        mockup: 'tictactoe.png',
+        link: 'https://threedttt.web.app/'
       },
       {
         title: 'Papp iOS App',
         tech: 'Swift',
         description: 'Native iOS application for mobility data. UX collaboration and product direction.',
         thumb: 'papp-ios_t_s.png',
-        mockup: 'papp-ios.png'
+        mockup: 'papp-ios.png',
+        link: 'https://apps.apple.com/dk/app/papp-mobility/id1600485051'
       },
       {
         title: 'Pyntet Studio',
         tech: 'HTML / CSS / JavaScript',
-        description: 'Simple handcrafted website built from scratch. Clean layout, no frameworks. Just structure, typography and control.',
+        description: 'Simple handcrafted website built from scratch.',
         thumb: 'pyntet_t_s.png',
-        mockup: 'pyntet.png'
+        mockup: 'pyntet.png',
+        link: 'https://simona-cerna.com/pyntet'
       },
       {
         title: 'Jeezis Portal',
         tech: 'Angular',
-        description: 'Family gift exchange app. Dynamic wishlists, mission system, authentication.',
+        description: 'Family gift exchange app.',
         thumb: 'jeezis_t_s.png',
-        mockup: 'jeezis.png'
+        mockup: 'jeezis.png',
+        private: true
       },
       {
         title: 'Loop24',
         tech: 'HTML / CSS',
-        description: 'Minimal event landing page for a 24h cycling race. Fast, simple, focused.',
+        description: 'Minimal event landing page for a 24h cycling race.',
         thumb: 'loop24_t_s.png',
-        mockup: 'loop24.png'
+        mockup: 'loop24.png',
+        link: 'https://loop24.cz/'
       },
       {
         title: 'Papp Mobility',
         tech: 'WIX Studio',
-        description: 'Company website redesign. Structured messaging and product presentation.',
+        description: 'Company website redesign.',
         thumb: 'papp-web_t_s.png',
-        mockup: 'papp-web.png'
+        mockup: 'papp-web.png',
+        link: 'https://www.pappmobility.com/'
       }
-/*       {
-        title: 'Countdown',
-        tech: 'Swift (WIP)',
-        description: 'Minimal countdown app currently in development. Clean UI, native animations.',
-        thumb: 'countdown_t.png',
-        mockup: 'countdown.png'
-      } */
+      /*       {
+              title: 'Countdown',
+              tech: 'Swift (WIP)',
+              description: 'Minimal countdown app currently in development. Clean UI, native animations.',
+              thumb: 'countdown_t.png',
+              mockup: 'countdown.png'
+            } */
     ];
 
   function setActive(index) {
@@ -1343,6 +1351,21 @@ document.addEventListener('DOMContentLoaded', () => {
       el.classList.toggle('is-active', active);
       el.setAttribute('aria-current', active ? 'true' : 'false');
     });
+
+    const stage = document.querySelector('.coding-stage');
+
+    stage.style.cursor = 'pointer';
+
+    stage.onclick = () => {
+      if (project.private) {
+        alert('This is a private project.\n\nDrop me a message if you would like to get access or know more.');
+        return;
+      }
+
+      if (project.link) {
+        window.open(project.link, '_blank', 'noopener');
+      }
+    };
   }
 
   function z2(n) {
