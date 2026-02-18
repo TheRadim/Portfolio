@@ -51,11 +51,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   contactBtn?.addEventListener('click', (e) => {
+    // IMPORTANT: prevents the global "# hash" click handler from scrolling to top
     e.preventDefault();
+    e.stopPropagation();
+
     overlay?.classList.remove('hidden');
   });
 
-  closeBtn?.addEventListener('click', closeOverlay);
+  closeBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    closeOverlay();
+  });
 
   overlay?.addEventListener('click', (e) => {
     if (!e.target.closest('.contact-box')) {
@@ -106,6 +113,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function scrollToPhotoSection() {
     scrollToSectionTopWithGap(photoSection);
   }
+
+  // Expose for other scripts if needed
+  window.scrollToPhotoSection = scrollToPhotoSection;
 
   arrow?.addEventListener('click', (e) => {
     e.preventDefault();
@@ -169,6 +179,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const a = e.target.closest('a[href^="#"]');
 
     if (!a) {
+      return;
+    }
+
+    // If the click came from the Contact link, its own handler already ran.
+    // This guard keeps things safe even if the DOM changes later.
+    if (a.id === 'openContact') {
       return;
     }
 
