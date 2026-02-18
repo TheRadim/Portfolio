@@ -10,6 +10,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const cursorFlash = document.getElementById('cursorFlashlight');
   const biker = document.getElementById('bikerCircle');
 
+  const headerEl = document.querySelector('.sticky-header');
+
+  function getHeaderH() {
+    return headerEl?.offsetHeight || 60;
+  }
+
+  function getRemPx() {
+    const root = getComputedStyle(document.documentElement).fontSize;
+    const px = parseFloat(root);
+    return Number.isFinite(px) ? px : 16;
+  }
+
   // Theme from storage
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark-mode');
@@ -25,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   themeToggle?.addEventListener('click', toggleTheme);
+
   themeToggle?.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -43,69 +56,148 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   closeBtn?.addEventListener('click', closeOverlay);
+
   overlay?.addEventListener('click', (e) => {
     if (!e.target.closest('.contact-box')) {
       closeOverlay();
     }
   });
+
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeOverlay();
     }
   });
 
-  // Smooth scroll helper (same feel as in reference)
   function smoothScrollTo(targetY, duration = 900) {
     const startY = window.scrollY;
     const distance = targetY - startY;
     const start = performance.now();
 
-    function ease(t) { return -(Math.cos(Math.PI * t) - 1) / 2; }
+    function ease(t) {
+      return -(Math.cos(Math.PI * t) - 1) / 2;
+    }
 
     function step(now) {
       const p = Math.min((now - start) / duration, 1);
       window.scrollTo(0, startY + distance * ease(p));
-      if (p < 1) requestAnimationFrame(step);
+
+      if (p < 1) {
+        requestAnimationFrame(step);
+      }
     }
+
     requestAnimationFrame(step);
   }
 
-  // Arrow → scroll to PHOTOS (keep the title visible)
+  function scrollToSectionTopWithGap(sectionEl) {
+    if (!sectionEl) {
+      return;
+    }
+
+    const headerH = getHeaderH();
+    const gap = getRemPx(); // 1rem
+
+    const y = sectionEl.getBoundingClientRect().top + window.scrollY - headerH - gap;
+    smoothScrollTo(Math.max(0, y), 900);
+  }
+
+  // HERO arrow → PHOTOS (title ends up 1rem below header)
   function scrollToPhotoSection() {
-    const headerH = (document.querySelector('.sticky-header')?.offsetHeight) || 60;
-    const keepTitle = 20;
-    const top = (photoSection?.offsetTop || 0) - headerH - keepTitle;
+    scrollToSectionTopWithGap(photoSection);
+  }
+
+  arrow?.addEventListener('click', (e) => {
+    e.preventDefault();
+    scrollToPhotoSection();
+  });
+
+  function scrollToNextSection(fromEl) {
+    const currentSection = fromEl.closest('section.section') || document.getElementById('intro');
+
+    if (!currentSection) {
+      return;
+    }
+
+    const sections = Array.from(document.querySelectorAll('section.section'));
+    const idx = sections.indexOf(currentSection);
+
+    let next = null;
+
+    if (idx >= 0 && idx < sections.length - 1) {
+      next = sections[idx + 1];
+    }
+    else {
+      next = document.getElementById('footer');
+    }
+
+    if (!next) {
+      return;
+    }
+
+    const headerH = getHeaderH();
+    const gap = getRemPx(); // 1rem
+    const top = next.getBoundingClientRect().top + window.scrollY - headerH - gap;
+
     smoothScrollTo(Math.max(0, top), 900);
   }
-  arrow?.addEventListener('click', scrollToPhotoSection);
+
+  // Section arrows (next / top)
+  document.querySelectorAll('[data-scroll]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      const mode = el.getAttribute('data-scroll');
+
+      if (mode === 'next') {
+        if (window.matchMedia('(max-width: 1024px)').matches) {
+          return;
+        }
+
+        e.preventDefault();
+        scrollToNextSection(el);
+        return;
+      }
+
+      if (mode === 'top') {
+        e.preventDefault();
+        smoothScrollTo(0, 900);
+      }
+    });
+  });
 
   // Intercept ALL hash links (footer "TO THE TOP", THE RAD, etc.) and smooth scroll
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href^="#"]');
-    if (!a) return;
+
+    if (!a) {
+      return;
+    }
 
     const hash = a.getAttribute('href');
-    const headerH = (document.querySelector('.sticky-header')?.offsetHeight) || 60;
 
-    // Top shortcuts
     if (hash === '#' || hash === '#top') {
       e.preventDefault();
       smoothScrollTo(0, 900);
       return;
     }
 
-    // Scroll to target id with header offset
     const target = document.querySelector(hash);
+
     if (target) {
       e.preventDefault();
-      const y = target.getBoundingClientRect().top + window.scrollY - headerH - 10;
-      smoothScrollTo(y, 900);
+
+      const headerH = getHeaderH();
+      const gap = getRemPx(); // 1rem
+
+      const y = target.getBoundingClientRect().top + window.scrollY - headerH - gap;
+      smoothScrollTo(Math.max(0, y), 900);
     }
   });
 
   // Biker starts inside (3vh from right)
   function placeBikerInitial() {
-    if (!biker) return;
+    if (!biker) {
+      return;
+    }
 
     const vh = window.innerHeight;
     const bikerW = 100;
@@ -115,6 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     biker.style.top = `${Math.max(vh * 0.4, 150)}px`;
     biker.style.opacity = '1';
   }
+
   placeBikerInitial();
   window.addEventListener('resize', placeBikerInitial);
 
@@ -143,8 +236,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Fancy cursor in dark mode
   document.addEventListener('mousemove', (e) => {
-    if (!document.body.classList.contains('dark-mode')) return;
-    if (!cursorOrb || !cursorFlash) return;
+    if (!document.body.classList.contains('dark-mode')) {
+      return;
+    }
+
+    if (!cursorOrb || !cursorFlash) {
+      return;
+    }
 
     cursorOrb.style.left = `${e.clientX - 6}px`;
     cursorOrb.style.top = `${e.clientY - 10}px`;
@@ -156,7 +254,10 @@ document.addEventListener('DOMContentLoaded', () => {
 // ========== TYPEWRITER ==========
 document.addEventListener('DOMContentLoaded', () => {
   const node = document.getElementById('typewriterText');
-  if (!node) return;
+
+  if (!node) {
+    return;
+  }
 
   const phrases =
     [
@@ -1259,7 +1360,8 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       title: 'Insights',
       tech: 'Angular',
-      description: 'Data visualisation platform. Product strategy, UX decisions and feature roadmap leadership.',
+      description:
+        'Mobility data, maps, charts, lots of decisions.\n\nPart product brain, part UI builder. Turning messy real-world data into something you can actually understand and use.',
       thumb: 'papp_t_s.png',
       mockup: 'insights.png',
       private: true
@@ -1267,7 +1369,8 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       title: 'Simona Černá',
       tech: 'Webflow / HTML / CSS',
-      description: 'Personal portfolio for a designer. Focus on elegance, typography and storytelling.',
+      description:
+        'A digital home for a designer.\n\nSoft typography, clean layout, letting the work breathe. Built to feel calm, intentional, and a little poetic.',
       thumb: 'simona_t_s.png',
       mockup: 'simona.png',
       link: 'https://simona-cerna.com'
@@ -1275,7 +1378,8 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       title: '3D Tic Tac Toe',
       tech: 'Angular',
-      description: 'Browser game experiment. 3D logic implementation and interactive state management.',
+      description:
+        'Classic game, but make it 3D.\n\nA small coding playground where logic gets layered and your brain starts spinning a bit. Built for fun, stayed for the challenge.',
       thumb: 'tictactoe_t.png',
       mockup: 'tictactoe.png',
       link: 'https://threedttt.web.app/'
@@ -1283,7 +1387,8 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       title: 'Papp iOS App',
       tech: 'Swift',
-      description: 'Native iOS application for mobility data. UX collaboration and product direction.',
+      description:
+        'Mobility data, now in your pocket.\n\nNative iOS app built around clarity and speed, making complex data feel simple.',
       thumb: 'papp-ios_t_s.png',
       mockup: 'papp-ios.png',
       link: 'https://apps.apple.com/dk/app/papp-mobility/id1600485051'
@@ -1291,7 +1396,8 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       title: 'Pyntet Studio',
       tech: 'HTML / CSS / JavaScript',
-      description: 'Simple handcrafted website built from scratch.',
+      description:
+        'Handcoded from scratch.\n\nNo templates, no shortcuts. Just clean HTML, custom CSS, and a site built to match the quiet elegance of the brand.',
       thumb: 'pyntet_t_s.png',
       mockup: 'pyntet.png',
       link: 'https://simona-cerna.com/pyntet'
@@ -1299,7 +1405,8 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       title: 'Jeezis Portal',
       tech: 'Angular',
-      description: 'Family gift exchange app.',
+      description:
+        'Family chaos, but organized.\n\nA private gift-exchange app to keep Christmas civil. Logic, secrets, and a bit of fun behind the scenes.',
       thumb: 'jeezis_t_s.png',
       mockup: 'jeezis.png',
       private: true
@@ -1307,7 +1414,8 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       title: 'Loop24',
       tech: 'HTML / CSS',
-      description: 'Minimal event landing page for a 24h cycling race.',
+      description:
+        '24 hours. Bikes. No sleep.\n\nMinimal web page for a cycling race. Straight to the point, built fast, focused on atmosphere and clarity.',
       thumb: 'loop24_t_s.png',
       mockup: 'loop24.png',
       link: 'https://loop24.cz/'
@@ -1315,7 +1423,8 @@ document.addEventListener('DOMContentLoaded', () => {
     {
       title: 'Papp Mobility',
       tech: 'WIX Studio',
-      description: 'Company website redesign.',
+      description:
+        'Company website refresh.\n\nClean structure, sharper message, less noise. Turning a growing startup into something that feels solid and ready.',
       thumb: 'papp-web_t_s.png',
       mockup: 'papp-web.png',
       link: 'https://www.pappmobility.com/'

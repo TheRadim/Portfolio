@@ -45,10 +45,15 @@
   <div class="container">
     <div id="bikerCircle" class="biker-placeholder" aria-hidden="true"></div>
 
+    <!-- HERO ARROW (make it the same element/type as the others) -->
     <div class="arrow-wrapper">
-      <div id="scrollArrow">↓<div class="scroll-text">scroll down</div>
-      </div>
+      <button id="scrollArrow" class="section-scroll-arrow section-scroll-arrow--hero section-scroll-arrow--section"
+        type="button" data-scroll="next" aria-label="Scroll to next section">
+        ↓
+        <span class="scroll-text">scroll down</span>
+      </button>
     </div>
+
 
     <section id="intro" class="section intro-section">
       <h1 class="hero-headline" id="heroHeadline">Hi, I’m Radim. I create.</h1>
@@ -95,6 +100,13 @@
 
         <div class="mobile-list" role="list" aria-label="Projects (mobile)"></div>
       </div>
+
+      <!-- DESKTOP SECTION ARROW -->
+      <button class="section-scroll-arrow section-scroll-arrow--section" type="button" data-scroll="next"
+        aria-label="Scroll to next section">
+        ↓
+        <span class="scroll-text">scroll down</span>
+      </button>
     </section>
 
     <!-- Lightbox (single instance) -->
@@ -173,8 +185,14 @@
           </button>
         </div>
       </div>
-    </section>
 
+      <!-- DESKTOP SECTION ARROW -->
+      <button class="section-scroll-arrow section-scroll-arrow--section" type="button" data-scroll="next"
+        aria-label="Scroll to next section">
+        ↓
+        <span class="scroll-text">scroll down</span>
+      </button>
+    </section>
 
     <section id="coding" class="section coding-section">
       <h2 class="section-title">CODING</h2>
@@ -202,18 +220,30 @@
           <div class="coding-dynamic-bio" id="codingBio">
             Mobility analytics dashboard.
           </div>
-
         </div>
-
       </div>
 
       <!-- Mobile -->
       <div class="coding-mobile"></div>
 
+      <!-- DESKTOP SECTION ARROW -->
+      <button class="section-scroll-arrow section-scroll-arrow--section" type="button" data-scroll="next"
+        aria-label="Scroll to next section">
+        ↓
+        <span class="scroll-text">scroll down</span>
+      </button>
     </section>
 
     <section id="web-projects" class="section">
       <h2 class="section-title">Me, Me, Me</h2>
+
+      <!-- LAST ARROW (change label + behavior to scroll up) -->
+      <button class="section-scroll-arrow section-scroll-arrow--section" type="button" data-scroll="top"
+        aria-label="Scroll to top">
+        ↑
+        <span class="scroll-text">scroll up</span>
+      </button>
+
     </section>
   </div>
 

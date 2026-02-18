@@ -317,7 +317,7 @@ body {
   top: 92vh;
   left: 30px;
   transform: translateX(-50%);
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   color: #111;
   opacity: 0;
   z-index: 1;
@@ -335,8 +335,8 @@ body {
 
 .scroll-text {
   position: absolute;
-  top: 1rem;
-  left: 5rem;
+  top: 0.2rem;
+  left: 2rem;
   transform: translateX(-50%) translateY(5px);
   font-size: 0.9rem;
   color: #333;
@@ -1326,12 +1326,12 @@ body.dark-mode {
 
 /* Left: about */
 .about-block {
-  position: sticky;
   top: 92px;
   max-height: calc(100vh - 120px);
   overflow: auto;
   padding-right: 4px;
-  margin-top: 15vh;
+  margin-top: 10vh;
+  min-height: 700px;
 }
 
 .about-title {
@@ -2699,4 +2699,124 @@ body.dark-mode .coding-info-message {
 .info-message-content p:last-child {
   font-size: 14px;
   font-weight: 500;
+}
+
+/* ===== Desktop section arrows (reuse hero vibe) ===== */
+.section
+{
+  position: relative;
+}
+
+/* Desktop only */
+@media (max-width: 1024px)
+{
+  .section-scroll-arrow--section
+  {
+    display: none !important;
+  }
+}
+
+/* Shared arrow look */
+.section-scroll-arrow
+{
+  font-size: 1.5rem;
+  color: #111;
+  animation: arrowBlink 3s ease-in-out infinite;
+  cursor: pointer;
+}
+
+/* Hero arrow keeps its existing absolute placement via #scrollArrow rules */
+.section-scroll-arrow--hero
+{
+  display: block;
+}
+
+/* Section arrows: bottom-left inside section */
+.section-scroll-arrow--section
+{
+  position: absolute;
+  left: 30px;
+  bottom: 18px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  line-height: 1;
+  z-index: 3;
+}
+
+/* Tooltip text (same style as hero) */
+.section-scroll-arrow .scroll-text
+{
+  position: absolute;
+  top: 0.2rem;
+  left: 3.5rem;
+  transform: translateX(-50%) translateY(5px);
+  font-size: 0.9rem;
+  color: #333;
+  white-space: nowrap;
+  padding: 2px 6px;
+  border-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Make sections a positioning context (safe) */
+.section
+{
+  position: relative;
+}
+
+/* PHOTO section: force the arrow to sit on top of content */
+#photos .section-scroll-arrow--section 
+{
+  position: absolute;
+  top: 70rem;
+}
+
+/* Optional: if any parent has overflow hidden, keep it visible */
+#photos
+{
+  overflow: visible;
+}
+
+
+.section-scroll-arrow:hover .scroll-text
+{
+  opacity: 0.9;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Dark mode colors (match your current setup) */
+body.dark-mode .section-scroll-arrow
+{
+  color: #f9d71c;
+}
+
+body.dark-mode .section-scroll-arrow .scroll-text
+{
+  color: #fafafa;
+  cursor: none;
+}
+
+/* PHOTO section: tooltip centered above the arrow */
+#photos .section-scroll-arrow--section
+{
+  position: absolute;
+  top: 70rem;
+}
+
+/* Center the tooltip text nicely for PHOTO */
+#photos .section-scroll-arrow--section .scroll-text
+{
+  top: 5.8rem;
+  left: 3.6rem;
+  transform: translateX(-50%) translateY(5px);
+  text-align: center;
+}
+
+/* Hover anim stays the same, but now centered */
+#photos .section-scroll-arrow--section:hover .scroll-text
+{
+  transform: translateX(-50%) translateY(0);
 }
