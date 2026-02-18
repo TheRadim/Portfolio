@@ -256,8 +256,22 @@
         </div>
 
         <!-- GAME PLACEHOLDER -->
-        <div class="me-game-placeholder">
-          <span>Mini game goes here 👾</span>
+        <div class="me-game-wrap">
+          <div class="me-game-ui">
+            <div class="me-game-score" aria-live="polite">
+              SCORE: <span id="meGameScore">0</span>/5
+            </div>
+            <div class="me-game-hint" id="meGameHint">
+              Press Space or click to start
+            </div>
+          </div>
+
+          <div class="me-game-canvas-wrap" id="meGameWrap" role="button" tabindex="0" aria-label="Mini running game">
+            <canvas id="meGameCanvas" width="980" height="220"></canvas>
+
+            <div class="me-game-overlay hidden" id="meGameOverlay" aria-hidden="true">
+            </div>
+          </div>
         </div>
 
         <div class="about-me-cta">
@@ -287,7 +301,7 @@
       <div>DROP A MESSAGE</div>
       <div>radim.theiner@gmail.com</div>
     </div>
-<!--     <div class="footer-center">
+    <!--     <div class="footer-center">
       <a href="#top" class="to-top">TO THE TOP ↑</a>
     </div> -->
     <div class="footer-right">

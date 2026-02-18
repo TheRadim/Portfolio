@@ -1548,3 +1548,537 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setActive(0);
 });
+
+
+// ===================================================================
+// ======================== ME GAME (MINI DINO) =======================
+// ===================================================================
+document.addEventListener("DOMContentLoaded", () =>
+{
+  const wrap = document.getElementById("meGameWrap");
+  const canvas = document.getElementById("meGameCanvas");
+  const scoreEl = document.getElementById("meGameScore");
+  const hintEl = document.getElementById("meGameHint");
+  const overlay = document.getElementById("meGameOverlay");
+
+  if (!wrap || !canvas || !scoreEl)
+  {
+    return;
+  }
+
+  // Transparent canvas
+  const ctx = canvas.getContext("2d", { alpha: true });
+
+  const TARGET_SCORE = 5;
+
+  const WORLD =
+  {
+    w: 980,
+    h: 220,
+    groundY: 175
+  };
+
+  const PLAYER =
+  {
+    x: 110,
+    w: 22,
+    h: 22,
+    y: WORLD.groundY - 22,
+    vy: 0,
+    gravity: 1600,
+    jumpV: -520,
+    onGround: true
+  };
+
+  const OB =
+  {
+    minW: 14,
+    maxW: 22,
+    h: 22,
+    speed: 340,
+
+    // tighter + consistent
+    gapMin: 260,
+    gapMax: 360,
+
+    // first obstacle comes quick
+    firstX: WORLD.w + 220
+  };
+
+  const FINISH =
+  {
+    active: false,
+    passed: false,
+    x: WORLD.w + 260,
+    w: 10,
+    h: 60
+  };
+
+  const State =
+  {
+    IDLE: "idle",
+    RUN: "run",
+    OVER: "over",
+    WIN: "win"
+  };
+
+  let state = State.IDLE;
+  let lastT = 0;
+
+  let obstacles = [];
+  let nextSpawnX = OB.firstX;
+
+  let score = 0;
+  let spawnedCount = 0; // ensures exactly 5 obstacles total
+
+  // ---- Toast (same vibe as coding-info-message) ----
+  let infoEl = null;
+  let infoHideTimer = null;
+
+  function ensureInfo()
+  {
+    if (infoEl)
+    {
+      return;
+    }
+
+    const el = document.createElement("div");
+    el.id = "meGameInfoMessage";
+    el.className = "me-game-info";
+    el.setAttribute("aria-live", "polite");
+
+    el.innerHTML = `
+      <div class="info-message-content">
+        <p id="meGameInfoTitle">MESSAGE</p>
+        <p id="meGameInfoText">...</p>
+      </div>
+    `;
+
+    document.body.appendChild(el);
+    infoEl = el;
+
+    // Dismiss by clicking anywhere on the toast
+    infoEl.addEventListener("pointerdown", () =>
+    {
+      hideInfo();
+    });
+  }
+
+  function showInfo(title, text, autoHideMs)
+  {
+    ensureInfo();
+
+    const t = infoEl.querySelector("#meGameInfoTitle");
+    const p = infoEl.querySelector("#meGameInfoText");
+
+    if (t) { t.textContent = title; }
+    if (p) { p.textContent = text; }
+
+    infoEl.classList.add("show");
+
+    if (infoHideTimer)
+    {
+      clearTimeout(infoHideTimer);
+      infoHideTimer = null;
+    }
+
+    if (typeof autoHideMs === "number")
+    {
+      infoHideTimer = setTimeout(() =>
+      {
+        hideInfo();
+      }, autoHideMs);
+    }
+  }
+
+  function hideInfo()
+  {
+    if (!infoEl)
+    {
+      return;
+    }
+
+    infoEl.classList.remove("show");
+
+    if (infoHideTimer)
+    {
+      clearTimeout(infoHideTimer);
+      infoHideTimer = null;
+    }
+  }
+
+  function isDark()
+  {
+    return document.body.classList.contains("dark-mode");
+  }
+
+  function colors()
+  {
+    return {
+      fg: isDark() ? "#fff" : "#000",
+      player: "#00499a",
+      finish: "#16a34a" // green line
+    };
+  }
+
+  function rand(min, max)
+  {
+    return min + Math.random() * (max - min);
+  }
+
+  // HTML is SCORE: <span>0</span>/5 so we ONLY set the number
+  function renderScore()
+  {
+    scoreEl.textContent = String(score);
+  }
+
+  function setOverlayHidden()
+  {
+    if (!overlay)
+    {
+      return;
+    }
+
+    overlay.classList.add("hidden");
+    overlay.setAttribute("aria-hidden", "true");
+  }
+
+  function reset()
+  {
+    PLAYER.y = WORLD.groundY - PLAYER.h;
+    PLAYER.vy = 0;
+    PLAYER.onGround = true;
+
+    obstacles = [];
+    nextSpawnX = OB.firstX;
+
+    score = 0;
+    spawnedCount = 0;
+
+    FINISH.active = false;
+    FINISH.passed = false;
+    FINISH.x = WORLD.w + 260;
+
+    renderScore();
+    hideInfo();
+
+    // Do not display hints in UI
+    if (hintEl)
+    {
+      hintEl.textContent = "";
+    }
+
+    setOverlayHidden();
+    state = State.IDLE;
+  }
+
+  function rectsOverlap(a, b)
+  {
+    return (
+      a.x < b.x + b.w &&
+      a.x + a.w > b.x &&
+      a.y < b.y + b.h &&
+      a.y + a.h > b.y
+    );
+  }
+
+  function spawnObstacle()
+  {
+    if (spawnedCount >= TARGET_SCORE)
+    {
+      return;
+    }
+
+    const w = Math.round(rand(OB.minW, OB.maxW));
+
+    const o =
+    {
+      x: nextSpawnX,
+      y: WORLD.groundY - OB.h,
+      w,
+      h: OB.h,
+      passed: false,
+      idx: spawnedCount + 1
+    };
+
+    obstacles.push(o);
+    spawnedCount++;
+
+    const gap = rand(OB.gapMin, OB.gapMax);
+    nextSpawnX = o.x + gap;
+  }
+
+  function startGame()
+  {
+    if (state === State.RUN)
+    {
+      return;
+    }
+
+    if (state === State.OVER || state === State.WIN)
+    {
+      reset();
+    }
+
+    hideInfo();
+    state = State.RUN;
+
+    if (obstacles.length === 0 && spawnedCount === 0)
+    {
+      spawnObstacle();
+    }
+  }
+
+  function jump()
+  {
+    if (state === State.IDLE)
+    {
+      startGame();
+    }
+
+    if (state !== State.RUN) { return; }
+    if (!PLAYER.onGround) { return; }
+
+    PLAYER.vy = PLAYER.jumpV;
+    PLAYER.onGround = false;
+  }
+
+  function endGameOver()
+  {
+    state = State.OVER;
+
+    showInfo(
+      "GAME OVER",
+      "Press Space to restart.",
+      null
+    );
+  }
+
+  function endGameWin()
+  {
+    state = State.WIN;
+
+    showInfo(
+      "NICE.",
+      "Glad you liked it — hit me up.",
+      3000
+    );
+  }
+
+  function update(dt)
+  {
+    if (state !== State.RUN)
+    {
+      return;
+    }
+
+    // player physics
+    PLAYER.vy += PLAYER.gravity * dt;
+    PLAYER.y += PLAYER.vy * dt;
+
+    if (PLAYER.y >= WORLD.groundY - PLAYER.h)
+    {
+      PLAYER.y = WORLD.groundY - PLAYER.h;
+      PLAYER.vy = 0;
+      PLAYER.onGround = true;
+    }
+
+    // spawn pipeline: keep spawning until we have 5 total, but only when last is moving in
+    if (spawnedCount < TARGET_SCORE)
+    {
+      if (obstacles.length === 0)
+      {
+        spawnObstacle();
+      }
+      else
+      {
+        const last = obstacles[obstacles.length - 1];
+
+        if (last.x < WORLD.w - 120)
+        {
+          spawnObstacle();
+        }
+      }
+    }
+
+    // move obstacles + scoring + collision
+    obstacles.forEach(o =>
+    {
+      o.x -= OB.speed * dt;
+
+      if (!o.passed && (o.x + o.w) < PLAYER.x)
+      {
+        o.passed = true;
+        score = Math.min(score + 1, TARGET_SCORE);
+        renderScore();
+
+        // when 5th obstacle is passed -> spawn finish line immediately
+        if (score === TARGET_SCORE && !FINISH.active)
+        {
+          FINISH.active = true;
+          FINISH.x = WORLD.w + 220;
+        }
+      }
+
+      if (rectsOverlap(PLAYER, o))
+      {
+        endGameOver();
+      }
+    });
+
+    // cleanup (only after they leave the screen naturally)
+    obstacles = obstacles.filter(o => o.x + o.w > -80);
+
+    // finish line logic (green line)
+    if (FINISH.active && !FINISH.passed)
+    {
+      FINISH.x -= OB.speed * dt;
+
+      const finishRect =
+      {
+        x: FINISH.x,
+        y: WORLD.groundY - FINISH.h,
+        w: FINISH.w,
+        h: FINISH.h
+      };
+
+      if (rectsOverlap(PLAYER, finishRect) || (finishRect.x + finishRect.w) < PLAYER.x)
+      {
+        FINISH.passed = true;
+        endGameWin();
+      }
+    }
+  }
+
+  function draw()
+  {
+    const c = colors();
+
+    // Transparent: clear only
+    ctx.clearRect(0, 0, WORLD.w, WORLD.h);
+
+    // ground
+    ctx.strokeStyle = c.fg;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, WORLD.groundY + 1);
+    ctx.lineTo(WORLD.w, WORLD.groundY + 1);
+    ctx.stroke();
+
+    // obstacles
+    ctx.fillStyle = c.fg;
+    obstacles.forEach(o =>
+    {
+      ctx.fillRect(o.x, o.y, o.w, o.h);
+    });
+
+    // finish line (green)
+    if (FINISH.active && !FINISH.passed)
+    {
+      ctx.fillStyle = c.finish;
+      ctx.globalAlpha = 0.9;
+      ctx.fillRect(FINISH.x, WORLD.groundY - FINISH.h, FINISH.w, FINISH.h);
+      ctx.globalAlpha = 1;
+    }
+
+    // player
+    ctx.fillStyle = c.player;
+    ctx.fillRect(PLAYER.x, PLAYER.y, PLAYER.w, PLAYER.h);
+
+    // idle label inside canvas
+    if (state === State.IDLE)
+    {
+      ctx.fillStyle = c.fg;
+      ctx.globalAlpha = 0.25;
+      ctx.font = "700 12px Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("CLICK / SPACE TO START", WORLD.w / 2, WORLD.groundY - 40);
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  function step(t)
+  {
+    const now = t / 1000;
+    const dt = Math.min(now - (lastT || now), 0.033);
+    lastT = now;
+
+    update(dt);
+    draw();
+
+    requestAnimationFrame(step);
+  }
+
+  function isGameInView()
+  {
+    const r = wrap.getBoundingClientRect();
+    return r.bottom > 0 && r.top < window.innerHeight;
+  }
+
+  function onKeyDown(e)
+  {
+    const k = e.key;
+
+    if (k !== " " && k !== "Enter")
+    {
+      return;
+    }
+
+    if (isGameInView())
+    {
+      e.preventDefault();
+    }
+
+    if (state === State.OVER || state === State.WIN)
+    {
+      reset();
+      startGame();
+      return;
+    }
+
+    if (state === State.IDLE)
+    {
+      startGame();
+      return;
+    }
+
+    jump();
+  }
+
+  function onPointer()
+  {
+    // click/tap starts or jumps, click toast dismisses itself already
+    if (state === State.OVER || state === State.WIN)
+    {
+      reset();
+      startGame();
+      return;
+    }
+
+    if (state === State.IDLE)
+    {
+      startGame();
+      return;
+    }
+
+    jump();
+  }
+
+  // Dismiss toast by clicking anywhere on the page
+  document.addEventListener("pointerdown", (e) =>
+  {
+    if (!infoEl || !infoEl.classList.contains("show"))
+    {
+      return;
+    }
+
+    // if click is not on toast, dismiss anyway (you asked: click anywhere)
+    hideInfo();
+  });
+
+  document.addEventListener("keydown", onKeyDown, { passive: false });
+  wrap.addEventListener("pointerdown", onPointer);
+
+  reset();
+  requestAnimationFrame(step);
+});

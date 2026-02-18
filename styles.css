@@ -2888,7 +2888,6 @@ body.dark-mode .section-scroll-arrow .scroll-text {
   font-family: var(--font-heading);
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: #fff;
 }
 
 /* CTA */
@@ -2898,4 +2897,91 @@ body.dark-mode .section-scroll-arrow .scroll-text {
   font-weight: 500;
   margin-top: 10px;
 
+}
+
+
+
+
+
+
+/* GAME */
+
+/* ===== ME GAME: message (same vibe as coding-info-message) ===== */
+
+.me-game-info
+{
+  position: fixed;
+  bottom: 40vh;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  z-index: 10000;
+
+  background: rgba(255, 255, 255, 0.95);
+  color: #111;
+  padding: 16px 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+
+body.dark-mode .me-game-info
+{
+  background: rgba(20, 20, 20, 0.9);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+
+.me-game-info.show
+{
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.me-game-info .info-message-content p:first-child
+{
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+  margin-bottom: 4px;
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+
+.me-game-info .info-message-content p:last-child
+{
+  font-size: 14px;
+  font-weight: 500;
+}
+
+#meGameCanvas
+{
+  background: transparent !important;
+}
+.me-game-canvas-wrap
+{
+  background: transparent !important;
+  border: 0 !important;
+}
+.me-game-info
+{
+  pointer-events: auto; /* was none */
+}
+
+#meGameCanvas
+{
+  background: transparent !important;
+}
+
+.me-game-canvas-wrap
+{
+  background: transparent !important;
+  border: 0 !important;
 }
