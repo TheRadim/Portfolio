@@ -1625,19 +1625,19 @@ document.addEventListener("DOMContentLoaded", () => {
     h: 42,
     speed: 420,
 
-    gapMin: 260,
-    gapMax: 420,
+    gapMin: 250,
+    gapMax: 520,
 
     firstX: WORLD.w + 160,
-    minSpawnSecs: 0.55,
-    maxSpawnSecs: 1.10
+    minSpawnSecs: 0.35,
+    maxSpawnSecs: 1.60
   };
 
   const FINISH =
   {
     active: false,
     passed: false,
-    x: WORLD.w + 260,
+    x: WORLD.w + 60,
     w: 44,
     h: 44
   };
@@ -1687,7 +1687,7 @@ document.addEventListener("DOMContentLoaded", () => {
     el.addEventListener("pointerdown", () => hideInfo());
   }
 
-  function showInfo(title, text) {
+  function showInfo(title, text, minDuration = 3000) {
     ensureInfo();
 
     const t = infoEl.querySelector("#meGameInfoTitle");
@@ -1704,7 +1704,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     infoTimer = setTimeout(() => {
       hideInfo();
-    }, 3000);
+    }, minDuration);
   }
 
   function hideInfo() {
@@ -1832,10 +1832,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function trySpawn() {
-    if (FINISH.active) {
-      return;
-    }
-
     if (spawnedCount >= TARGET_SCORE) {
       return;
     }
@@ -1847,12 +1843,12 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // random gaps in WORLD px space
     const gap = rand(OB.gapMin, OB.gapMax);
-    const desiredX = farX + gap;
 
-    // ensure obstacle spawns off-screen to the right (not popping in front)
-    const spawnX = Math.max(desiredX, WORLD.w + 80);
+    const spawnX = Math.max(
+      farX + gap,
+      WORLD.w + 80
+    );
 
     spawnObstacle(spawnX);
   }
@@ -1899,7 +1895,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     state = State.OVER;
-    showInfo("GAME OVER", "Press click to restart.");
+    showInfo("GAME OVER", "Click to restart.");
   }
 
   function lockFinish() {
@@ -1908,12 +1904,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     FINISH.active = true;
     FINISH.passed = false;
-    FINISH.x = WORLD.w + 220;
+    FINISH.x = WORLD.w + 30;
   }
 
   function endGameWin() {
     state = State.WIN;
-    showInfo("NICE.", "Glad you liked it. Hit me up if I can create something cool for you as well.");
+
+    showInfo(
+      "THAT WAS FUN.",
+      "You made it. \n\nWant to build something cool together?",
+      5000
+    );
   }
 
   function update(dt) {
