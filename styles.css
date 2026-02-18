@@ -2702,23 +2702,19 @@ body.dark-mode .coding-info-message {
 }
 
 /* ===== Desktop section arrows (reuse hero vibe) ===== */
-.section
-{
+.section {
   position: relative;
 }
 
 /* Desktop only */
-@media (max-width: 1024px)
-{
-  .section-scroll-arrow--section
-  {
+@media (max-width: 1024px) {
+  .section-scroll-arrow--section {
     display: none !important;
   }
 }
 
 /* Shared arrow look */
-.section-scroll-arrow
-{
+.section-scroll-arrow {
   font-size: 1.5rem;
   color: #111;
   animation: arrowBlink 3s ease-in-out infinite;
@@ -2726,14 +2722,12 @@ body.dark-mode .coding-info-message {
 }
 
 /* Hero arrow keeps its existing absolute placement via #scrollArrow rules */
-.section-scroll-arrow--hero
-{
+.section-scroll-arrow--hero {
   display: block;
 }
 
 /* Section arrows: bottom-left inside section */
-.section-scroll-arrow--section
-{
+.section-scroll-arrow--section {
   position: absolute;
   left: 30px;
   bottom: 18px;
@@ -2745,8 +2739,7 @@ body.dark-mode .coding-info-message {
 }
 
 /* Tooltip text (same style as hero) */
-.section-scroll-arrow .scroll-text
-{
+.section-scroll-arrow .scroll-text {
   position: absolute;
   top: 0.2rem;
   left: 3.5rem;
@@ -2762,53 +2755,45 @@ body.dark-mode .coding-info-message {
 }
 
 /* Make sections a positioning context (safe) */
-.section
-{
+.section {
   position: relative;
 }
 
 /* PHOTO section: force the arrow to sit on top of content */
-#photos .section-scroll-arrow--section 
-{
+#photos .section-scroll-arrow--section {
   position: absolute;
   top: 70rem;
 }
 
 /* Optional: if any parent has overflow hidden, keep it visible */
-#photos
-{
+#photos {
   overflow: visible;
 }
 
 
-.section-scroll-arrow:hover .scroll-text
-{
+.section-scroll-arrow:hover .scroll-text {
   opacity: 0.9;
   transform: translateX(-50%) translateY(0);
 }
 
 /* Dark mode colors (match your current setup) */
-body.dark-mode .section-scroll-arrow
-{
+body.dark-mode .section-scroll-arrow {
   color: #f9d71c;
 }
 
-body.dark-mode .section-scroll-arrow .scroll-text
-{
+body.dark-mode .section-scroll-arrow .scroll-text {
   color: #fafafa;
   cursor: none;
 }
 
 /* PHOTO section: tooltip centered above the arrow */
-#photos .section-scroll-arrow--section
-{
+#photos .section-scroll-arrow--section {
   position: absolute;
   top: 70rem;
 }
 
 /* Center the tooltip text nicely for PHOTO */
-#photos .section-scroll-arrow--section .scroll-text
-{
+#photos .section-scroll-arrow--section .scroll-text {
   top: 5.8rem;
   left: 3.6rem;
   transform: translateX(-50%) translateY(5px);
@@ -2816,25 +2801,101 @@ body.dark-mode .section-scroll-arrow .scroll-text
 }
 
 /* Hover anim stays the same, but now centered */
-#photos .section-scroll-arrow--section:hover .scroll-text
-{
+#photos .section-scroll-arrow--section:hover .scroll-text {
   transform: translateX(-50%) translateY(0);
 }
 
 
 /* === Make CODING mobile title match PHOTO mobile title === */
-@media (max-width: 1024px)
-{
-  .coding-mobile-title
-  {
+@media (max-width: 1024px) {
+  .coding-mobile-title {
     font-weight: 500;
     letter-spacing: 0;
   }
 }
 
 /* Optional: match desktop coding list title vibe too */
-.coding-item-title
-{
+.coding-item-title {
   font-weight: 500;
   letter-spacing: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ================= ME SECTION ================= */
+
+.me-section
+{
+  position: relative;
+}
+
+/* Center the container, not the text */
+.about-me-wrapper
+{
+  max-width: 760px;
+  margin: 80px auto 0 auto;
+  padding: 0 var(--edge);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* keep left alignment */
+}
+
+/* Text stays left aligned */
+.about-me-text
+{
+  text-align: left;
+  line-height: 1.45;
+  opacity: 0.9;
+}
+
+.about-me-text p
+{
+  margin: 0 0 20px 0;
+}
+
+/* GAME PLACEHOLDER */
+.me-game-placeholder
+{
+  width: 100%;
+  height: 220px;
+  margin: 40px 0;
+
+  background: #3b7dff;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #fff;
+}
+
+/* CTA */
+.about-me-cta
+{
+  text-align: center;
+  font-weight: 500;
+  margin-top: 10px;
+
 }
