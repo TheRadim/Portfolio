@@ -1668,51 +1668,54 @@ document.addEventListener("DOMContentLoaded", () => {
   let infoTimer = null;
 
   function ensureInfo() {
-    if (infoEl) {
-      return;
-    }
+    if (infoEl) { return; }
 
     const el = document.createElement("div");
     el.className = "me-game-info";
+    el.setAttribute("aria-live", "polite");
+    el.setAttribute("aria-hidden", "true");
+
     el.innerHTML = `
-      <div class="info-message-content">
-        <p id="meGameInfoTitle">MESSAGE</p>
-        <p id="meGameInfoText">...</p>
-      </div>
-    `;
+    <div class="info-message-content">
+      <p id="meGameInfoTitle">MESSAGE</p>
+      <p id="meGameInfoText">...</p>
+    </div>
+  `;
 
     document.body.appendChild(el);
     infoEl = el;
 
-    el.addEventListener("pointerdown", () => hideInfo());
+    // allow dismiss by clicking the toast itself
+    el.addEventListener("pointerdown", (e) => {
+      e.stopPropagation();
+      hideInfo();
+    });
   }
 
-  function showInfo(title, text, minDuration = 3000) {
+  function showInfo(title, text, durationMs = 3000) {
     ensureInfo();
 
     const t = infoEl.querySelector("#meGameInfoTitle");
     const p = infoEl.querySelector("#meGameInfoText");
 
-    t.textContent = title;
-    p.textContent = text;
+    if (t) { t.textContent = title; }
+    if (p) { p.textContent = text; }
 
+    infoEl.setAttribute("aria-hidden", "false");
     infoEl.classList.add("show");
 
-    if (infoTimer) {
-      clearTimeout(infoTimer);
-    }
+    if (infoTimer) { clearTimeout(infoTimer); }
 
     infoTimer = setTimeout(() => {
       hideInfo();
-    }, minDuration);
+    }, durationMs);
   }
 
   function hideInfo() {
-    if (!infoEl) {
-      return;
-    }
+    if (!infoEl) { return; }
 
     infoEl.classList.remove("show");
+    infoEl.setAttribute("aria-hidden", "true");
 
     if (infoTimer) {
       clearTimeout(infoTimer);

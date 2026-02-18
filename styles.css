@@ -3017,3 +3017,65 @@ body.dark-mode .me-game-info
   display: block;
   background: transparent !important;
 }
+
+
+/* ===== ME GAME: toast message ===== */
+
+.me-game-info
+{
+  position: fixed;
+  bottom: 40vh;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  z-index: 10000;
+
+  background: rgba(255, 255, 255, 0.95);
+  color: #111;
+  padding: 16px 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+  text-align: center;
+
+  /* critical: when hidden it must not block clicks */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), visibility 0s linear 0.35s;
+}
+
+body.dark-mode .me-game-info
+{
+  background: rgba(20, 20, 20, 0.92);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.me-game-info.show
+{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+
+  transform: translateX(-50%) translateY(0);
+  transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), visibility 0s;
+}
+
+.me-game-info .info-message-content p:first-child
+{
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  font-size: 11px;
+  margin: 0 0 4px 0;
+  opacity: 0.5;
+  text-transform: uppercase;
+}
+
+.me-game-info .info-message-content p:last-child
+{
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
