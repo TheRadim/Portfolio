@@ -1603,32 +1603,30 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======== TUNING ==========
   // ==========================
 
+  const PLAYER_SCALE = 60 / 42;
+
   const PLAYER =
   {
     x: 110,
-    w: 42,
-    h: 42,
-    y: WORLD.groundY - 42,
+    w: 60,
+    h: 60,
+    y: WORLD.groundY - 60,
     vy: 0,
     gravity: 1800,
     jumpV: -620,
     onGround: true
   };
 
-  // more playable pacing:
-  // - slightly slower than 460
-  // - gaps are RANDOM but with a higher minimum so it never becomes "impossible"
-  // - spawn is TIME/SPACE controlled so you never wait forever, and never get a 190px nightmare stack
   const OB =
   {
-    w: 36,
-    h: 42,
+    w: Math.round(36 * PLAYER_SCALE),   // 51
+    h: 50,
     speed: 420,
 
-    gapMin: 250,
-    gapMax: 520,
+    gapMin: Math.round(200 * PLAYER_SCALE), // 357
+    gapMax: Math.round(520 * PLAYER_SCALE), // 743
 
-    firstX: WORLD.w + 160,
+    firstX: WORLD.w + Math.round(160 * PLAYER_SCALE), // 229
     minSpawnSecs: 0.35,
     maxSpawnSecs: 1.60
   };
@@ -1638,8 +1636,8 @@ document.addEventListener("DOMContentLoaded", () => {
     active: false,
     passed: false,
     x: WORLD.w + 60,
-    w: 44,
-    h: 44
+    w: 60,
+    h: 60
   };
 
   const State =
