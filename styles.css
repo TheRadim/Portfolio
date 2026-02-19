@@ -613,6 +613,47 @@ body.dark-mode .mobile-list * {
   cursor: none !important;
 }
 
+/* ========================================================= */
+/* === Dark mode: hide system cursor over key interactives === */
+/* ========================================================= */
+
+body.dark-mode #scrollArrow,
+body.dark-mode #scrollArrow *,
+
+/* Section arrows (new ones) */
+body.dark-mode .section-scroll-arrow,
+body.dark-mode .section-scroll-arrow *,
+
+/* PHOTO — ribbon, strip, stage image, nav arrows, lightbox controls */
+body.dark-mode .project-ribbon,
+body.dark-mode .project-ribbon *,
+body.dark-mode .strip,
+body.dark-mode .strip *,
+body.dark-mode .stage-box,
+body.dark-mode .stage-box *,
+body.dark-mode .lightbox,
+body.dark-mode .lightbox *,
+
+/* VIDEO — preview player (thumbnail area), link + badge */
+body.dark-mode .player-box,
+body.dark-mode .player-box *,
+body.dark-mode .player-link,
+body.dark-mode .player-badge,
+
+/* CODING — preview images (desktop + mobile) */
+body.dark-mode .coding-stage,
+body.dark-mode .coding-stage *,
+body.dark-mode .coding-preview,
+body.dark-mode .coding-preview *,
+body.dark-mode .coding-mobile,
+body.dark-mode .coding-mobile *,
+
+/* Contact overlay close “X” */
+body.dark-mode .contact-overlay .close-btn,
+body.dark-mode .contact-overlay .close-btn * {
+  cursor: none !important;
+}
+
 /* =================================================================== */
 /* ============================== HERO =============================== */
 /* =================================================================== */
