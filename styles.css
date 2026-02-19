@@ -92,7 +92,8 @@ body {
 /* === Disable custom cursor on touch devices / tablets === */
 /* ========================================================= */
 
-@media (hover: none), (pointer: coarse) {
+@media (hover: none),
+(pointer: coarse) {
   body.dark-mode {
     cursor: default !important;
   }
@@ -468,6 +469,71 @@ footer {
 .close-btn:hover {
   color: #3b7d8e;
 }
+
+/* Footer links reset */
+footer a {
+  color: inherit;
+  text-decoration: none;
+}
+
+footer a:visited,
+footer a:active {
+  color: inherit;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: none;
+}
+
+/* ========================================================= */
+/* === iOS / mobile tap highlight + selection cleanup ======= */
+/* ========================================================= */
+
+/* Remove the gray/blue tap flash on iOS */
+a,
+button,
+[role="button"],
+input,
+textarea,
+select,
+label,
+.lightbulb-toggle,
+.close-btn,
+.contact-link,
+.social-link {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent text selection “blue blocks” when tapping UI */
+.lightbulb-toggle,
+.close-btn,
+#scrollArrow,
+.section-scroll-arrow,
+.ribbon-item,
+.strip-thumb,
+.video-row,
+.player-box,
+.coding-item,
+.coding-stage,
+.coding-mobile-head,
+.coding-mobile-body img {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Optional: remove default focus ring outlines on tap (only if you don’t rely on them) */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid currentColor;
+  /* keeps keyboard accessibility */
+  outline-offset: 2px;
+}
+
 
 /* =================================================================== */
 /* ============================= DARK MODE =========================== */
