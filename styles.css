@@ -1,12 +1,23 @@
-/* === Root tokens (stability, no visual change) === */
+/* =================================================================== */
+/* ============================= TOKENS ============================== */
+/* =================================================================== */
+
+/* Base tokens (keep cascade the same) */
 :root {
   --fg: #111;
   --muted: #b9b9b9;
-  --font-heading: 'Inter', sans-serif;
+  --font-heading: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   --ease: cubic-bezier(.2, .6, .2, 1);
+
+  --container-max: 1600px;
+  --edge: 50px;
+  --octo-offset: 123px;
 }
 
-/* === BASE === */
+/* =================================================================== */
+/* ============================== BASE =============================== */
+/* =================================================================== */
+
 html {
   scroll-behavior: auto !important;
   cursor: default;
@@ -21,8 +32,9 @@ html {
 }
 
 .container {
-  max-width: 1600px;
+  max-width: var(--container-max);
   margin: 0 auto;
+  overflow: visible;
 }
 
 body {
@@ -37,7 +49,10 @@ body {
   position: relative;
 }
 
-/* Cursor orb + flashlight */
+/* =================================================================== */
+/* =========================== CURSOR FX ============================= */
+/* =================================================================== */
+
 #cursorOrb {
   position: fixed;
   width: 100px;
@@ -71,42 +86,52 @@ body {
   z-index: 9999;
   opacity: 0;
   transition: opacity 0.3s ease;
-  animation: none;
 }
 
-/* === HEADER === */
+/* =================================================================== */
+/* ============================== HEADER ============================= */
+/* =================================================================== */
+
 .sticky-header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   padding: 0.4rem 2rem 0 30px;
   height: 60px;
   background: #fafafa;
+
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-heading);
+  letter-spacing: 0;
 }
 
 .name-wrapper {
   position: relative;
 }
 
+/* THEINER RADIM -> THE RAD colors & swap (lighter surname, darker given) */
 .name {
-  font-size: clamp(2.4rem, 4vw + 0.2rem, 3.4rem);
-  font-weight: 300;
+  font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0;
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1;
   padding-left: 20px;
   color: #111;
   text-decoration: none;
-  letter-spacing: 0.04em;
-  line-height: 1;
 }
 
-/* Full name */
+.sticky-header .name {
+  transition: color .2s ease;
+}
+
 .name-full {
   opacity: 1;
   transition: opacity 0.4s ease;
@@ -115,25 +140,35 @@ body {
   pointer-events: auto;
 }
 
-/* Short name */
+.name-full .surname {
+  color: var(--muted) !important;
+}
+
+.name-full .given {
+  color: var(--fg) !important;
+}
+
 .name-short {
   position: absolute;
   top: 0;
   left: 0;
   opacity: 0;
-  transform: translateX(0);
-  transition: opacity 0.1s ease;
+
   pointer-events: none;
   display: inline-block;
+  text-decoration: none;
+
+  transform: translateX(0);
+  transition: opacity 0.1s ease;
 }
 
 .name-short .the {
-  color: var(--muted);
-  margin-right: 0.2em;
+  color: var(--muted) !important;
+  margin-right: 0.3em;
 }
 
 .name-short .rad {
-  color: #111;
+  color: var(--fg) !important;
   display: inline-block;
   transform: translateX(1.5em);
   opacity: 0;
@@ -240,11 +275,15 @@ body {
   }
 }
 
-/* === SECTIONS === */
+/* =================================================================== */
+/* ============================ GLOBAL UI ============================ */
+/* =================================================================== */
+
 .section {
   padding: 50px 0px;
   min-height: 70vh;
   line-height: 1;
+  position: relative;
 }
 
 .section-title {
@@ -259,59 +298,7 @@ body {
   color: var(--fg);
 }
 
-/* Intro */
-.intro-section {
-  height: 130vh;
-}
-
-.intro-text {
-  font-size: clamp(1.4rem, 3vw + 0.2rem, 2.6rem);
-  font-weight: 300;
-  text-transform: uppercase;
-  line-height: 1.0;
-  letter-spacing: 0.01em;
-  margin-top: 0.3rem;
-  padding-left: 50px;
-  max-width: 700px;
-}
-
-.intro-text p {
-  margin: 0 0 0.1rem 0;
-}
-
-/* Typewriter */
-.typewriter-container {
-  width: 90%;
-  position: absolute;
-  top: 60vh;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: clamp(2rem, 2vw + 0.5rem, 2rem);
-  opacity: 0.15;
-  pointer-events: none;
-  z-index: 5;
-  text-align: center;
-  white-space: normal;
-  word-break: break-word;
-  will-change: transform, opacity;
-}
-
-.typewriter-text-wrapper {
-  display: inline-block;
-}
-
-.cursor {
-  display: inline-block;
-  animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-  50% {
-    opacity: 0;
-  }
-}
-
-/* Scroll arrow */
+/* Scroll arrow (hero) */
 #scrollArrow {
   position: absolute;
   top: 92vh;
@@ -362,6 +349,12 @@ body {
 
   50% {
     opacity: 0.5;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
   }
 }
 
@@ -459,11 +452,17 @@ footer {
   color: #3b7d8e;
 }
 
-/* Dark mode */
+/* =================================================================== */
+/* ============================= DARK MODE =========================== */
+/* =================================================================== */
+
 body.dark-mode {
   background-color: #2c2c2c;
   color: #fafafa;
   cursor: none;
+
+  --fg: #fafafa;
+  --muted: #b9b9b9;
 }
 
 body.dark-mode #cursorOrb {
@@ -554,21 +553,11 @@ body.dark-mode .name:hover span {
   color: #f9d71c;
 }
 
-/* Dark mode – header name turns yellow on hover */
 body.dark-mode .sticky-header .name:hover,
 body.dark-mode .sticky-header .name:hover span,
 body.dark-mode .sticky-header .name-full:hover,
 body.dark-mode .sticky-header .name-short:hover {
   color: #f9d71c !important;
-}
-
-.sticky-header .name {
-  transition: color .2s ease;
-}
-
-body.dark-mode .typewriter-container {
-  opacity: 0.3;
-  color: #fafafa;
 }
 
 body.dark-mode .lightbulb-toggle svg {
@@ -579,445 +568,64 @@ body.dark-mode .bulb-rope {
   background-color: #f9d71c;
 }
 
-/* Biker */
-.sticky-intro {
-  position: -webkit-sticky;
-  position: relative;
-  top: 60px;
-  z-index: 10;
-  background: inherit;
+/* Dark mode mapping for name parts */
+body.dark-mode .name-full .surname,
+body.dark-mode .name-short .the {
+  color: #b9b9b9 !important;
 }
 
-.sticky-intro-wrapper {
-  position: sticky;
-  top: 80px;
-  z-index: 10;
-  background: inherit;
-  padding-bottom: 4rem;
+body.dark-mode .name-full .given,
+body.dark-mode .name-short .rad {
+  color: #fafafa !important;
 }
 
-#bikerCircle {
-  width: 100px;
-  height: 100px;
-  background-image: url('assets/biker-dark.gif');
-  background-size: contain;
-  background-repeat: no-repeat;
-  position: fixed;
-  left: 100vw;
-  opacity: 0;
-  transition: opacity 0.5s ease, background-image 0.3s ease;
-  z-index: 1;
-  pointer-events: none;
+/* Dark mode: hide cursor on header + ribbons + video list + coding list */
+body.dark-mode .sticky-header,
+body.dark-mode .sticky-header *,
+body.dark-mode .project-ribbon,
+body.dark-mode .project-ribbon *,
+body.dark-mode .videos-lines,
+body.dark-mode .videos-lines *,
+body.dark-mode .coding-list,
+body.dark-mode .coding-list * {
+  cursor: none !important;
 }
 
-body.dark-mode #bikerCircle {
-  background-image: url('assets/biker-light.gif');
+body.dark-mode .mobile-list,
+body.dark-mode .mobile-list * {
+  cursor: none !important;
 }
 
-/* Header uses Inter like the hero */
-.sticky-header {
-  font-family: var(--font-heading);
-  letter-spacing: 0.05em;
-}
+/* =================================================================== */
+/* ============================== HERO =============================== */
+/* =================================================================== */
 
-.name {
-  font-family: var(--font-heading);
-  font-weight: 800;
-  letter-spacing: -0.01em;
-}
-
-/* Make THE RAD link behave like before */
-.name-short {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  transform: translateX(0);
-  transition: opacity 0.1s ease;
-  pointer-events: none;
-  display: inline-block;
-  text-decoration: none;
-}
-
-/* Bold hero headline */
-.hero-headline {
-  position: absolute;
-  top: 28vh;
-  left: 50px;
-  margin: 0;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: clamp(40px, 10vw, 120px);
-  line-height: 0.92;
-  letter-spacing: -0.01em;
-  max-width: min(92%, 1100px);
-  color: var(--fg);
-}
-
-/* Move the typewriter to bottom-right and format multiline */
-.typewriter-container {
-  position: absolute;
-  right: var(--edge);
-  bottom: 8vh;
-  left: auto;
-  top: auto;
-  transform: none;
-  width: min(540px, 40vw);
-  text-align: right;
-  opacity: 0.35;
-  font-size: clamp(14px, 1.2vw + 0.2rem, 18px);
-}
-
-.typewriter-text-wrapper {
-  white-space: pre-line;
-}
-
-/* Optionally hide the old static block (we type it instead) */
-.intro-text {
-  display: none;
-}
-
-/* Biker starts inside: 3vh from right edge */
-#bikerCircle {
-  left: calc(100vw - 3vh - 100px);
-  opacity: 1;
-}
-
-/* Dark mode keeps behavior */
-body.dark-mode .name,
-body.dark-mode .hero-headline {
-  color: #fafafa;
-}
-
-/* Center the hero headline */
-.hero-headline {
-  position: absolute;
-  top: 32vh;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
-  text-align: center;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: clamp(40px, 10vw, 120px);
-  line-height: 0.92;
-  letter-spacing: -0.01em;
-  max-width: min(92%, 1100px);
-  color: var(--fg);
-}
-
-/* Keep typewriter where it originally was (center, ~60vh) */
-.typewriter-container {
-  width: 90%;
-  position: absolute;
-  top: 60vh;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: clamp(2rem, 2vw + 0.5rem, 2rem);
-  opacity: 0.15;
-  pointer-events: none;
-  z-index: 5;
-  text-align: center;
-  white-space: normal;
-  word-break: break-word;
-  will-change: transform, opacity;
-}
-
-/* Move the 'creative octopus' block to bottom-left */
-.intro-section {
-  position: relative;
-}
-
-.sticky-intro-wrapper {
-  position: static;
-}
-
-.intro-text {
-  position: absolute;
-  left: 50px;
-  bottom: 8vh;
-  margin: 0;
-  display: block;
-  max-width: 560px;
-  font-size: 18px;
-  font-weight: 400;
-  text-transform: uppercase;
-  line-height: 1.1;
-  letter-spacing: 0.01em;
-}
-
-/* HERO: place the “creative octopus…” block in the bottom-right (blue square) */
-.intro-section {
-  position: relative;
-}
-
-.sticky-intro-wrapper {
-  position: static;
-}
-
-.intro-text {
-  position: absolute;
-  right: var(--edge);
-  top: 80vh;
-  right: 0vw;
-  left: auto;
-  margin: 0;
-  display: block;
-  max-width: min(560px, 42vw);
-  text-align: right;
-  font-size: 18px;
-  font-weight: 400;
-  text-transform: uppercase;
-  line-height: 1.1;
-  letter-spacing: 0.01em;
-}
-
-/* Responsive safeguard */
-@media (max-width: 768px) {
-  .intro-text {
-    right: var(--edge);
-    left: var(--edge);
-    bottom: 6vh;
-    max-width: none;
-    text-align: left;
-  }
-}
-
-/* Make sure the section is the positioning context */
-.intro-section {
-  position: relative;
-}
-
-/* Creative Octopus block — bottom-right, tighter to the edge */
-.intro-text {
-  position: absolute;
-  top: 80vh;
-  /* keep your current vertical position */
-  right: 0;
-  /* anchor to the container's right edge */
-  padding-right: clamp(8px, 1vw, 18px);
-  /* tiny breathing room */
-  left: auto;
-  margin: 0;
-  display: block;
-  max-width: min(520px, 38vw);
-  text-align: right;
-  /* align lines to the right */
-  font-size: 18px;
-  font-weight: 400;
-  text-transform: uppercase;
-  line-height: 1.1;
-  letter-spacing: 0.01em;
-}
-
-/* Optional: mobile safeguard (pull it in and left-align if space is tight) */
-@media (max-width: 768px) {
-  .intro-text {
-    right: var(--edge);
-    left: var(--edge);
-    padding-right: 0;
-    max-width: none;
-    text-align: left;
-  }
-}
-
-:root {
-  --container-max: 1600px;
-  /* keep in sync with .container */
-  --hero-edge: 16px;
-  /* gap from viewport right */
-}
-
-.container {
-  max-width: var(--container-max);
-}
-
-.intro-section {
-  position: relative;
-  overflow: visible;
-}
-
-.intro-text {
-  position: absolute;
-  top: 80vh;
-  left: auto;
-  right: 10;
-  margin: 0;
-  display: block;
-
-  /* push outside the container into the viewport gutter */
-  right: calc(var(--hero-edge) - max(0px, (100vw - var(--container-max)) / 2));
-
-  max-width: min(520px, 38vw);
-  text-align: right;
-  font-size: 18px;
-  font-weight: 400;
-  text-transform: uppercase;
-  line-height: 1.1;
-  letter-spacing: 0.01em;
-}
-
-/* mobile fallback: keep it inside and readable */
-@media (max-width: 768px) {
-  .intro-text {
-    right: var(--hero-edge);
-    left: var(--hero-edge);
-    max-width: none;
-    text-align: left;
-  }
-}
-
-/* keep these root vars from earlier */
-:root {
-  --container-max: 1600px;
-  --hero-edge: 16px;
-}
-
-:root {
-  --container-max: 1600px;
-  /* keep in sync with .container max-width */
-}
-
-.intro-text {
-  /* 123px from the viewport right edge */
-  right: calc(130px - max(0px, (100vw - var(--container-max)) / 2));
-}
-
-/* Mobile fallback: keep it inside the edges */
-@media (max-width: 768px) {
-  .intro-text {
-    right: 16px;
-    left: 16px;
-  }
-}
-
-/* ===== Vars / Typo ===== */
-:root {
-  --fg: #111;
-  --muted: #b9b9b9;
-  --font-heading: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-  --container-max: 1600px;
-  --edge: 50px;
-  --octo-offset: 123px;
-  /* distance of octopus block from viewport right */
-}
-
-.container {
-  max-width: var(--container-max);
-  margin: 0 auto;
-}
-
-/* ===== Header (Inter, heavy like hero) ===== */
-.sticky-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.4rem 2rem 0 30px;
-  height: 60px;
-  background: #fafafa;
-  font-family: var(--font-heading);
-  letter-spacing: 0;
-}
-
-.name-wrapper {
-  position: relative;
-}
-
-.name {
-  font-family: var(--font-heading);
-  font-weight: 900;
-  letter-spacing: 0;
-  font-size: clamp(22px, 2.2vw, 28px);
-  line-height: 1;
-  padding-left: 20px;
-  color: var(--fg);
-  text-decoration: none;
-}
-
-.name-full {
-  opacity: 1;
-  transition: opacity 0.4s ease;
-  position: relative;
-  z-index: 2;
-  pointer-events: auto;
-}
-
-.name-short {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  transition: opacity 0.1s ease;
-  pointer-events: none;
-  display: inline-block;
-  text-decoration: none;
-}
-
-.name-short .the {
-  color: var(--muted);
-  margin-right: 0.3em;
-}
-
-.name-short .rad {
-  color: var(--fg);
-  display: inline-block;
-  transform: translateX(1.5em);
-  opacity: 0;
-  transition: transform 0.4s ease, opacity 0.4s ease;
-}
-
-.name-scrolled .name-full {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.name-scrolled .name-short {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.name-scrolled .name-short .rad {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* ===== Hero ===== */
 .intro-section {
   position: relative;
   height: 130vh;
+  overflow: visible;
 }
 
-/* Centered bold line; slightly higher; one-line on very large screens */
 .hero-headline {
   position: absolute;
-  top: 29vh;
+  top: 25vh;
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
   text-align: center;
 
-  font-family: var(--font-heading);
+  font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   font-weight: 900;
-  font-size: clamp(44px, 9.2vw, 128px);
-  line-height: 0.95;
+  font-size: clamp(32px, 7.8vw, 128px);
+  line-height: 0.92;
   letter-spacing: 0;
-  max-width: min(92%, 1200px);
-  color: var(--fg);
-
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  color: #111;
+  white-space: nowrap;
 }
 
-@media (min-width: 1400px) {
-  .hero-headline {
-    max-width: 1400px;
-    white-space: nowrap;
-  }
+body.dark-mode .name,
+body.dark-mode .hero-headline {
+  color: #fafafa;
 }
 
 /* Typewriter stays centered ~60vh */
@@ -1037,7 +645,23 @@ body.dark-mode .hero-headline {
   will-change: transform, opacity;
 }
 
-/* ===== “Creative octopus …” block — bottom-right with fixed viewport offset ===== */
+body.dark-mode .typewriter-container {
+  opacity: 0.3;
+  color: #fafafa;
+}
+
+.typewriter-text-wrapper {
+  display: inline-block;
+  white-space: pre-line;
+}
+
+.cursor {
+  display: inline-block;
+  animation: blink 1s step-end infinite;
+}
+
+/* ===== Creative Octopus block (original size, new position) ===== */
+
 .sticky-intro-wrapper {
   position: static;
 }
@@ -1045,23 +669,30 @@ body.dark-mode .hero-headline {
 .intro-text {
   position: absolute;
   top: 80vh;
+
+  /* keep it 123px from viewport edge */
+  right: calc(var(--octo-offset) - max(0px, (100vw - var(--container-max)) / 2));
   left: auto;
 
-  /* exactly 123px from viewport edge, regardless of centered container */
-  right: calc(var(--octo-offset) - max(0px, (100vw - var(--container-max)) / 2));
-
-  margin: 0;
-  display: block;
-  max-width: min(520px, 38vw);
-  text-align: right;
-
-  font-size: 18px;
-  font-weight: 400;
+  font-size: clamp(0.9rem, 0.8vw + 0.3rem, 1.4rem);
+  font-weight: 300;
   text-transform: uppercase;
-  line-height: 1.1;
+
+  line-height: 1.0;
   letter-spacing: 0.01em;
+
+  margin-top: 0.3rem;
+  padding-left: 0;
+  max-width: 500px;
+
+  text-align: right;
 }
 
+.intro-text p {
+  margin: 0 0 0.1rem 0;
+}
+
+/* Mobile fallback */
 @media (max-width: 768px) {
   .intro-text {
     right: 16px;
@@ -1071,161 +702,44 @@ body.dark-mode .hero-headline {
   }
 }
 
-/* THEINER RADIM -> THE RAD colors & swap (lighter given, darker surname) */
-.name {
-  font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-  font-weight: 900;
-  letter-spacing: 0;
-  font-size: clamp(22px, 2.2vw, 28px);
-  line-height: 1;
-  padding-left: 20px;
-  color: #111;
-  text-decoration: none;
-}
-
-.name-full {
-  opacity: 1;
-  transition: opacity 0.4s ease;
+/* Biker */
+.sticky-intro {
+  position: -webkit-sticky;
   position: relative;
-  z-index: 2;
-  pointer-events: auto;
+  top: 60px;
+  z-index: 10;
+  background: inherit;
 }
 
-.name-full .surname {
-  color: #111;
-}
-
-.name-full .given {
-  color: #b9b9b9;
-}
-
-.name-short {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  pointer-events: none;
-  display: inline-block;
-  text-decoration: none;
-  transition: opacity 0.1s ease;
-}
-
-.name-short .the {
-  color: #b9b9b9;
-  margin-right: 0.3em;
-}
-
-.name-short .rad {
-  color: #111;
-  display: inline-block;
-  transform: translateX(1.5em);
-  opacity: 0;
-  transition: transform 0.4s ease, opacity 0.4s ease;
-}
-
-.name-scrolled .name-full {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.name-scrolled .name-short {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.name-scrolled .name-short .rad {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-/* biker starts inside already (CSS baseline) */
 #bikerCircle {
+  width: 100px;
+  height: 100px;
+  background-image: url('assets/biker-dark.gif');
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: fixed;
   left: calc(100vw - 3vh - 100px);
   opacity: 1;
+  transition: opacity 0.5s ease, background-image 0.3s ease;
+  z-index: 1;
+  pointer-events: none;
 }
 
-/* === Fixes: hero + octopus + name swap === */
-:root {
-  --container-max: 1600px;
-  --octo-offset: 50px;
-}
-
-.container {
-  max-width: var(--container-max);
-  margin: 0 auto;
-  overflow: visible;
-}
-
-.intro-section {
-  position: relative;
-  height: 130vh;
-  overflow: visible;
-}
-
-/* keep headline high, never break, auto-shrink */
-.hero-headline {
-  position: absolute;
-  top: 25vh;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
-  text-align: center;
-  font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-  font-weight: 900;
-  font-size: clamp(32px, 7.8vw, 128px);
-  line-height: 0.92;
-  letter-spacing: 0;
-  color: #111;
-  white-space: nowrap;
-}
-
-/* === Name tint: THEINER lighter, RADIM darker (short + long) === */
-.name-full .surname {
-  color: var(--muted) !important;
-  /* THEINER */
-}
-
-.name-full .given {
-  color: var(--fg) !important;
-  /* RADIM */
-}
-
-.name-short .the {
-  color: var(--muted) !important;
-  /* THE */
-}
-
-.name-short .rad {
-  color: var(--fg) !important;
-  /* RAD */
-}
-
-/* Dark mode mapping */
-body.dark-mode .name-full .surname,
-body.dark-mode .name-short .the {
-  color: #b9b9b9 !important;
-}
-
-body.dark-mode .name-full .given,
-body.dark-mode .name-short .rad {
-  color: #fafafa !important;
+body.dark-mode #bikerCircle {
+  background-image: url('assets/biker-light.gif');
 }
 
 /* =================================================================== */
-/* =================== PHOTO GALLERY (Desktop + Phone) =============== */
+/* =============================== PHOTO ============================= */
 /* =================================================================== */
 
+/* Photo gallery vars (intentionally override --edge later in the file) */
 :root {
   --ribbon-thumb: clamp(96px, 9vw, 140px);
   --strip-thumb: clamp(44px, 5.4vw, 70px);
   --strip-thumb-m: clamp(28px, 10.5vw, 40px);
   --edge: clamp(12px, 2.6vw, 32px);
   --gap: 10px;
-}
-
-body.dark-mode {
-  --fg: #fafafa;
-  --muted: #b9b9b9;
 }
 
 /* Container */
@@ -1350,6 +864,18 @@ body.dark-mode {
   min-height: 60vh;
 }
 
+.about-text p {
+  margin: 0 0 12px 0;
+}
+
+.about-text p+p {
+  margin-top: 10px;
+}
+
+.mobile-about p {
+  margin: 0 0 10px 0;
+}
+
 /* Stage */
 .stage-box {
   position: relative;
@@ -1373,6 +899,11 @@ body.dark-mode {
   cursor: zoom-in;
   transition: opacity 0.6s var(--ease), filter 0.6s var(--ease), transform 0.6s var(--ease);
   will-change: opacity, filter, transform;
+}
+
+.stage-box img.is-preview {
+  filter: blur(8px);
+  transform: scale(1.01);
 }
 
 .stage-index {
@@ -1481,11 +1012,6 @@ body.dark-mode {
   opacity: 1;
 }
 
-.stage-box img.is-preview {
-  filter: blur(8px);
-  transform: scale(1.01);
-}
-
 /* Stage caption */
 .stage-caption {
   position: absolute;
@@ -1524,18 +1050,6 @@ body.dark-mode {
   }
 }
 
-.about-text p {
-  margin: 0 0 12px 0;
-}
-
-.about-text p+p {
-  margin-top: 10px;
-}
-
-.mobile-about p {
-  margin: 0 0 10px 0;
-}
-
 /* ===== Mobile (accordion) — fits on tiny screens ===== */
 .mobile-list {
   display: none;
@@ -1560,7 +1074,6 @@ body.dark-mode {
     border-top-color: rgba(255, 255, 255, .14);
   }
 
-  /* Header row: [num][title][thumb][chev], thumb/chev always visible */
   .mobile-head {
     display: grid;
     grid-template-columns: 28px minmax(0, 1fr) clamp(26px, 8.5vw, 34px) 20px;
@@ -1674,8 +1187,6 @@ body.dark-mode {
     flex-wrap: wrap;
     gap: var(--gap);
     overflow: hidden;
-    /* no internal scrollbars */
-    /* 3 rows tall: 3 thumb heights + 2 vertical gaps between rows */
     max-height: calc(var(--strip-thumb-m) * 3 + var(--gap) * 2);
     padding: 0 0 8px 0;
   }
@@ -1787,7 +1298,6 @@ body.dark-mode {
   .gallery-main,
   .viewer {
     overflow: visible !important;
-    /* belt-and-suspenders */
   }
 }
 
@@ -1799,39 +1309,15 @@ body.dark-mode {
     margin-top: 0 !important;
   }
 
-  /* keep everything visible without inner scrollbars */
   .stage-box {
     height: min(60vh, 560px);
   }
 }
 
-/* ===== Dark mode: hide cursor on header + ribbons + video list + coding list ===== */
-body.dark-mode .sticky-header,
-body.dark-mode .sticky-header *,
+/* =================================================================== */
+/* =============================== VIDEO ============================= */
+/* =================================================================== */
 
-body.dark-mode .project-ribbon,
-body.dark-mode .project-ribbon *,
-
-body.dark-mode .videos-lines,
-body.dark-mode .videos-lines *,
-
-body.dark-mode .coding-list,
-body.dark-mode .coding-list * {
-  cursor: none !important;
-}
-
-body.dark-mode .mobile-list,
-body.dark-mode .mobile-list * {
-  cursor: none !important;
-}
-
-
-
-
-
-
-
-/* ===== VIDEO SECTION (SINGLE PLAYER) ===== */
 .videos-section {
   --line: rgba(0, 0, 0, .10);
   --line-strong: rgba(0, 0, 0, .18);
@@ -1939,7 +1425,7 @@ body.dark-mode .videos-section {
   opacity: 1;
 }
 
-/* FIXED: Meta text visibility */
+/* Meta */
 .row-meta {
   justify-self: end;
   display: grid;
@@ -1951,15 +1437,12 @@ body.dark-mode .videos-section {
   text-transform: uppercase;
   font-weight: 500;
   color: var(--fg);
-  /* Follows theme color */
   opacity: .35;
-  /* Subtle in light mode */
   transition: opacity .2s var(--ease);
 }
 
 body.dark-mode .row-meta {
   color: rgba(255, 255, 255, .55);
-  /* Greyish vibe like coding section */
   opacity: 1;
   cursor: none;
 }
@@ -2098,46 +1581,9 @@ body.dark-mode .videos-section .video-row {
   cursor: none;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ================= CODING SECTION ================= */
+/* =================================================================== */
+/* =============================== CODING ============================ */
+/* =================================================================== */
 
 .coding-section {
   margin-top: 10vh;
@@ -2160,7 +1606,8 @@ body.dark-mode .videos-section .video-row {
   gap: clamp(20px, 4vw, 60px);
   padding: 0 var(--edge);
   align-items: stretch;
-  /* keep both sides flush */
+  width: 100%;
+  justify-content: center;
 }
 
 /* More centered feel on wide screens + flexible column gap */
@@ -2168,6 +1615,9 @@ body.dark-mode .videos-section .video-row {
   .coding-wrap {
     grid-template-columns: minmax(340px, 520px) minmax(560px, 700px);
     gap: clamp(28px, 6vw, 110px);
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -2232,8 +1682,8 @@ body.dark-mode .coding-num {
 }
 
 .coding-item-title {
-  font-weight: 600;
-  letter-spacing: .02em;
+  font-weight: 500;
+  letter-spacing: 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -2255,13 +1705,25 @@ body.dark-mode .coding-item-title {
   height: 100%;
   object-fit: cover;
   display: block;
+
+  filter: grayscale(100%) brightness(0.2) contrast(1.1);
+  transition: filter .2s var(--ease);
+}
+
+body.dark-mode .coding-thumb img {
+  filter: grayscale(100%) brightness(1.8) contrast(1.1);
+}
+
+/* Restore original color on hover or active */
+.coding-item:hover .coding-thumb img,
+.coding-item.is-active .coding-thumb img {
+  filter: none;
 }
 
 .coding-chev {
   opacity: .7;
   text-align: right;
   color: inherit;
-  /* allow dark-mode to affect it */
 }
 
 body.dark-mode .coding-chev {
@@ -2292,13 +1754,11 @@ body.dark-mode .coding-chev {
   margin: 0 0 16px 0;
 }
 
-/* Flexible gap (so tech-to-stage space adapts to bio line count) */
 .coding-spacer {
   flex: 1 1 auto;
   min-height: 0;
 }
 
-/* Fixed mockup size (never grows/shrinks with text) */
 .coding-stage {
   flex: 0 0 380px;
   height: 380px;
@@ -2309,6 +1769,13 @@ body.dark-mode .coding-chev {
   justify-content: center;
 
   margin: 0 0 14px 0;
+
+  cursor: pointer;
+  transition: transform .2s var(--ease);
+}
+
+.coding-stage:hover {
+  transform: scale(1.015);
 }
 
 .coding-stage img {
@@ -2318,9 +1785,23 @@ body.dark-mode .coding-chev {
   height: auto;
   object-fit: contain;
   display: block;
+
+  cursor: pointer;
+  transition: transform 0.3s var(--ease);
 }
 
-/* Reserve 4 lines + clamp to 4 */
+.coding-stage img:active {
+  transform: scale(0.98);
+}
+
+.coding-stage-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
 .coding-dynamic-bio {
   max-width: 60ch;
   line-height: 1.45;
@@ -2384,8 +1865,8 @@ body.dark-mode .coding-chev {
   }
 
   .coding-mobile-title {
-    font-weight: 600;
-    letter-spacing: .02em;
+    font-weight: 500;
+    letter-spacing: 0;
     min-width: 0;
     overflow: hidden;
     white-space: nowrap;
@@ -2455,6 +1936,13 @@ body.dark-mode .coding-chev {
 
     object-fit: contain;
     margin: 0 auto 12px auto;
+
+    cursor: pointer;
+    transition: transform 0.3s var(--ease);
+  }
+
+  .coding-mobile-body img:active {
+    transform: scale(0.98);
   }
 
   .coding-mobile-body p {
@@ -2464,67 +1952,17 @@ body.dark-mode .coding-chev {
   }
 }
 
-/* Center the CODING grid within the container */
-.coding-wrap {
-  justify-content: center;
-  /* centers the grid tracks (your two columns) */
-  width: 100%;
-}
-
-/* Optional: prevent the section from feeling too wide on huge screens */
-@media (min-width: 1280px) {
-  .coding-wrap {
-    max-width: 1400px;
-    /* tweak: 1320–1500 */
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
-/* Coding list icons – default light mode */
-.coding-thumb img {
-  filter: grayscale(100%) brightness(0.2) contrast(1.1);
-  transition: filter .2s var(--ease);
-}
-
-/* Coding list icons – dark mode default */
-body.dark-mode .coding-thumb img {
-  filter: grayscale(100%) brightness(1.8) contrast(1.1);
-}
-
-/* Restore original color on hover or active */
-.coding-item:hover .coding-thumb img,
-.coding-item.is-active .coding-thumb img {
-  filter: none;
-}
-
-.coding-stage {
-  cursor: pointer;
-  transition: transform .2s var(--ease);
-}
-
-.coding-stage:hover {
-  transform: scale(1.015);
-}
-
-/* Keep stage clickable on phones */
-.coding-stage-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
-
-/* Dark mode: hide cursor over stage + mobile stage links */
 body.dark-mode .coding-stage-link,
-body.dark-mode .coding-stage-link * {
-  cursor: none;
-}
-
+body.dark-mode .coding-stage-link *,
 body.dark-mode .coding-mobile-link,
 body.dark-mode .coding-mobile-link * {
   cursor: none;
+}
+
+.coding-mobile-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* ================= Coding Private Popup ================= */
@@ -2568,38 +2006,7 @@ body.dark-mode .coding-popup-box {
   opacity: .85;
 }
 
-.coding-popup-close {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 22px;
-  cursor: pointer;
-  opacity: .6;
-  transition: opacity .2s var(--ease), color .2s var(--ease);
-}
-
-.coding-popup-close:hover {
-  opacity: 1;
-}
-
-body.dark-mode .coding-popup-close:hover {
-  color: #f9d71c;
-}
-
-body.dark-mode .coding-stage-link,
-body.dark-mode .coding-stage-link *,
-body.dark-mode .coding-mobile-link,
-body.dark-mode .coding-mobile-link *,
-body.dark-mode .coding-popup-close {
-  cursor: none;
-}
-
-.coding-mobile-link {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
+/* (kept final version) */
 .coding-popup-close {
   position: absolute;
   top: 14px;
@@ -2622,11 +2029,18 @@ body.dark-mode .coding-popup-close {
   line-height: 1;
 
   opacity: .75;
-  transition: opacity .2s var(--ease), transform .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+  cursor: pointer;
+
+  transition:
+    opacity .2s var(--ease),
+    transform .2s var(--ease),
+    border-color .2s var(--ease),
+    color .2s var(--ease);
 }
 
 body.dark-mode .coding-popup-close {
   border-color: rgba(255, 255, 255, .18);
+  cursor: none;
 }
 
 .coding-popup-close:hover {
@@ -2636,20 +2050,6 @@ body.dark-mode .coding-popup-close {
 
 body.dark-mode .coding-popup-close:hover {
   color: #f9d71c;
-}
-
-/* ================= CODING SECTION FIXES ================= */
-
-/* Make sure images are clickable on both desktop and mobile */
-.coding-stage img,
-.coding-mobile-body img {
-  cursor: pointer;
-  transition: transform 0.3s var(--ease);
-}
-
-.coding-stage img:active,
-.coding-mobile-body img:active {
-  transform: scale(0.98);
 }
 
 /* ================= Styled Info Message (Overlay) ================= */
@@ -2701,10 +2101,9 @@ body.dark-mode .coding-info-message {
   font-weight: 500;
 }
 
-/* ===== Desktop section arrows (reuse hero vibe) ===== */
-.section {
-  position: relative;
-}
+/* =================================================================== */
+/* =============================== ARROWS ============================ */
+/* =================================================================== */
 
 /* Desktop only */
 @media (max-width: 1024px) {
@@ -2713,7 +2112,6 @@ body.dark-mode .coding-info-message {
   }
 }
 
-/* Shared arrow look */
 .section-scroll-arrow {
   font-size: 1.5rem;
   color: #111;
@@ -2721,12 +2119,10 @@ body.dark-mode .coding-info-message {
   cursor: pointer;
 }
 
-/* Hero arrow keeps its existing absolute placement via #scrollArrow rules */
 .section-scroll-arrow--hero {
   display: block;
 }
 
-/* Section arrows: bottom-left inside section */
 .section-scroll-arrow--section {
   position: absolute;
   left: 30px;
@@ -2738,7 +2134,6 @@ body.dark-mode .coding-info-message {
   z-index: 3;
 }
 
-/* Tooltip text (same style as hero) */
 .section-scroll-arrow .scroll-text {
   position: absolute;
   top: 0.2rem;
@@ -2754,29 +2149,33 @@ body.dark-mode .coding-info-message {
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-/* Make sections a positioning context (safe) */
-.section {
-  position: relative;
-}
-
-/* PHOTO section: force the arrow to sit on top of content */
-#photos .section-scroll-arrow--section {
-  position: absolute;
-  top: 70rem;
-}
-
-/* Optional: if any parent has overflow hidden, keep it visible */
-#photos {
-  overflow: visible;
-}
-
-
 .section-scroll-arrow:hover .scroll-text {
   opacity: 0.9;
   transform: translateX(-50%) translateY(0);
 }
 
-/* Dark mode colors (match your current setup) */
+/* PHOTO section arrow positioning */
+#photos {
+  overflow: visible;
+}
+
+#photos .section-scroll-arrow--section {
+  position: absolute;
+  top: 70rem;
+}
+
+#photos .section-scroll-arrow--section .scroll-text {
+  top: 5.8rem;
+  left: 3.6rem;
+  transform: translateX(-50%) translateY(5px);
+  text-align: center;
+}
+
+#photos .section-scroll-arrow--section:hover .scroll-text {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Dark mode colors */
 body.dark-mode .section-scroll-arrow {
   color: #f9d71c;
 }
@@ -2786,95 +2185,36 @@ body.dark-mode .section-scroll-arrow .scroll-text {
   cursor: none;
 }
 
-/* PHOTO section: tooltip centered above the arrow */
-#photos .section-scroll-arrow--section {
-  position: absolute;
-  top: 70rem;
-}
+/* =================================================================== */
+/* ================================ ME =============================== */
+/* =================================================================== */
 
-/* Center the tooltip text nicely for PHOTO */
-#photos .section-scroll-arrow--section .scroll-text {
-  top: 5.8rem;
-  left: 3.6rem;
-  transform: translateX(-50%) translateY(5px);
-  text-align: center;
-}
-
-/* Hover anim stays the same, but now centered */
-#photos .section-scroll-arrow--section:hover .scroll-text {
-  transform: translateX(-50%) translateY(0);
-}
-
-
-/* === Make CODING mobile title match PHOTO mobile title === */
-@media (max-width: 1024px) {
-  .coding-mobile-title {
-    font-weight: 500;
-    letter-spacing: 0;
-  }
-}
-
-/* Optional: match desktop coding list title vibe too */
-.coding-item-title {
-  font-weight: 500;
-  letter-spacing: 0;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ================= ME SECTION ================= */
-
-.me-section
-{
+.me-section {
   position: relative;
   padding-bottom: 10vh;
+  padding-top: 10vh;
 }
 
-/* Center the container, not the text */
-.about-me-wrapper
-{
+.about-me-wrapper {
   max-width: 760px;
   margin: 80px auto 0 auto;
   padding: 0 var(--edge);
   display: flex;
   flex-direction: column;
-  align-items: stretch; /* keep left alignment */
+  align-items: stretch;
 }
 
-/* Text stays left aligned */
-.about-me-text
-{
+.about-me-text {
   text-align: left;
   line-height: 1.45;
   opacity: 0.9;
 }
 
-.about-me-text p
-{
+.about-me-text p {
   margin: 0 0 20px 0;
 }
 
-/* GAME PLACEHOLDER */
-.me-game-placeholder
-{
+.me-game-placeholder {
   width: 100%;
   height: 220px;
   margin: 40px 0;
@@ -2891,116 +2231,26 @@ body.dark-mode .section-scroll-arrow .scroll-text {
   letter-spacing: 0.04em;
 }
 
-/* CTA */
-.about-me-cta
-{
+.about-me-cta {
   text-align: center;
   font-weight: 500;
   margin-top: 10px;
-
 }
 
+/* =================================================================== */
+/* ================================ GAME ============================= */
+/* =================================================================== */
 
-
-
-
-
-/* GAME */
-
-/* ===== ME GAME: message (same vibe as coding-info-message) ===== */
-
-.me-game-info
-{
-  position: fixed;
-  bottom: 40vh;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  z-index: 10000;
-
-  background: rgba(255, 255, 255, 0.95);
-  color: #111;
-  padding: 16px 24px;
-  border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-
-  text-align: center;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
-}
-
-body.dark-mode .me-game-info
-{
-  background: rgba(20, 20, 20, 0.9);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-}
-
-.me-game-info.show
-{
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-.me-game-info .info-message-content p:first-child
-{
-  font-family: var(--font-heading);
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  font-size: 11px;
-  margin-bottom: 4px;
-  opacity: 0.5;
-  text-transform: uppercase;
-}
-
-.me-game-info .info-message-content p:last-child
-{
-  font-size: 14px;
-  font-weight: 500;
-}
-
-#meGameCanvas
-{
-  background: transparent !important;
-}
-.me-game-canvas-wrap
-{
-  background: transparent !important;
-  border: 0 !important;
-}
-.me-game-info
-{
-  pointer-events: auto; /* was none */
-}
-
-#meGameCanvas
-{
-  background: transparent !important;
-}
-
-.me-game-canvas-wrap
-{
-  background: transparent !important;
-  border: 0 !important;
-}
-
-.me-game-wrap
-{
+.me-game-wrap {
   width: 100%;
   max-width: 820px;
   margin: 28px auto 0 auto;
   padding: 0 var(--edge);
 }
 
-.me-game-canvas-wrap
-{
+.me-game-canvas-wrap {
   position: relative;
   width: 100%;
-
-  /* shrink nicely on mobile */
   height: clamp(140px, 22vw, 220px);
 
   overflow: visible;
@@ -3010,19 +2260,15 @@ body.dark-mode .me-game-info
   border: 0 !important;
 }
 
-#meGameCanvas
-{
+#meGameCanvas {
   width: 100%;
   height: 100%;
   display: block;
   background: transparent !important;
 }
 
-
-/* ===== ME GAME: toast message ===== */
-
-.me-game-info
-{
+/* ===== ME GAME: toast message (kept final behavior) ===== */
+.me-game-info {
   position: fixed;
   bottom: 40vh;
   left: 50%;
@@ -3037,7 +2283,6 @@ body.dark-mode .me-game-info
 
   text-align: center;
 
-  /* critical: when hidden it must not block clicks */
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -3045,15 +2290,13 @@ body.dark-mode .me-game-info
   transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), visibility 0s linear 0.35s;
 }
 
-body.dark-mode .me-game-info
-{
+body.dark-mode .me-game-info {
   background: rgba(20, 20, 20, 0.92);
   color: #fff;
   border-color: rgba(255, 255, 255, 0.12);
 }
 
-.me-game-info.show
-{
+.me-game-info.show {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -3062,8 +2305,7 @@ body.dark-mode .me-game-info
   transition: opacity 0.35s var(--ease), transform 0.35s var(--ease), visibility 0s;
 }
 
-.me-game-info .info-message-content p:first-child
-{
+.me-game-info .info-message-content p:first-child {
   font-family: var(--font-heading);
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -3073,8 +2315,7 @@ body.dark-mode .me-game-info
   text-transform: uppercase;
 }
 
-.me-game-info .info-message-content p:last-child
-{
+.me-game-info .info-message-content p:last-child {
   margin: 0;
   font-size: 14px;
   font-weight: 500;
