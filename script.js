@@ -228,15 +228,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-    /* ========================= */
+  /* ========================= */
   /* ===== BIKER (stable) ===== */
   /* ========================= */
 
   let rafBiker = 0;
   let lastScrollY = window.scrollY;
 
-  function calcBikerX(y)
-  {
+  function calcBikerX(y) {
     const vh = window.innerHeight;
     const bikerW = 100;
     const mr = Math.max(vh * 0.03, 8);
@@ -248,12 +247,10 @@ document.addEventListener('DOMContentLoaded', () => {
     return startX + p * (endX - startX);
   }
 
-  function renderBiker()
-  {
+  function renderBiker() {
     rafBiker = 0;
 
-    if (!biker)
-    {
+    if (!biker) {
       return;
     }
 
@@ -264,10 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
     biker.style.opacity = (y > window.innerHeight) ? '0' : '1';
   }
 
-  function requestBikerRender()
-  {
-    if (rafBiker)
-    {
+  function requestBikerRender() {
+    if (rafBiker) {
       return;
     }
 
@@ -279,8 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Keep your existing onScroll() for name swap etc,
   // but REMOVE the old biker block from it, and just do:
-  function onScroll()
-  {
+  function onScroll() {
     lastScrollY = window.scrollY;
 
     const y = lastScrollY;
@@ -292,8 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
   onScroll();
   document.addEventListener('scroll', onScroll, { passive: true });
 
-  window.addEventListener('resize', () =>
-  {
+  window.addEventListener('resize', () => {
     requestBikerRender();
   });
 
@@ -830,28 +823,23 @@ document.addEventListener('DOMContentLoaded', () => {
       item.addEventListener('click', () => {
         const wasActive = (i === activeProject);
 
-        setActiveProject(0, 0, false);
+        if (!wasActive) {
+          setActiveProject(i, 0, true);
+        }
 
-        if (wasActive) {
-          if (typeof window.scrollToPhotoSection === 'function') {
-            window.scrollToPhotoSection();
-          }
-          else {
-            // Fallback: same math as the arrow uses
-            const header = document.querySelector('.sticky-header');
-            const headerH = header ? header.offsetHeight : 60;
-            const keepTitle = 20;
-            const photos = document.getElementById('photos');
-            const targetY = Math.max(0, (photos ? photos.offsetTop : 0) - headerH - keepTitle);
-            window.scrollTo({ top: targetY, behavior: 'smooth' });
-          }
+        // Scroll behavior
+        if (typeof window.scrollToPhotoSection === 'function') {
+          window.scrollToPhotoSection();
         }
         else {
-          // Preserve your current "scroll to ribbon" behavior when changing projects
           const header = document.querySelector('.sticky-header');
-          const headerH = header ? header.offsetHeight : 0;
-          const y = ribbonEl.getBoundingClientRect().top + window.scrollY;
-          window.scrollTo({ top: Math.max(0, y - headerH), behavior: 'smooth' });
+          const headerH = header ? header.offsetHeight : 60;
+          const gap = 16;
+
+          const photos = document.getElementById('photos');
+          const targetY = Math.max(0, (photos ? photos.offsetTop : 0) - headerH - gap);
+
+          window.scrollTo({ top: targetY, behavior: 'smooth' });
         }
       });
 
@@ -1005,7 +993,6 @@ document.addEventListener('DOMContentLoaded', () => {
   nextBtn.addEventListener('click', next);
   stageImg.addEventListener('click', () => openLightbox());
   window.addEventListener('resize', positionStageOverlays);
-  window.addEventListener('resize', positionStageOverlays);
 
   // ---------- Routing ----------
   function syncHash() {
@@ -1014,6 +1001,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (location.hash !== hash) {
       history.replaceState(null, '', hash);
+    }
+  }
+
+  function clearPhotoHashFromUrl() {
+    if (location.hash && location.hash.startsWith('#photo/')) {
+      history.replaceState(null, '', location.pathname + location.search);
     }
   }
 
@@ -1264,6 +1257,9 @@ document.addEventListener('DOMContentLoaded', () => {
     renderRibbon();
     renderMobile();
     readHash();
+
+    // Clean URL after initial state is restored
+    clearPhotoHashFromUrl();
   }
 
   boot();
