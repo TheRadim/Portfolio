@@ -799,7 +799,7 @@ document.addEventListener('DOMContentLoaded', () => {
       item.addEventListener('click', () => {
         const wasActive = (i === activeProject);
 
-        setActiveProject(i, 0, true);
+        setActiveProject(0, 0, false);
 
         if (wasActive) {
           if (typeof window.scrollToPhotoSection === 'function') {
@@ -1000,7 +1000,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    setActiveProject(0, 0, true);
+    setActiveProject(0, 0, false);
   }
 
   window.addEventListener('hashchange', readHash);
