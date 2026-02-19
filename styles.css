@@ -835,6 +835,7 @@ body.dark-mode .typewriter-container {
   background: inherit;
 }
 
+/* Biker (stable: transform-only movement, no left/top thrash) */
 #bikerCircle {
   width: 100px;
   height: 100px;
@@ -842,9 +843,19 @@ body.dark-mode .typewriter-container {
   background-size: contain;
   background-repeat: no-repeat;
   position: fixed;
-  left: calc(100vw - 3vh - 100px);
+  top: max(40vh, 150px);
+  left: 0;
+
+  transform: translate3d(var(--biker-x, 0px), 0, 0);
+  will-change: transform, opacity;
+
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+
   opacity: 1;
   transition: opacity 0.5s ease, background-image 0.3s ease;
+
   z-index: 1;
   pointer-events: none;
 }

@@ -228,43 +228,74 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Biker starts inside (3vh from right)
-  function placeBikerInitial() {
-    if (!biker) {
-      return;
-    }
+    /* ========================= */
+  /* ===== BIKER (stable) ===== */
+  /* ========================= */
 
+  let rafBiker = 0;
+  let lastScrollY = window.scrollY;
+
+  function calcBikerX(y)
+  {
     const vh = window.innerHeight;
     const bikerW = 100;
     const mr = Math.max(vh * 0.03, 8);
 
-    biker.style.left = `${window.innerWidth - bikerW - mr}px`;
-    biker.style.top = `${Math.max(vh * 0.4, 150)}px`;
-    biker.style.opacity = '1';
+    const startX = window.innerWidth - bikerW - mr; // inside right edge
+    const endX = -bikerW;                           // fully off-screen left
+
+    const p = Math.min(y / vh, 1);
+    return startX + p * (endX - startX);
   }
 
-  placeBikerInitial();
-  window.addEventListener('resize', placeBikerInitial);
+  function renderBiker()
+  {
+    rafBiker = 0;
 
-  // Scroll effects
-  function onScroll() {
-    const y = window.scrollY;
-    const vh = window.innerHeight;
+    if (!biker)
+    {
+      return;
+    }
 
+    const y = lastScrollY;
+    const x = calcBikerX(y);
+
+    biker.style.setProperty('--biker-x', `${x}px`);
+    biker.style.opacity = (y > window.innerHeight) ? '0' : '1';
+  }
+
+  function requestBikerRender()
+  {
+    if (rafBiker)
+    {
+      return;
+    }
+
+    rafBiker = requestAnimationFrame(renderBiker);
+  }
+
+  // Initial paint
+  requestBikerRender();
+
+  // Keep your existing onScroll() for name swap etc,
+  // but REMOVE the old biker block from it, and just do:
+  function onScroll()
+  {
+    lastScrollY = window.scrollY;
+
+    const y = lastScrollY;
     nameWrapper?.classList.toggle('name-scrolled', y > 50);
 
-    if (biker) {
-      const bikerW = 100;
-      const mr = Math.max(vh * 0.03, 8);
-      const startL = window.innerWidth - bikerW - mr;
-      const endL = -bikerW;
-      const p = Math.min(y / vh, 1);
-
-      biker.style.left = `${startL + p * (endL - startL)}px`;
-      biker.style.top = `${Math.max(vh * 0.4, 150)}px`;
-      biker.style.opacity = y > vh ? 0 : 1;
-    }
+    requestBikerRender();
   }
+
+  onScroll();
+  document.addEventListener('scroll', onScroll, { passive: true });
+
+  window.addEventListener('resize', () =>
+  {
+    requestBikerRender();
+  });
 
   onScroll();
   document.addEventListener('scroll', onScroll, { passive: true });
