@@ -29,7 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function toggleTheme() {
     document.body.classList.toggle('dark-mode');
-    localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    localStorage.setItem(
+      'theme',
+      document.body.classList.contains('dark-mode') ? 'dark' : 'light'
+    );
 
     themeToggle?.classList.remove('animate');
     void themeToggle?.offsetWidth;
@@ -105,7 +108,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const headerH = getHeaderH();
     const gap = getRemPx(); // 1rem
 
-    const y = sectionEl.getBoundingClientRect().top + window.scrollY - headerH - gap;
+    const y =
+      sectionEl.getBoundingClientRect().top
+      + window.scrollY
+      - headerH
+      - gap;
+
     smoothScrollTo(Math.max(0, y), 900);
   }
 
@@ -123,7 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function scrollToNextSection(fromEl) {
-    const currentSection = fromEl.closest('section.section') || document.getElementById('intro');
+    const currentSection =
+      fromEl.closest('section.section')
+      || document.getElementById('intro');
 
     if (!currentSection) {
       return;
@@ -147,7 +157,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const headerH = getHeaderH();
     const gap = getRemPx(); // 1rem
-    const top = next.getBoundingClientRect().top + window.scrollY - headerH - gap;
+    const top =
+      next.getBoundingClientRect().top
+      + window.scrollY
+      - headerH
+      - gap;
 
     smoothScrollTo(Math.max(0, top), 900);
   }
@@ -204,7 +218,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const headerH = getHeaderH();
       const gap = getRemPx(); // 1rem
 
-      const y = target.getBoundingClientRect().top + window.scrollY - headerH - gap;
+      const y =
+        target.getBoundingClientRect().top
+        + window.scrollY
+        - headerH
+        - gap;
+
       smoothScrollTo(Math.max(0, y), 900);
     }
   });
@@ -333,68 +352,74 @@ document.addEventListener('DOMContentLoaded', () => {
 // ===================================================================
 // ======================= PHOTO GALLERY ==============================
 // ===================================================================
-document.addEventListener("DOMContentLoaded", () => {
-  const gallery = document.getElementById("gallery");
+document.addEventListener('DOMContentLoaded', () => {
+  const gallery = document.getElementById('gallery');
+
   if (!gallery) {
     return;
   }
 
-  const CAN_SAMPLE = location.protocol !== "file:";
+  const CAN_SAMPLE = location.protocol !== 'file:';
 
-  const ribbonEl = gallery.querySelector(".project-ribbon");
-  const aboutTitle = gallery.querySelector(".about-title");
-  const aboutText = gallery.querySelector(".about-text");
-  const stageBox = gallery.querySelector("#stageBox");
-  const stageImg = gallery.querySelector("#stageImage");
-  const stageIndex = gallery.querySelector("#stageIndex");
-  const prevBtn = gallery.querySelector(".stage-box .prev");
-  const nextBtn = gallery.querySelector(".stage-box .next");
-  const stripEl = gallery.querySelector(".strip");
-  const mobileList = gallery.querySelector(".mobile-list");
+  const ribbonEl = gallery.querySelector('.project-ribbon');
+  const aboutTitle = gallery.querySelector('.about-title');
+  const aboutText = gallery.querySelector('.about-text');
+  const stageBox = gallery.querySelector('#stageBox');
+  const stageImg = gallery.querySelector('#stageImage');
+  const stageIndex = gallery.querySelector('#stageIndex');
+  const prevBtn = gallery.querySelector('.stage-box .prev');
+  const nextBtn = gallery.querySelector('.stage-box .next');
+  const stripEl = gallery.querySelector('.strip');
+  const mobileList = gallery.querySelector('.mobile-list');
 
-  const lb = document.getElementById("lightbox");
-  const lbImg = document.getElementById("lbImage");
-  const lbPrev = lb.querySelector(".lb-prev");
-  const lbNext = lb.querySelector(".lb-next");
-  const lbClose = lb.querySelector(".lb-close");
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImage');
+  const lbPrev = lb.querySelector('.lb-prev');
+  const lbNext = lb.querySelector('.lb-next');
+  const lbClose = lb.querySelector('.lb-close');
 
-  let stageCaption = document.getElementById("stageCaption");
+  let stageCaption = document.getElementById('stageCaption');
+
   if (!stageCaption) {
-    stageCaption = document.createElement("div");
-    stageCaption.id = "stageCaption";
-    stageCaption.className = "stage-caption";
+    stageCaption = document.createElement('div');
+    stageCaption.id = 'stageCaption';
+    stageCaption.className = 'stage-caption';
     stageBox.appendChild(stageCaption);
   }
 
   // ---------- Projects ----------
   function rangePaths(dir, count, ext, subfolder) {
-    return Array.from({ length: count }, (_, i) => `assets/photo/${dir}/${subfolder}/${i + 1}.${ext}`);
+    return Array.from(
+      { length: count },
+      (_, i) => `assets/photo/${dir}/${subfolder}/${i + 1}.${ext}`
+    );
   }
 
   function buildProjects(defs) {
-    return defs.map(d => {
-      const defExt = d.ext || "webp";
-      const defT = d.thumbExt || "webp";
+    return defs.map((d) => {
+      const defExt = d.ext || 'webp';
+      const defT = d.thumbExt || 'webp';
 
       let images = [];
       let thumbs = [];
       let captions = Array.isArray(d.captions) ? [...d.captions] : [];
 
       if (Array.isArray(d.sources) && d.sources.length > 0) {
-        d.sources.forEach(s => {
+        d.sources.forEach((s) => {
           const ext = s.ext || defExt;
           const tExt = s.thumbExt || defT;
           const cnt = s.count || 0;
 
-          images.push(...rangePaths(s.dir, cnt, ext, "full"));
-          thumbs.push(...rangePaths(s.dir, cnt, tExt, "thumbs"));
+          images.push(...rangePaths(s.dir, cnt, ext, 'full'));
+          thumbs.push(...rangePaths(s.dir, cnt, tExt, 'thumbs'));
         });
       }
       else {
         const cnt = d.count || 0;
+
         if (d.dir && cnt > 0) {
-          images = rangePaths(d.dir, cnt, defExt, "full");
-          thumbs = rangePaths(d.dir, cnt, defT, "thumbs");
+          images = rangePaths(d.dir, cnt, defExt, 'full');
+          thumbs = rangePaths(d.dir, cnt, defT, 'thumbs');
         }
       }
 
@@ -405,8 +430,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return {
         id: d.id,
         title: d.title,
-        description: d.description || "",
-        thumb: thumbs[0] || images[0] || "",
+        description: d.description || '',
+        thumb: thumbs[0] || images[0] || '',
         images,
         thumbs,
         captions
@@ -417,181 +442,181 @@ document.addEventListener("DOMContentLoaded", () => {
   const projectDefs =
     [
       {
-        dir: "1",
-        id: "pas-normal",
-        title: "PAS NORMAL STUDIOS",
+        dir: '1',
+        id: 'pas-normal',
+        title: 'PAS NORMAL STUDIOS',
         description:
-          "Late-summer roll with the Pas Normal Studios crew in Copenhagen’s late summer. \n\n Snapping fast-paced action and laid-back evening hangs with the Panormal crew. Just good vibes, cool people, and a brand that loves its racers.",
+          'Late-summer roll with the Pas Normal Studios crew in Copenhagen’s late summer. \n\n Snapping fast-paced action and laid-back evening hangs with the Panormal crew. Just good vibes, cool people, and a brand that loves its racers.',
         count: 10,
-        ext: "webp",
-        thumbExt: "webp",
+        ext: 'webp',
+        thumbExt: 'webp',
         captions:
           []
       },
       {
-        dir: "2",
-        id: "gravity-snowboards",
-        title: "GRAVITY SNB",
+        dir: '2',
+        id: 'gravity-snowboards',
+        title: 'GRAVITY SNB',
         description:
-          "Prepping boards for winter with Gravity’s tools. \n\nWaxing, tuning, and getting everything sharp and ready. It’s all about that pre-season ritual for the love of snowboarding.",
+          'Prepping boards for winter with Gravity’s tools. \n\nWaxing, tuning, and getting everything sharp and ready. It’s all about that pre-season ritual for the love of snowboarding.',
         count: 9,
-        ext: "webp",
-        thumbExt: "webp",
+        ext: 'webp',
+        thumbExt: 'webp',
         captions:
           []
       },
       {
-        dir: "3",
-        id: "happy-socks",
-        title: "HAPPY SOCKS",
+        dir: '3',
+        id: 'happy-socks',
+        title: 'HAPPY SOCKS',
         description:
-          "Funky, colorful, and playful vibes shooting for Fizzymag wit Matija Max Vidovic.  \n\nBold color, graphic shapes, a little absurd on purpose.\n\nEven after years, one of my favourite outcomes.",
+          'Funky, colorful, and playful vibes shooting for Fizzymag wit Matija Max Vidovic.  \n\nBold color, graphic shapes, a little absurd on purpose.\n\nEven after years, one of my favourite outcomes.',
         count: 9,
-        ext: "webp",
-        thumbExt: "webp",
+        ext: 'webp',
+        thumbExt: 'webp',
         captions:
           []
       },
       {
-        dir: "4",
-        id: "atelier-pyntet",
-        title: "ATELIER PYNTET",
+        dir: '4',
+        id: 'atelier-pyntet',
+        title: 'ATELIER PYNTET',
         description:
-          "Inspired by coastal nature. \n\nThis project for a small studio between Prague and Copenhagen covers everything from photography to videography and web design. \n\nShot on Danish beaches, it highlights the elegance of jewelry and art pieces like the “Waterdrop” stand, blending natural beauty with minimalist design.",
+          'Inspired by coastal nature. \n\nThis project for a small studio between Prague and Copenhagen covers everything from photography to videography and web design. \n\nShot on Danish beaches, it highlights the elegance of jewelry and art pieces like the “Waterdrop” stand, blending natural beauty with minimalist design.',
         count: 16,
-        ext: "webp",
-        thumbExt: "webp",
+        ext: 'webp',
+        thumbExt: 'webp',
         captions:
           []
       },
       {
-        dir: "5",
-        id: "bikes",
-        title: "BIKES",
+        dir: '5',
+        id: 'bikes',
+        title: 'BIKES',
         description:
-          "I love bikes. Riding, racing, and telling the stories around them. \n\nI shoot across disciplines—from gritty race days to clean product work—delivering both speed and detail. \n\nDownhill in Town’s freehub echo in narrow streets, Copenhagen’s Sunshine Crit at city-lap pace, the muddy joy of Jinglecross, and crisp product portraits of Stevens’ chameleon-paint builds.",
+          'I love bikes. Riding, racing, and telling the stories around them. \n\nI shoot across disciplines—from gritty race days to clean product work—delivering both speed and detail. \n\nDownhill in Town’s freehub echo in narrow streets, Copenhagen’s Sunshine Crit at city-lap pace, the muddy joy of Jinglecross, and crisp product portraits of Stevens’ chameleon-paint builds.',
         count: 24,
-        ext: "webp",
-        thumbExt: "webp",
+        ext: 'webp',
+        thumbExt: 'webp',
         captions:
           [
-            "Downhill in Town",
-            "Sunshine Crit",
-            "Jinglecross",
-            "Sunshine Crit",
-            "Stevens Bikes",
-            "Downhill in Town",
-            "Sunshine Crit",
-            "Jinglecross",
-            "Stevens Bikes",
-            "Sunshine Crit",
-            "Downhill in Town",
-            "Jinglecross",
-            "Stevens Bikes",
-            "Jinglecross",
-            "Sunshine Crit",
-            "Stevens Bikes",
-            "Downhill in Town",
-            "Jinglecross",
-            "Sunshine Crit",
-            "Jinglecross",
-            "Stevens Bikes",
-            "Downhill in Town",
-            "Jinglecross",
-            "Jinglecross"
+            'Downhill in Town',
+            'Sunshine Crit',
+            'Jinglecross',
+            'Sunshine Crit',
+            'Stevens Bikes',
+            'Downhill in Town',
+            'Sunshine Crit',
+            'Jinglecross',
+            'Stevens Bikes',
+            'Sunshine Crit',
+            'Downhill in Town',
+            'Jinglecross',
+            'Stevens Bikes',
+            'Jinglecross',
+            'Sunshine Crit',
+            'Stevens Bikes',
+            'Downhill in Town',
+            'Jinglecross',
+            'Sunshine Crit',
+            'Jinglecross',
+            'Stevens Bikes',
+            'Downhill in Town',
+            'Jinglecross',
+            'Jinglecross'
           ]
       },
       {
-        dir: "6",
-        id: "kmen-coffee",
-        title: "KMEN COFFEE",
+        dir: '6',
+        id: 'kmen-coffee',
+        title: 'KMEN COFFEE',
         description:
-          "Specialty coffee by friends. Shots of the daily grind at Kemn Coffee, from roasting to brewing. \n\nIt’s all about the aroma, the community, and the love of a good cup shared with friends.",
+          'Specialty coffee by friends. Shots of the daily grind at Kemn Coffee, from roasting to brewing. \n\nIt’s all about the aroma, the community, and the love of a good cup shared with friends.',
         count: 8,
-        ext: "webp",
-        thumbExt: "webp",
+        ext: 'webp',
+        thumbExt: 'webp',
         captions:
           []
       },
       {
-        dir: "7",
-        id: "portraits",
-        title: "FACES",
+        dir: '7',
+        id: 'portraits',
+        title: 'FACES',
         description:
-          "People first.\n\n Portraits, moments and snaps. \n\nSometimes on film, sometimes digital. Always about the person in front of the lens.\n\nSmall gestures say the most.",
+          'People first.\n\n Portraits, moments and snaps. \n\nSometimes on film, sometimes digital. Always about the person in front of the lens.\n\nSmall gestures say the most.',
         count: 14,
-        ext: "webp",
-        thumbExt: "webp",
+        ext: 'webp',
+        thumbExt: 'webp',
         captions:
           []
       },
       {
-        dir: "8",
-        id: "urban",
-        title: "URBAN",
+        dir: '8',
+        id: 'urban',
+        title: 'URBAN',
         description:
-          "A minimalist ode to lines, light, and materials. \n\nFrom the clean aesthetics of Danish design to architectural marvels across Europe, these photos celebrate the simplicity of architectural forms. \n\nIt’s all about the vibe of places and spaces.",
+          'A minimalist ode to lines, light, and materials. \n\nFrom the clean aesthetics of Danish design to architectural marvels across Europe, these photos celebrate the simplicity of architectural forms. \n\nIt’s all about the vibe of places and spaces.',
         count: 19,
-        ext: "webp",
-        thumbExt: "webp",
+        ext: 'webp',
+        thumbExt: 'webp',
         captions:
           [
-            "Denmark",
-            "Denmark",
-            "Portugal",
-            "Denmark",
-            "Portugal",
-            "Switzerland",
-            "Denmark",
-            "Portugal",
-            "Denmark",
-            "Italy",
-            "Denmark",
-            "Italy",
-            "Denmark",
-            "Czechia",
-            "Denmark",
-            "Denmark",
-            "Denmark",
-            "Denmark",
-            "Denmark",
+            'Denmark',
+            'Denmark',
+            'Portugal',
+            'Denmark',
+            'Portugal',
+            'Switzerland',
+            'Denmark',
+            'Portugal',
+            'Denmark',
+            'Italy',
+            'Denmark',
+            'Italy',
+            'Denmark',
+            'Czechia',
+            'Denmark',
+            'Denmark',
+            'Denmark',
+            'Denmark',
+            'Denmark'
           ]
       },
       {
-        dir: "9",
-        id: "nature",
-        title: "NATURE",
+        dir: '9',
+        id: 'nature',
+        title: 'NATURE',
         description:
-          "Quiet frames outside. Weather, texture, patience. \n\nLong walks and short shutters.\n\nThis is personal: I love time outdoors, and with a camera in hand. \n\nI collect what I see - thin light, quiet color, space to breathe.",
+          'Quiet frames outside. Weather, texture, patience. \n\nLong walks and short shutters.\n\nThis is personal: I love time outdoors, and with a camera in hand. \n\nI collect what I see - thin light, quiet color, space to breathe.',
         count: 24,
-        ext: "webp",
-        thumbExt: "webp",
+        ext: 'webp',
+        thumbExt: 'webp',
         captions:
           [
-            "Switzerland",
-            "Spain",
-            "France",
-            "Portugal",
-            "Sweden",
-            "Czechia",
-            "Denmark",
-            "Austria",
-            "Czechia",
-            "Czechia",
-            "Portugal",
-            "Norway",
-            "Czechia",
-            "Germany",
-            "Austria",
-            "Slovenia",
-            "Czechia",
-            "Austria",
-            "Czechia",
-            "Slovenia",
-            "Austria",
-            "Denmark",
-            "Germany",
-            "Portugal"
+            'Switzerland',
+            'Spain',
+            'France',
+            'Portugal',
+            'Sweden',
+            'Czechia',
+            'Denmark',
+            'Austria',
+            'Czechia',
+            'Czechia',
+            'Portugal',
+            'Norway',
+            'Czechia',
+            'Germany',
+            'Austria',
+            'Slovenia',
+            'Czechia',
+            'Austria',
+            'Czechia',
+            'Slovenia',
+            'Austria',
+            'Denmark',
+            'Germany',
+            'Portugal'
           ]
       }
     ];
@@ -605,9 +630,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function create(tag, cls) {
     const el = document.createElement(tag);
+
     if (cls) {
       el.className = cls;
     }
+
     return el;
   }
 
@@ -617,34 +644,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getCaption(proj, idx) {
     const base =
-      (proj.captions && typeof proj.captions[idx] === "string" && proj.captions[idx].trim())
+      (proj.captions && typeof proj.captions[idx] === 'string' && proj.captions[idx].trim())
       || proj.title
-      || "";
+      || '';
 
     return `${base} — ${z2(idx + 1)}/${z2(proj.images.length)}`;
   }
 
   // Lazy load helper
-  const io = ("IntersectionObserver" in window)
-    ? new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const el = entry.target;
-          const src = el.getAttribute("data-src");
-          if (src) {
-            el.src = src;
-            el.removeAttribute("data-src");
+  const io = ('IntersectionObserver' in window)
+    ? new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const src = el.getAttribute('data-src');
+
+            if (src) {
+              el.src = src;
+              el.removeAttribute('data-src');
+            }
+
+            io.unobserve(el);
           }
-          io.unobserve(el);
-        }
-      });
-    },
-      { rootMargin: "200px 0px 200px 0px", threshold: 0.01 })
+        });
+      },
+      { rootMargin: '200px 0px 200px 0px', threshold: 0.01 }
+    )
     : null;
 
   function lazySet(img, src) {
     if (io) {
-      img.setAttribute("data-src", src);
+      img.setAttribute('data-src', src);
       io.observe(img);
     }
     else {
@@ -680,7 +711,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateStageIndexContrast();
     }
     else {
-      stageIndex.classList.remove("index--dark");
+      stageIndex.classList.remove('index--dark');
     }
   }
 
@@ -704,10 +735,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const sx = Math.max(0, Math.floor(left + 14));
       const sy = Math.max(0, Math.floor(top + 14));
-      const sw = 20, sh = 20;
+      const sw = 20;
+      const sh = 20;
 
-      const canvas = updateStageIndexContrast._c || (updateStageIndexContrast._c = document.createElement("canvas"));
-      const ctx = updateStageIndexContrast._x || (updateStageIndexContrast._x = canvas.getContext("2d", { willReadFrequently: true }));
+      const canvas = updateStageIndexContrast._c || (updateStageIndexContrast._c = document.createElement('canvas'));
+      const ctx = updateStageIndexContrast._x || (updateStageIndexContrast._x = canvas.getContext('2d', { willReadFrequently: true }));
 
       canvas.width = cw;
       canvas.height = ch;
@@ -715,45 +747,48 @@ document.addEventListener("DOMContentLoaded", () => {
       ctx.drawImage(stageImg, left, top, dw, dh);
 
       const data = ctx.getImageData(sx, sy, sw, sh).data;
-      let sum = 0, count = 0;
+      let sum = 0;
+      let count = 0;
 
       for (let i = 0; i < data.length; i += 4) {
-        const r = data[i], g = data[i + 1], b = data[i + 2];
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
         sum += 0.2126 * r + 0.7152 * g + 0.0722 * b;
         count++;
       }
 
       const L = sum / count;
       const lightBg = L > 150;
-      stageIndex.classList.toggle("index--dark", lightBg);
+      stageIndex.classList.toggle('index--dark', lightBg);
     }
     catch (_e) {
-      stageIndex.classList.remove("index--dark");
+      stageIndex.classList.remove('index--dark');
     }
   }
 
   // ---------- Ribbon ----------
   function renderRibbon() {
-    ribbonEl.innerHTML = "";
+    ribbonEl.innerHTML = '';
 
     projects.forEach((p, i) => {
-      const item = create("button", "ribbon-item");
-      item.type = "button";
-      item.setAttribute("role", "listitem");
-      item.setAttribute("aria-current", i === activeProject ? "true" : "false");
+      const item = create('button', 'ribbon-item');
+      item.type = 'button';
+      item.setAttribute('role', 'listitem');
+      item.setAttribute('aria-current', i === activeProject ? 'true' : 'false');
 
-      const num = create("div", "num");
+      const num = create('div', 'num');
       num.textContent = z2(i + 1);
 
-      const thumb = create("div", "thumb");
+      const thumb = create('div', 'thumb');
       const img = new Image();
-      img.alt = "";
-      img.loading = "lazy";
-      img.decoding = "async";
+      img.alt = '';
+      img.loading = 'lazy';
+      img.decoding = 'async';
       lazySet(img, p.thumb);
       thumb.appendChild(img);
 
-      const ov = create("div", "overlay");
+      const ov = create('div', 'overlay');
       ov.textContent = p.title;
       thumb.appendChild(ov);
 
@@ -761,31 +796,31 @@ document.addEventListener("DOMContentLoaded", () => {
       item.appendChild(thumb);
 
       // --- inside renderRibbon(), replace the existing item.addEventListener("click", ...) ---
-      item.addEventListener("click", () => {
+      item.addEventListener('click', () => {
         const wasActive = (i === activeProject);
 
         setActiveProject(i, 0, true);
 
         if (wasActive) {
-          if (typeof window.scrollToPhotoSection === "function") {
+          if (typeof window.scrollToPhotoSection === 'function') {
             window.scrollToPhotoSection();
           }
           else {
             // Fallback: same math as the arrow uses
-            const header = document.querySelector(".sticky-header");
+            const header = document.querySelector('.sticky-header');
             const headerH = header ? header.offsetHeight : 60;
             const keepTitle = 20;
-            const photos = document.getElementById("photos");
+            const photos = document.getElementById('photos');
             const targetY = Math.max(0, (photos ? photos.offsetTop : 0) - headerH - keepTitle);
-            window.scrollTo({ top: targetY, behavior: "smooth" });
+            window.scrollTo({ top: targetY, behavior: 'smooth' });
           }
         }
         else {
           // Preserve your current "scroll to ribbon" behavior when changing projects
-          const header = document.querySelector(".sticky-header");
+          const header = document.querySelector('.sticky-header');
           const headerH = header ? header.offsetHeight : 0;
           const y = ribbonEl.getBoundingClientRect().top + window.scrollY;
-          window.scrollTo({ top: Math.max(0, y - headerH), behavior: "smooth" });
+          window.scrollTo({ top: Math.max(0, y - headerH), behavior: 'smooth' });
         }
       });
 
@@ -795,23 +830,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ---------- Viewer ----------
   function renderStrip(proj, current) {
-    stripEl.innerHTML = "";
+    stripEl.innerHTML = '';
 
     proj.images.forEach((_src, i) => {
-      const b = create("button", "strip-thumb");
-      b.type = "button";
+      const b = create('button', 'strip-thumb');
+      b.type = 'button';
       b.dataset.num = z2(i + 1);
 
       const capText = getCaption(proj, i);
 
-      b.setAttribute("aria-label", `${capText}`);
-      b.setAttribute("aria-selected", i === current ? "true" : "false");
+      b.setAttribute('aria-label', `${capText}`);
+      b.setAttribute('aria-selected', i === current ? 'true' : 'false');
       b.title = capText;
-      b.addEventListener("click", () => setActiveSlide(i, true));
+      b.addEventListener('click', () => setActiveSlide(i, true));
 
       const img = new Image();
-      img.loading = "lazy";
-      img.decoding = "async";
+      img.loading = 'lazy';
+      img.decoding = 'async';
       img.alt = capText;
       lazySet(img, (proj.thumbs && proj.thumbs[i]) ? proj.thumbs[i] : proj.images[i]);
 
@@ -823,11 +858,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // Add near your utils:
   function renderParagraphs(container, text) {
     container.replaceChildren();
-    const parts = String(text || "").trim().split(/\n\s*\n/);
-    parts.forEach(t => {
+    const parts = String(text || '').trim().split(/\n\s*\n/);
+
+    parts.forEach((t) => {
       const s = t.trim();
-      if (!s) { return; }
-      const p = document.createElement("p");
+
+      if (!s) {
+        return;
+      }
+
+      const p = document.createElement('p');
       p.textContent = s;
       container.appendChild(p);
     });
@@ -835,15 +875,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateAbout(proj) {
     aboutTitle.textContent = proj.title;
-    renderParagraphs(aboutText, proj.description || "");
+    renderParagraphs(aboutText, proj.description || '');
   }
 
   function preloadNeighbors(proj, idx) {
-    [idx - 1, idx + 1].forEach(j => {
+    [idx - 1, idx + 1].forEach((j) => {
       if (j >= 0 && j < proj.images.length) {
         const pre = new Image();
-        pre.decoding = "async";
-        pre.loading = "eager";
+        pre.decoding = 'async';
+        pre.loading = 'eager';
         pre.src = proj.images[j];
       }
     });
@@ -854,29 +894,29 @@ document.addEventListener("DOMContentLoaded", () => {
     const caption = getCaption(proj, idx);
 
     stageCaption.textContent = caption;
-    stageCaption.classList.add("has-caption");
+    stageCaption.classList.add('has-caption');
 
     const preview = (proj.thumbs && proj.thumbs[idx]) ? proj.thumbs[idx] : src;
     stageIndex.textContent = z2(idx + 1);
-    stageImg.classList.add("is-preview");
-    stageImg.style.opacity = "1";
-    stageImg.decoding = "async";
-    stageImg.fetchPriority = "high";
+    stageImg.classList.add('is-preview');
+    stageImg.style.opacity = '1';
+    stageImg.decoding = 'async';
+    stageImg.fetchPriority = 'high';
     stageImg.alt = caption;
     stageImg.src = preview;
 
     /* >>> ensure overlays are placed for the preview, not just the full <<< */
-    stageImg.addEventListener("load", positionStageOverlays, { once: true });
+    stageImg.addEventListener('load', positionStageOverlays, { once: true });
 
     const full = new Image();
-    full.decoding = "async";
+    full.decoding = 'async';
     full.onload = () => {
-      stageImg.style.opacity = "0";
+      stageImg.style.opacity = '0';
       requestAnimationFrame(() => {
         stageImg.src = src;
         stageImg.onload = () => {
-          stageImg.classList.remove("is-preview");
-          stageImg.style.opacity = "1";
+          stageImg.classList.remove('is-preview');
+          stageImg.style.opacity = '1';
           positionStageOverlays();
         };
       });
@@ -893,8 +933,8 @@ document.addEventListener("DOMContentLoaded", () => {
     activeProject = index;
     activeSlide = Math.max(0, Math.min(slide, projects[index].images.length - 1));
 
-    gallery.querySelectorAll(".ribbon-item").forEach((it, i) => {
-      it.setAttribute("aria-current", i === index ? "true" : "false");
+    gallery.querySelectorAll('.ribbon-item').forEach((it, i) => {
+      it.setAttribute('aria-current', i === index ? 'true' : 'false');
     });
 
     const proj = projects[index];
@@ -913,8 +953,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setStage(proj.images[activeSlide], activeSlide);
 
-    stripEl.querySelectorAll(".strip-thumb").forEach((el, i) => {
-      el.setAttribute("aria-selected", i === activeSlide ? "true" : "false");
+    stripEl.querySelectorAll('.strip-thumb').forEach((el, i) => {
+      el.setAttribute('aria-selected', i === activeSlide ? 'true' : 'false');
     });
 
     if (pushHash) {
@@ -930,60 +970,64 @@ document.addEventListener("DOMContentLoaded", () => {
     setActiveSlide(activeSlide + 1, true);
   }
 
-  prevBtn.addEventListener("click", prev);
-  nextBtn.addEventListener("click", next);
-  stageImg.addEventListener("click", () => openLightbox());
-  window.addEventListener("resize", positionStageOverlays);
-  window.addEventListener("resize", positionStageOverlays);
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+  stageImg.addEventListener('click', () => openLightbox());
+  window.addEventListener('resize', positionStageOverlays);
+  window.addEventListener('resize', positionStageOverlays);
 
   // ---------- Routing ----------
   function syncHash() {
     const proj = projects[activeProject];
     const hash = `#photo/${encodeURIComponent(proj.id)}?i=${activeSlide + 1}`;
+
     if (location.hash !== hash) {
-      history.replaceState(null, "", hash);
+      history.replaceState(null, '', hash);
     }
   }
 
   function readHash() {
     const m = location.hash.match(/^#photo\/([^?]+)(?:\?i=(\d+))?/i);
+
     if (m) {
       const slug = decodeURIComponent(m[1]);
-      const idx = projects.findIndex(p => p.id === slug);
+      const idx = projects.findIndex((p) => p.id === slug);
       const slide = Math.max(1, Number(m[2] || 1)) - 1;
+
       if (idx >= 0) {
         setActiveProject(idx, slide, false);
         return;
       }
     }
+
     setActiveProject(0, 0, true);
   }
 
-  window.addEventListener("hashchange", readHash);
+  window.addEventListener('hashchange', readHash);
 
   // Render mobile list (accordion style)
   function renderMobile() {
-    mobileList.innerHTML = "";
+    mobileList.innerHTML = '';
 
     projects.forEach((p, idx) => {
-      const item = create("div", "mobile-item");
-      item.setAttribute("role", "listitem");
-      item.setAttribute("aria-expanded", "false");
+      const item = create('div', 'mobile-item');
+      item.setAttribute('role', 'listitem');
+      item.setAttribute('aria-expanded', 'false');
 
-      const head = create("div", "mobile-head");
-      const num = create("div", "mobile-num");
-      const title = create("div", "mobile-title");
-      const mth = create("div", "mobile-thumb");
-      const chev = create("div", "mobile-chev");
+      const head = create('div', 'mobile-head');
+      const num = create('div', 'mobile-num');
+      const title = create('div', 'mobile-title');
+      const mth = create('div', 'mobile-thumb');
+      const chev = create('div', 'mobile-chev');
 
       num.textContent = z2(idx + 1);
       title.textContent = p.title;
-      chev.textContent = "›";
+      chev.textContent = '›';
 
       const timg = new Image();
-      timg.alt = "";
-      timg.decoding = "async";
-      timg.loading = "lazy";
+      timg.alt = '';
+      timg.decoding = 'async';
+      timg.loading = 'lazy';
       lazySet(timg, p.thumb);
       mth.appendChild(timg);
 
@@ -992,34 +1036,40 @@ document.addEventListener("DOMContentLoaded", () => {
       head.appendChild(mth);
       head.appendChild(chev);
 
-      const body = create("div", "mobile-body");
-      const about = create("div", "mobile-about");
-      renderParagraphs(about, p.description || "");
+      const body = create('div', 'mobile-body');
+      const about = create('div', 'mobile-about');
+      renderParagraphs(about, p.description || '');
       body.appendChild(about);
 
       let built = false;
 
       function buildBody() {
-        if (built) { return; }
+        if (built) {
+          return;
+        }
+
         built = true;
 
-        const stage = create("div", "mobile-stage");
-        const mp = create("button", "nav prev"); mp.textContent = "‹";
-        const mn = create("button", "nav next"); mn.textContent = "›";
+        const stage = create('div', 'mobile-stage');
+        const mp = create('button', 'nav prev');
+        mp.textContent = '‹';
+
+        const mn = create('button', 'nav next');
+        mn.textContent = '›';
 
         const img = new Image();
-        img.alt = "";
-        img.decoding = "async";
-        img.loading = "eager";
-        img.fetchPriority = "high";
+        img.alt = '';
+        img.decoding = 'async';
+        img.loading = 'eager';
+        img.fetchPriority = 'high';
 
-        const cap = create("div", "mobile-caption");
+        const cap = create('div', 'mobile-caption');
 
         // FULL SIZE from the start (no low-res thumb)
         const first = p.images[0];
-        img.style.opacity = "0";
+        img.style.opacity = '0';
         img.onload = () => {
-          img.style.opacity = "1";
+          img.style.opacity = '1';
         };
         img.src = first;
 
@@ -1028,20 +1078,21 @@ document.addEventListener("DOMContentLoaded", () => {
         stage.appendChild(mn);
         stage.appendChild(cap);
 
-        const mStrip = create("div", "mobile-strip");
+        const mStrip = create('div', 'mobile-strip');
+
         p.images.forEach((_src, i) => {
-          const b = create("button", "strip-thumb");
-          b.type = "button";
+          const b = create('button', 'strip-thumb');
+          b.type = 'button';
           b.dataset.num = z2(i + 1);
 
           const im = new Image();
           im.alt = getCaption(p, i);
-          im.decoding = "async";
-          im.loading = "lazy";
+          im.decoding = 'async';
+          im.loading = 'lazy';
           lazySet(im, p.thumbs?.[i] || p.images[i]);
 
           b.appendChild(im);
-          b.addEventListener("click", () => mSet(i));
+          b.addEventListener('click', () => mSet(i));
           mStrip.appendChild(b);
         });
 
@@ -1055,14 +1106,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const caption = getCaption(p, cur);
           cap.textContent = caption;
-          cap.classList.add("has-caption");
+          cap.classList.add('has-caption');
 
           const full = p.images[cur];
 
           if (img.src !== full) {
-            img.style.opacity = "0";
+            img.style.opacity = '0';
             img.onload = () => {
-              img.style.opacity = "1";
+              img.style.opacity = '1';
               img.onload = null;
             };
             img.src = full;
@@ -1071,10 +1122,10 @@ document.addEventListener("DOMContentLoaded", () => {
           preloadNeighbors(p, cur);
         }
 
-        mp.addEventListener("click", () => mSet(cur - 1));
-        mn.addEventListener("click", () => mSet(cur + 1));
+        mp.addEventListener('click', () => mSet(cur - 1));
+        mn.addEventListener('click', () => mSet(cur + 1));
 
-        img.addEventListener("click", () => {
+        img.addEventListener('click', () => {
           activeProject = idx;
           activeSlide = cur;
           openLightbox();
@@ -1082,16 +1133,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Initialize
         cap.textContent = getCaption(p, 0);
-        cap.classList.add("has-caption");
+        cap.classList.add('has-caption');
         mSet(0);
       }
 
-      head.addEventListener("click", () => {
+      head.addEventListener('click', () => {
         const open = mobileList.querySelector('.mobile-item[aria-expanded="true"]');
+
         if (open && open !== item) {
           animateClose(open);
         }
-        if (item.getAttribute("aria-expanded") === "true") {
+
+        if (item.getAttribute('aria-expanded') === 'true') {
           animateClose(item);
         }
         else {
@@ -1107,63 +1160,71 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function animateOpen(item) {
-    const body = item.querySelector(".mobile-body");
-    item.setAttribute("aria-expanded", "true");
-    body.style.maxHeight = "0px";
+    const body = item.querySelector('.mobile-body');
+    item.setAttribute('aria-expanded', 'true');
+    body.style.maxHeight = '0px';
     const h = body.scrollHeight;
-    requestAnimationFrame(() => { body.style.maxHeight = `${h}px`; });
+    requestAnimationFrame(() => {
+      body.style.maxHeight = `${h}px`;
+    });
   }
 
   function animateClose(item) {
-    const body = item.querySelector(".mobile-body");
+    const body = item.querySelector('.mobile-body');
     const h = body.scrollHeight;
     body.style.maxHeight = `${h}px`;
-    requestAnimationFrame(() => { body.style.maxHeight = "0px"; });
-    item.setAttribute("aria-expanded", "false");
+    requestAnimationFrame(() => {
+      body.style.maxHeight = '0px';
+    });
+    item.setAttribute('aria-expanded', 'false');
   }
 
   // ---------- Lightbox ----------
   function openLightbox() {
     const proj = projects[activeProject];
-    lb.classList.remove("hidden");
-    lb.setAttribute("aria-hidden", "false");
+    lb.classList.remove('hidden');
+    lb.setAttribute('aria-hidden', 'false');
     lbImg.src = proj.images[activeSlide];
     lbImg.alt = getCaption(proj, activeSlide);
     preloadNeighbors(proj, activeSlide);
   }
 
   function closeLightbox() {
-    lb.classList.add("hidden");
-    lb.setAttribute("aria-hidden", "true");
+    lb.classList.add('hidden');
+    lb.setAttribute('aria-hidden', 'true');
   }
 
-  lbPrev.addEventListener("click", () => {
+  lbPrev.addEventListener('click', () => {
     prev();
     const proj = projects[activeProject];
     lbImg.src = proj.images[activeSlide];
     lbImg.alt = getCaption(proj, activeSlide);
   });
-  lbNext.addEventListener("click", () => {
+
+  lbNext.addEventListener('click', () => {
     next();
     const proj = projects[activeProject];
     lbImg.src = proj.images[activeSlide];
     lbImg.alt = getCaption(proj, activeSlide);
   });
-  lbClose.addEventListener("click", closeLightbox);
-  lb.addEventListener("click", (e) => {
+
+  lbClose.addEventListener('click', closeLightbox);
+
+  lb.addEventListener('click', (e) => {
     if (e.target === lb) {
       closeLightbox();
     }
   });
-  document.addEventListener("keydown", (e) => {
-    if (lb.classList.contains("hidden")) {
-      if (e.key === "ArrowLeft") { prev(); }
-      if (e.key === "ArrowRight") { next(); }
+
+  document.addEventListener('keydown', (e) => {
+    if (lb.classList.contains('hidden')) {
+      if (e.key === 'ArrowLeft') { prev(); }
+      if (e.key === 'ArrowRight') { next(); }
     }
     else {
-      if (e.key === "Escape") { closeLightbox(); }
-      if (e.key === "ArrowLeft") { lbPrev.click(); }
-      if (e.key === "ArrowRight") { lbNext.click(); }
+      if (e.key === 'Escape') { closeLightbox(); }
+      if (e.key === 'ArrowLeft') { lbPrev.click(); }
+      if (e.key === 'ArrowRight') { lbNext.click(); }
     }
   });
 
@@ -1176,10 +1237,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   boot();
 });
-
-
-
-
 
 // ===== VIDEO SECTION (ONE PREVIEW VIDEO, CLICK OPENS VIMEO) =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -1222,6 +1279,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const current = video.currentSrc || '';
+
     if (current.includes(src)) {
       return;
     }
@@ -1240,6 +1298,7 @@ document.addEventListener('DOMContentLoaded', () => {
     video.load();
 
     const play = video.play();
+
     if (play && typeof play.catch === 'function') {
       play.catch(() => { });
     }
@@ -1261,10 +1320,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const parts = normalized
       .split(/\n\s*\n+/)
-      .map(s => s.trim())
+      .map((s) => s.trim())
       .filter(Boolean);
 
-    el.innerHTML = parts.map(p => {
+    el.innerHTML = parts.map((p) => {
       const safe = p
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -1275,7 +1334,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function setActive(row) {
-    rows.forEach(r => {
+    rows.forEach((r) => {
       r.classList.toggle('is-active', r === row);
     });
 
@@ -1305,7 +1364,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setActive(row);
   }
 
-  rows.forEach(row => {
+  rows.forEach((row) => {
     row.addEventListener('mouseenter', () => {
       maybeHoverSelect(row);
     });
@@ -1322,130 +1381,107 @@ document.addEventListener('DOMContentLoaded', () => {
 
   bp1024.addEventListener('change', () => {
     const active = lines.querySelector('.video-row.is-active') || rows[0];
+
     if (active) {
       setActive(active);
     }
   });
 
   const first = lines.querySelector('.video-row.is-active') || rows[0];
+
   if (first) {
     setActive(first);
   }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ==================================================
 // ================= CODING SECTION =================
 // ==================================================
-
 document.addEventListener('DOMContentLoaded', () => {
   const list = document.querySelector('.coding-list');
   const preview = document.querySelector('.coding-preview');
   const mobile = document.querySelector('.coding-mobile');
   const infoMsg = document.getElementById('codingInfoMessage');
 
-  if (!list || !preview || !mobile) return;
+  if (!list || !preview || !mobile) {
+    return;
+  }
 
-  const projects = [
-    {
-      title: 'Insights',
-      tech: 'Angular',
-      description:
-        'Mobility data, maps, charts, lots of decisions.\n\nPart product brain, part UI builder. Turning messy real-world data into something you can actually understand and use.',
-      thumb: 'papp_t_s.png',
-      mockup: 'insights.png',
-      private: true
-    },
-    {
-      title: 'Simona Černá',
-      tech: 'Webflow / HTML / CSS',
-      description:
-        'A digital home for a designer.\n\nSoft typography, clean layout, letting the work breathe. Built to feel calm, intentional, and a little poetic.',
-      thumb: 'simona_t_s.png',
-      mockup: 'simona.png',
-      link: 'https://simona-cerna.com'
-    },
-    {
-      title: '3D Tic Tac Toe',
-      tech: 'Angular',
-      description:
-        'Classic game, but make it 3D.\n\nA small coding playground where logic gets layered and your brain starts spinning a bit. Built for fun, stayed for the challenge.',
-      thumb: 'tictactoe_t.png',
-      mockup: 'tictactoe.png',
-      link: 'https://threedttt.web.app/'
-    },
-    {
-      title: 'Papp iOS App',
-      tech: 'Swift',
-      description:
-        'Mobility data, now in your pocket.\n\nNative iOS app built around clarity and speed, making complex data feel simple.',
-      thumb: 'papp-ios_t_s.png',
-      mockup: 'papp-ios.png',
-      link: 'https://apps.apple.com/dk/app/papp-mobility/id1600485051'
-    },
-    {
-      title: 'Pyntet Studio',
-      tech: 'HTML / CSS / JavaScript',
-      description:
-        'Handcoded from scratch.\n\nNo templates, no shortcuts. Just clean HTML, custom CSS, and a site built to match the quiet elegance of the brand.',
-      thumb: 'pyntet_t_s.png',
-      mockup: 'pyntet.png',
-      link: 'https://simona-cerna.com/pyntet'
-    },
-    {
-      title: 'Jeezis Portal',
-      tech: 'Angular',
-      description:
-        'Family chaos, but organized.\n\nA private gift-exchange app to keep Christmas civil. Logic, secrets, and a bit of fun behind the scenes.',
-      thumb: 'jeezis_t_s.png',
-      mockup: 'jeezis.png',
-      private: true
-    },
-    {
-      title: 'Loop24',
-      tech: 'HTML / CSS',
-      description:
-        '24 hours. Bikes. No sleep.\n\nMinimal web page for a cycling race. Straight to the point, built fast, focused on atmosphere and clarity.',
-      thumb: 'loop24_t_s.png',
-      mockup: 'loop24.png',
-      link: 'https://loop24.cz/'
-    },
-    {
-      title: 'Papp Mobility',
-      tech: 'WIX Studio',
-      description:
-        'Company website refresh.\n\nClean structure, sharper message, less noise. Turning a growing startup into something that feels solid and ready.',
-      thumb: 'papp-web_t_s.png',
-      mockup: 'papp-web.png',
-      link: 'https://www.pappmobility.com/'
-    }
-  ];
+  const projects =
+    [
+      {
+        title: 'Insights',
+        tech: 'Angular',
+        description:
+          'Mobility data, maps, charts, lots of decisions.\n\nPart product brain, part UI builder. Turning messy real-world data into something you can actually understand and use.',
+        thumb: 'papp_t_s.png',
+        mockup: 'insights.png',
+        private: true
+      },
+      {
+        title: 'Simona Černá',
+        tech: 'Webflow / HTML / CSS',
+        description:
+          'A digital home for a designer.\n\nSoft typography, clean layout, letting the work breathe. Built to feel calm, intentional, and a little poetic.',
+        thumb: 'simona_t_s.png',
+        mockup: 'simona.png',
+        link: 'https://simona-cerna.com'
+      },
+      {
+        title: '3D Tic Tac Toe',
+        tech: 'Angular',
+        description:
+          'Classic game, but make it 3D.\n\nA small coding playground where logic gets layered and your brain starts spinning a bit. Built for fun, stayed for the challenge.',
+        thumb: 'tictactoe_t.png',
+        mockup: 'tictactoe.png',
+        link: 'https://threedttt.web.app/'
+      },
+      {
+        title: 'Papp iOS App',
+        tech: 'Swift',
+        description:
+          'Mobility data, now in your pocket.\n\nNative iOS app built around clarity and speed, making complex data feel simple.',
+        thumb: 'papp-ios_t_s.png',
+        mockup: 'papp-ios.png',
+        link: 'https://apps.apple.com/dk/app/papp-mobility/id1600485051'
+      },
+      {
+        title: 'Pyntet Studio',
+        tech: 'HTML / CSS / JavaScript',
+        description:
+          'Handcoded from scratch.\n\nNo templates, no shortcuts. Just clean HTML, custom CSS, and a site built to match the quiet elegance of the brand.',
+        thumb: 'pyntet_t_s.png',
+        mockup: 'pyntet.png',
+        link: 'https://simona-cerna.com/pyntet'
+      },
+      {
+        title: 'Jeezis Portal',
+        tech: 'Angular',
+        description:
+          'Family chaos, but organized.\n\nA private gift-exchange app to keep Christmas civil. Logic, secrets, and a bit of fun behind the scenes.',
+        thumb: 'jeezis_t_s.png',
+        mockup: 'jeezis.png',
+        private: true
+      },
+      {
+        title: 'Loop24',
+        tech: 'HTML / CSS',
+        description:
+          '24 hours. Bikes. No sleep.\n\nMinimal web page for a cycling race. Straight to the point, built fast, focused on atmosphere and clarity.',
+        thumb: 'loop24_t_s.png',
+        mockup: 'loop24.png',
+        link: 'https://loop24.cz/'
+      },
+      {
+        title: 'Papp Mobility',
+        tech: 'WIX Studio',
+        description:
+          'Company website refresh.\n\nClean structure, sharper message, less noise. Turning a growing startup into something that feels solid and ready.',
+        thumb: 'papp-web_t_s.png',
+        mockup: 'papp-web.png',
+        link: 'https://www.pappmobility.com/'
+      }
+    ];
 
   // Helper to show the subtle overlay message
   function showInfoMessage() {
@@ -1462,7 +1498,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function handleProjectClick(project) {
     if (project.private) {
       showInfoMessage();
-    } else if (project.link) {
+    }
+    else if (project.link) {
       window.open(project.link, '_blank', 'noopener');
     }
   }
@@ -1496,6 +1533,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="coding-thumb"><img src="assets/coding/thumbs/${p.thumb}" alt=""></div>
       <div class="coding-chev">›</div>
     `;
+
     btn.addEventListener('mouseenter', () => setActive(i));
     btn.addEventListener('click', () => setActive(i));
     list.appendChild(btn);
@@ -1503,8 +1541,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Generate Mobile Accordion
   projects.forEach((p, i) => {
-    const item = document.createElement("div");
-    item.className = "coding-mobile-item";
+    const item = document.createElement('div');
+    item.className = 'coding-mobile-item';
     item.innerHTML = `
       <div class="coding-mobile-head">
         <div class="coding-mobile-num">${(i + 1).toString().padStart(2, '0')}</div>
@@ -1521,25 +1559,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Make mobile image clickable
     const mobileImg = item.querySelector('.mobile-mockup-trigger');
+
     mobileImg.addEventListener('click', (e) => {
       e.stopPropagation(); // Don't close the accordion when clicking image
       handleProjectClick(p);
     });
 
-    const head = item.querySelector(".coding-mobile-head");
-    head.addEventListener("click", () => {
-      const isExpanded = item.getAttribute("aria-expanded") === "true";
+    const head = item.querySelector('.coding-mobile-head');
+
+    head.addEventListener('click', () => {
+      const isExpanded = item.getAttribute('aria-expanded') === 'true';
 
       // Close others
-      mobile.querySelectorAll('.coding-mobile-item').forEach(other => {
-        other.setAttribute("aria-expanded", "false");
-        other.querySelector(".coding-mobile-body").style.maxHeight = null;
+      mobile.querySelectorAll('.coding-mobile-item').forEach((other) => {
+        other.setAttribute('aria-expanded', 'false');
+        other.querySelector('.coding-mobile-body').style.maxHeight = null;
       });
 
       if (!isExpanded) {
-        item.setAttribute("aria-expanded", "true");
-        const body = item.querySelector(".coding-mobile-body");
-        body.style.maxHeight = body.scrollHeight + "px";
+        item.setAttribute('aria-expanded', 'true');
+        const body = item.querySelector('.coding-mobile-body');
+        body.style.maxHeight = body.scrollHeight + 'px';
       }
     });
 
@@ -1549,18 +1589,17 @@ document.addEventListener('DOMContentLoaded', () => {
   setActive(0);
 });
 
-
-document.addEventListener("DOMContentLoaded", () => {
-  const wrap = document.getElementById("meGameWrap");
-  const canvas = document.getElementById("meGameCanvas");
-  const scoreEl = document.getElementById("meGameScore");
-  const hintEl = document.getElementById("meGameHint");
+document.addEventListener('DOMContentLoaded', () => {
+  const wrap = document.getElementById('meGameWrap');
+  const canvas = document.getElementById('meGameCanvas');
+  const scoreEl = document.getElementById('meGameScore');
+  const hintEl = document.getElementById('meGameHint');
 
   if (!wrap || !canvas || !scoreEl) {
     return;
   }
 
-  const ctx = canvas.getContext("2d", { alpha: true });
+  const ctx = canvas.getContext('2d', { alpha: true });
 
   const TARGET_SCORE = 5;
 
@@ -1581,11 +1620,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const imgCactus = new Image();
   const imgFinish = new Image();
 
-  imgStand.src = "assets/mes.png";
-  imgRun.src = "assets/mer.png";
-  imgJump.src = "assets/mej.png";
-  imgCactus.src = "assets/cac.png";
-  imgFinish.src = "assets/box.png";
+  imgStand.src = 'assets/mes.png';
+  imgRun.src = 'assets/mer.png';
+  imgJump.src = 'assets/mej.png';
+  imgCactus.src = 'assets/cac.png';
+  imgFinish.src = 'assets/box.png';
 
   let spritesReady = 0;
 
@@ -1642,10 +1681,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const State =
   {
-    IDLE: "idle",
-    RUN: "run",
-    OVER: "over",
-    WIN: "win"
+    IDLE: 'idle',
+    RUN: 'run',
+    OVER: 'over',
+    WIN: 'win'
   };
 
   let state = State.IDLE;
@@ -1666,12 +1705,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let infoTimer = null;
 
   function ensureInfo() {
-    if (infoEl) { return; }
+    if (infoEl) {
+      return;
+    }
 
-    const el = document.createElement("div");
-    el.className = "me-game-info";
-    el.setAttribute("aria-live", "polite");
-    el.setAttribute("aria-hidden", "true");
+    const el = document.createElement('div');
+    el.className = 'me-game-info';
+    el.setAttribute('aria-live', 'polite');
+    el.setAttribute('aria-hidden', 'true');
 
     el.innerHTML = `
     <div class="info-message-content">
@@ -1684,7 +1725,7 @@ document.addEventListener("DOMContentLoaded", () => {
     infoEl = el;
 
     // allow dismiss by clicking the toast itself
-    el.addEventListener("pointerdown", (e) => {
+    el.addEventListener('pointerdown', (e) => {
       e.stopPropagation();
       hideInfo();
     });
@@ -1693,16 +1734,18 @@ document.addEventListener("DOMContentLoaded", () => {
   function showInfo(title, text, durationMs = 3000) {
     ensureInfo();
 
-    const t = infoEl.querySelector("#meGameInfoTitle");
-    const p = infoEl.querySelector("#meGameInfoText");
+    const t = infoEl.querySelector('#meGameInfoTitle');
+    const p = infoEl.querySelector('#meGameInfoText');
 
     if (t) { t.textContent = title; }
     if (p) { p.textContent = text; }
 
-    infoEl.setAttribute("aria-hidden", "false");
-    infoEl.classList.add("show");
+    infoEl.setAttribute('aria-hidden', 'false');
+    infoEl.classList.add('show');
 
-    if (infoTimer) { clearTimeout(infoTimer); }
+    if (infoTimer) {
+      clearTimeout(infoTimer);
+    }
 
     infoTimer = setTimeout(() => {
       hideInfo();
@@ -1710,10 +1753,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function hideInfo() {
-    if (!infoEl) { return; }
+    if (!infoEl) {
+      return;
+    }
 
-    infoEl.classList.remove("show");
-    infoEl.setAttribute("aria-hidden", "true");
+    infoEl.classList.remove('show');
+    infoEl.setAttribute('aria-hidden', 'true');
 
     if (infoTimer) {
       clearTimeout(infoTimer);
@@ -1721,8 +1766,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  document.addEventListener("pointerdown", () => {
-    if (infoEl && infoEl.classList.contains("show")) {
+  document.addEventListener('pointerdown', () => {
+    if (infoEl && infoEl.classList.contains('show')) {
       hideInfo();
     }
   });
@@ -1745,7 +1790,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.scale(w / WORLD.w, h / WORLD.h);
   }
 
-  window.addEventListener("resize", resizeCanvas);
+  window.addEventListener('resize', resizeCanvas);
 
   // ==========================
   // ======= HELPERS ==========
@@ -1761,10 +1806,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function rectsOverlap(a, b) {
     return (
-      a.x < b.x + b.w &&
-      a.x + a.w > b.x &&
-      a.y < b.y + b.h &&
-      a.y + a.h > b.y
+      a.x < b.x + b.w
+      && a.x + a.w > b.x
+      && a.y < b.y + b.h
+      && a.y + a.h > b.y
     );
   }
 
@@ -1788,7 +1833,7 @@ document.addEventListener("DOMContentLoaded", () => {
     hideInfo();
 
     if (hintEl) {
-      hintEl.textContent = "";
+      hintEl.textContent = '';
     }
 
     state = State.IDLE;
@@ -1799,7 +1844,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const x = (typeof forceX === "number") ? forceX : WORLD.w + 120;
+    const x = (typeof forceX === 'number') ? forceX : WORLD.w + 120;
 
     obstacles.push(
       {
@@ -1808,7 +1853,8 @@ document.addEventListener("DOMContentLoaded", () => {
         w: OB.w,
         h: OB.h,
         passed: false
-      });
+      }
+    );
 
     spawnedCount++;
 
@@ -1896,12 +1942,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     state = State.OVER;
-    showInfo("GAME OVER", "Click to restart.");
+    showInfo('GAME OVER', 'Click to restart.');
   }
 
   function lockFinish() {
     // stop any further obstacle spawns and remove any "future" obstacles
-    obstacles = obstacles.filter(o => (o.x + o.w) < PLAYER.x);
+    obstacles = obstacles.filter((o) => (o.x + o.w) < PLAYER.x);
 
     FINISH.active = true;
     FINISH.passed = false;
@@ -1912,8 +1958,8 @@ document.addEventListener("DOMContentLoaded", () => {
     state = State.WIN;
 
     showInfo(
-      "THAT WAS FUN.",
-      "You made it. \n\nWant to build something cool together?",
+      'THAT WAS FUN.',
+      'You made it. \n\nWant to build something cool together?',
       5000
     );
   }
@@ -1973,7 +2019,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    obstacles = obstacles.filter(o => o.x + o.w > -120);
+    obstacles = obstacles.filter((o) => o.x + o.w > -120);
 
     // finish box
     if (FINISH.active && !FINISH.passed && state === State.RUN) {
@@ -1998,7 +2044,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.clearRect(0, 0, WORLD.w, WORLD.h);
 
     // ground (dark-mode friendly)
-    const groundColor = document.body.classList.contains("dark-mode") ? "#fff" : "#000";
+    const groundColor = document.body.classList.contains('dark-mode') ? '#fff' : '#000';
     ctx.strokeStyle = groundColor;
     ctx.lineWidth = 2;
 
@@ -2037,9 +2083,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (state === State.IDLE) {
       ctx.fillStyle = groundColor;
       ctx.globalAlpha = 0.25;
-      ctx.font = "700 12px Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial";
-      ctx.textAlign = "center";
-      ctx.fillText("CLICK / SPACE TO START", WORLD.w / 2, WORLD.groundY - 40);
+      ctx.font = '700 12px Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('CLICK / SPACE TO START', WORLD.w / 2, WORLD.groundY - 40);
       ctx.globalAlpha = 1;
     }
   }
@@ -2061,7 +2107,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function onKeyDown(e) {
-    if (e.key !== " " && e.key !== "Enter") {
+    if (e.key !== ' ' && e.key !== 'Enter') {
       return;
     }
 
@@ -2098,8 +2144,8 @@ document.addEventListener("DOMContentLoaded", () => {
     jump();
   }
 
-  document.addEventListener("keydown", onKeyDown, { passive: false });
-  wrap.addEventListener("pointerdown", onPointer);
+  document.addEventListener('keydown', onKeyDown, { passive: false });
+  wrap.addEventListener('pointerdown', onPointer);
 
   reset();
   resizeCanvas();
