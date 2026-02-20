@@ -19,23 +19,40 @@
      ===== GOATCOUNTER UX ======
      =========================== */
 
+  const gcQueue = [];
+
   function gcDeviceTag() {
-    return window.matchMedia("(max-width: 1024px)").matches ? "m" : "d";
+    return window.matchMedia("(max-width: 1024px)").matches ? "__m" : "__d";
   }
 
   function gcCanTrack() {
     return !!(window.goatcounter && location.protocol !== "file:");
   }
 
-  function gcTrack(path, title, extra) {
+  function gcNormPath(path) {
+    const p = String(path || "").trim();
+
+    if (!p) {
+      return "";
+    }
+
+    return p.startsWith("/") ? p.slice(1) : p;
+  }
+
+  function gcFlush() {
     if (!gcCanTrack()) {
       return;
     }
 
-    const d = gcDeviceTag();
+    while (gcQueue.length) {
+      window.goatcounter.count(gcQueue.shift());
+    }
+  }
+
+  function gcTrack(path, title, extra) {
     const payload =
     {
-      path: `/__${d}${path}`,
+      path: `${gcDeviceTag()}/${gcNormPath(path)}`,
       title: title || undefined,
       event: true
     };
@@ -44,8 +61,22 @@
       Object.assign(payload, extra);
     }
 
+    if (!gcCanTrack()) {
+      gcQueue.push(payload);
+      return;
+    }
+
     window.goatcounter.count(payload);
   }
+
+  (function gcWaitForGoatcounter() {
+    if (gcCanTrack()) {
+      gcFlush();
+      return;
+    }
+
+    setTimeout(gcWaitForGoatcounter, 250);
+  })();
 
   function gcSlug(s) {
     return String(s || "")
