@@ -6,10 +6,14 @@
    - Dark-mode cursor
    - Typewriter
    - Photo gallery + lightbox + mobile accordion + hash routing
-   - Video section (single preview player) + tracking + watch buckets
-   - Coding section (desktop list + mobile accordion) + private-project toast + tracking
-   - Mini runner game + tracking
-   - Section timing (IntersectionObserver) + tracking
+   - Video section (single preview player)
+   - Coding section (desktop list + mobile accordion + private-project toast)
+   - Mini runner game
+   - Minimal GoatCounter tracking:
+       contact open
+       game win / game over
+       time spent in photos / videos / coding
+       photo interactions count (single flush on leave)
    ========================================================================== */
 
 (() => {
@@ -20,8 +24,12 @@
      =========================== */
 
   const gcQueue = [];
-  const gcCooldown = new Map();
-  const gcSeen = new Set();
+
+  const metrics =
+  {
+    photoInteractions: 0,
+    flushed: false
+  };
 
   function gcDeviceTag() {
     return window.matchMedia("(max-width: 1024px)").matches ? "__m" : "__d";
@@ -49,10 +57,6 @@
       .replace(/(^-|-$)/g, "");
   }
 
-  function gcNow() {
-    return Date.now ? Date.now() : (new Date()).getTime();
-  }
-
   function gcSend(payload) {
     if (!gcCanTrack()) {
       gcQueue.push(payload);
@@ -71,31 +75,10 @@
     setTimeout(gcWaitForGoatcounter, 250);
   })();
 
-  function gcTrackOnce(key, payload) {
-    if (gcSeen.has(key)) {
-      return;
-    }
-
-    gcSeen.add(key);
-    gcSend(payload);
-  }
-
-  function gcTrackCooldown(key, cooldownMs, payload) {
-    const t = gcNow();
-    const last = gcCooldown.get(key) || 0;
-
-    if ((t - last) < cooldownMs) {
-      return;
-    }
-
-    gcCooldown.set(key, t);
-    gcSend(payload);
-  }
-
   /*
-    Event design (IMPORTANT):
-    - path is LOW-cardinality: "__d/ev/<category>/<action>"
-    - details go in title/referrer (so you don't blow up "visits")
+    Minimal event design (IMPORTANT):
+    - LOW-cardinality paths only: "__d/ev/<category>/<action>"
+    - Details go in title/referrer
   */
   function gcEvent(category, action, label, extra) {
     const payload =
@@ -113,37 +96,24 @@
     gcSend(payload);
   }
 
-  function gcEventOnce(key, category, action, label, extra) {
-    const payload =
-    {
-      path: `${gcDeviceTag()}/ev/${gcSlug(category)}/${gcSlug(action)}`,
-      title: label ? String(label) : undefined,
-      referrer: `${location.pathname}${location.hash || ""}`,
-      event: true
-    };
-
-    if (extra && typeof extra === "object") {
-      Object.assign(payload, extra);
+  function flushMetrics() {
+    if (metrics.flushed) {
+      return;
     }
 
-    gcTrackOnce(key, payload);
-  }
+    metrics.flushed = true;
 
-  function gcEventCooldown(key, cooldownMs, category, action, label, extra) {
-    const payload =
-    {
-      path: `${gcDeviceTag()}/ev/${gcSlug(category)}/${gcSlug(action)}`,
-      title: label ? String(label) : undefined,
-      referrer: `${location.pathname}${location.hash || ""}`,
-      event: true
-    };
-
-    if (extra && typeof extra === "object") {
-      Object.assign(payload, extra);
+    if (metrics.photoInteractions > 0) {
+      gcEvent("photo", "interactions", String(metrics.photoInteractions));
     }
-
-    gcTrackCooldown(key, cooldownMs, payload);
   }
+
+  window.addEventListener("pagehide", flushMetrics);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") {
+      flushMetrics();
+    }
+  });
 
   function onReady(fn) {
     if (document.readyState === "loading") {
@@ -192,8 +162,6 @@
       themeToggle?.classList.remove("animate");
       void themeToggle?.offsetWidth;
       themeToggle?.classList.add("animate");
-
-      gcEvent("ui", "theme_toggle", document.body.classList.contains("dark-mode") ? "dark" : "light");
     }
 
     themeToggle?.addEventListener("click", toggleTheme);
@@ -214,7 +182,7 @@
       overlay?.classList.remove("hidden");
       overlay?.setAttribute("aria-hidden", "false");
 
-      gcEvent("ui", "contact_open", "open");
+      gcEvent("contact", "open", "overlay");
     }
 
     contactBtn?.addEventListener("click", (e) => {
@@ -229,13 +197,11 @@
       e.preventDefault();
       e.stopPropagation();
       closeOverlayFn();
-      gcEvent("ui", "contact_close", "button");
     });
 
     overlay?.addEventListener("click", (e) => {
       if (!e.target.closest(".contact-box")) {
         closeOverlayFn();
-        gcEvent("ui", "contact_close", "bg");
       }
     });
 
@@ -243,7 +209,6 @@
       if (e.key === "Escape") {
         if (overlay && !overlay.classList.contains("hidden")) {
           closeOverlayFn();
-          gcEvent("ui", "contact_close", "esc");
         }
       }
     });
@@ -341,14 +306,12 @@
 
           e.preventDefault();
           scrollToNextSection(el);
-          gcEvent("scroll", "next", "arrow");
           return;
         }
 
         if (mode === "top") {
           e.preventDefault();
           smoothScrollTo(0, 900);
-          gcEvent("scroll", "top", "arrow");
         }
       });
     });
@@ -371,7 +334,6 @@
       if (hash === "#" || hash === "#top") {
         e.preventDefault();
         smoothScrollTo(0, 900);
-        gcEvent("hash", "scroll", "top");
         return;
       }
 
@@ -380,7 +342,6 @@
       if (target) {
         e.preventDefault();
         scrollToElementTopWithGap(target);
-        gcEvent("hash", "scroll", hash.replace("#", ""));
       }
     });
 
@@ -589,8 +550,29 @@
     const lbNext = lb?.querySelector(".lb-next");
     const lbClose = lb?.querySelector(".lb-close");
 
-    if (!ribbonEl || !aboutTitle || !aboutText || !stageBox || !stageImg || !stageIndex || !stageCaption || !prevBtn || !nextBtn || !stripEl || !mobileList || !lb || !lbImg || !lbPrev || !lbNext || !lbClose) {
+    if (
+      !ribbonEl
+      || !aboutTitle
+      || !aboutText
+      || !stageBox
+      || !stageImg
+      || !stageIndex
+      || !stageCaption
+      || !prevBtn
+      || !nextBtn
+      || !stripEl
+      || !mobileList
+      || !lb
+      || !lbImg
+      || !lbPrev
+      || !lbNext
+      || !lbClose
+    ) {
       return;
+    }
+
+    function markPhotoInteraction() {
+      metrics.photoInteractions++;
     }
 
     // ---------- Projects ----------
@@ -1018,7 +1000,7 @@
             setActiveProject(i, 0, true);
           }
 
-          gcEvent("photo", "ribbon_click", `${projects[i].id} | ${projects[i].title}`);
+          markPhotoInteraction();
         });
 
         ribbonEl.appendChild(item);
@@ -1039,7 +1021,10 @@
         b.setAttribute("aria-label", `${capText}`);
         b.setAttribute("aria-selected", i === current ? "true" : "false");
         b.title = capText;
-        b.addEventListener("click", () => setActiveSlide(i, true));
+        b.addEventListener("click", () => {
+          markPhotoInteraction();
+          setActiveSlide(i, true);
+        });
 
         const img = new Image();
         img.loading = "lazy";
@@ -1074,14 +1059,6 @@
       renderStrip(proj, activeSlide);
       setStage(proj.images[activeSlide], activeSlide);
 
-      gcEventCooldown(
-        `photo_project_${proj.id}`,
-        800,
-        "photo",
-        "project",
-        `${proj.id} | ${proj.title}`
-      );
-
       if (pushHash) {
         syncHash();
       }
@@ -1097,31 +1074,27 @@
         el.setAttribute("aria-selected", i === activeSlide ? "true" : "false");
       });
 
-      const proj2 = projects[activeProject];
-      gcEventCooldown(
-        `photo_slide_${proj2.id}`,
-        800,
-        "photo",
-        "slide",
-        `${proj2.id} #${activeSlide + 1}`
-      );
-
       if (pushHash) {
         syncHash();
       }
     }
 
     function prev() {
+      markPhotoInteraction();
       setActiveSlide(activeSlide - 1, true);
     }
 
     function next() {
+      markPhotoInteraction();
       setActiveSlide(activeSlide + 1, true);
     }
 
     prevBtn.addEventListener("click", prev);
     nextBtn.addEventListener("click", next);
-    stageImg.addEventListener("click", () => openLightbox());
+    stageImg.addEventListener("click", () => {
+      markPhotoInteraction();
+      openLightbox();
+    });
     window.addEventListener("resize", positionStageOverlays);
 
     // ---------- Lightbox ----------
@@ -1135,20 +1108,15 @@
       lbImg.alt = getCaption(proj, activeSlide);
 
       preloadNeighbors(proj, activeSlide);
-
-      gcEvent("photo", "lightbox_open", `${proj.id} #${activeSlide + 1}`);
     }
 
     function closeLightbox() {
-      const proj = projects[activeProject];
-
       lb.classList.add("hidden");
       lb.setAttribute("aria-hidden", "true");
-
-      gcEvent("photo", "lightbox_close", proj.id);
     }
 
     lbPrev.addEventListener("click", () => {
+      markPhotoInteraction();
       prev();
       const proj = projects[activeProject];
       lbImg.src = proj.images[activeSlide];
@@ -1156,16 +1124,21 @@
     });
 
     lbNext.addEventListener("click", () => {
+      markPhotoInteraction();
       next();
       const proj = projects[activeProject];
       lbImg.src = proj.images[activeSlide];
       lbImg.alt = getCaption(proj, activeSlide);
     });
 
-    lbClose.addEventListener("click", closeLightbox);
+    lbClose.addEventListener("click", () => {
+      markPhotoInteraction();
+      closeLightbox();
+    });
 
     lb.addEventListener("click", (e) => {
       if (e.target === lb) {
+        markPhotoInteraction();
         closeLightbox();
       }
     });
@@ -1298,7 +1271,10 @@
             lazySet(im, p.thumbs?.[i] || p.images[i]);
 
             b.appendChild(im);
-            b.addEventListener("click", () => mSet(i));
+            b.addEventListener("click", () => {
+              markPhotoInteraction();
+              mSet(i);
+            });
             mStrip.appendChild(b);
           });
 
@@ -1328,10 +1304,17 @@
             preloadNeighbors(p, cur);
           }
 
-          mp.addEventListener("click", () => mSet(cur - 1));
-          mn.addEventListener("click", () => mSet(cur + 1));
+          mp.addEventListener("click", () => {
+            markPhotoInteraction();
+            mSet(cur - 1);
+          });
+          mn.addEventListener("click", () => {
+            markPhotoInteraction();
+            mSet(cur + 1);
+          });
 
           img.addEventListener("click", () => {
+            markPhotoInteraction();
             activeProject = idx;
             activeSlide = cur;
             openLightbox();
@@ -1376,7 +1359,7 @@
             buildBody();
             animateOpen(item);
 
-            gcEvent("photo", "mobile_open", `${p.id} | ${p.title}`);
+            markPhotoInteraction();
           }
         });
 
@@ -1393,8 +1376,6 @@
       readHash();
       clearPhotoHashFromUrl();
       positionStageOverlays();
-
-      gcEventOnce("photo_boot", "photo", "boot", "gallery");
     }
 
     boot();
@@ -1493,96 +1474,7 @@
       }).join("");
     }
 
-    function vidSlug(row) {
-      return String(row.getAttribute("data-title") || "video")
-        .trim()
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)/g, "");
-    }
-
-    /* ===== Watch time tracking (preview) ===== */
-    let watchActiveSlug = "";
-    let watchMs = 0;
-    let watchLast = 0;
-
-    function watchBucket(sec) {
-      if (sec < 5) { return "lt5"; }
-      if (sec < 15) { return "5-15"; }
-      if (sec < 30) { return "15-30"; }
-      if (sec < 60) { return "30-60"; }
-      if (sec < 120) { return "60-120"; }
-      return "120p";
-    }
-
-    function watchFlush(reason) {
-      if (!watchActiveSlug) {
-        return;
-      }
-
-      const sec = Math.round(watchMs / 1000);
-
-      if (sec <= 0) {
-        watchMs = 0;
-        watchLast = performance.now();
-        return;
-      }
-
-      gcEvent(
-        "video",
-        "preview_watch",
-        `${watchActiveSlug} | ${watchBucket(sec)} | ${sec}s`,
-        { referrer: reason }
-      );
-
-      watchMs = 0;
-      watchLast = performance.now();
-    }
-
-    function watchSetActive(row) {
-      const slug = row ? vidSlug(row) : "video";
-
-      if (slug !== watchActiveSlug) {
-        watchFlush("switch");
-        watchActiveSlug = slug;
-        watchLast = performance.now();
-      }
-    }
-
-    function watchTick() {
-      if (document.visibilityState !== "visible") {
-        return;
-      }
-
-      const isPlaying = !video.paused && !video.ended && video.readyState >= 2;
-
-      if (!isPlaying) {
-        return;
-      }
-
-      const now = performance.now();
-
-      if (watchLast) {
-        watchMs += Math.max(0, now - watchLast);
-      }
-
-      watchLast = now;
-    }
-
-    setInterval(watchTick, 1000);
-
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "hidden") {
-        watchFlush("hidden");
-      }
-    });
-
-    window.addEventListener("pagehide", () => {
-      watchFlush("pagehide");
-    });
-
-    /* ===== Selection ===== */
-    function setActive(row, reason) {
+    function setActive(row) {
       rows.forEach((r) => {
         r.classList.toggle("is-active", r === row);
       });
@@ -1591,8 +1483,6 @@
       const desc = row.getAttribute("data-description") || row.getAttribute("data-bio") || "";
       const preview = row.getAttribute("data-preview") || "";
       const vimeo = sanitizeVimeoPageUrl(row.getAttribute("data-vimeo-url"));
-
-      watchSetActive(row);
 
       titleEl.textContent = title;
       setParagraphs(bioEl, desc);
@@ -1605,10 +1495,6 @@
         openBtn.href = vimeo;
         openBtn.setAttribute("aria-label", `Open “${title}” on Vimeo`);
       }
-
-      if (reason === "click") {
-        gcEvent("video", "select", `${vidSlug(row)} | ${title}`);
-      }
     }
 
     function maybeHoverSelect(row) {
@@ -1616,7 +1502,7 @@
         return;
       }
 
-      setActive(row, "hover");
+      setActive(row);
     }
 
     rows.forEach((row) => {
@@ -1625,12 +1511,12 @@
       });
 
       row.addEventListener("focus", () => {
-        setActive(row, "focus");
+        setActive(row);
       });
 
       row.addEventListener("click", (e) => {
         e.preventDefault();
-        setActive(row, "click");
+        setActive(row);
       });
     });
 
@@ -1638,27 +1524,15 @@
       const active = lines.querySelector(".video-row.is-active") || rows[0];
 
       if (active) {
-        setActive(active, "resize");
+        setActive(active);
       }
-    });
-
-    // Track Vimeo opens
-    openBtn.addEventListener("click", () => {
-      const active = lines.querySelector(".video-row.is-active") || rows[0];
-      const slug = active ? vidSlug(active) : "video";
-      const t = active ? (active.getAttribute("data-title") || "Video") : "Video";
-
-      gcEvent("video", "open_vimeo", `${slug} | ${t}`);
-      watchFlush("open");
     });
 
     const first = lines.querySelector(".video-row.is-active") || rows[0];
 
     if (first) {
-      setActive(first, "boot");
+      setActive(first);
     }
-
-    gcEventOnce("video_boot", "video", "boot", "section");
   }
 
   /* ==========================================================================
@@ -1762,21 +1636,17 @@
     }
 
     function handleProjectClick(project) {
-      gcEvent("coding", "click", project.title);
-
       if (project.private) {
-        gcEvent("coding", "private", project.title);
         showInfoMessage();
         return;
       }
 
       if (project.link) {
-        gcEvent("coding", "open", project.title);
         window.open(project.link, "_blank", "noopener");
       }
     }
 
-    function setActive(index, reason) {
+    function setActive(index) {
       const project = projects[index];
 
       document.getElementById("codingTitle").textContent = project.title;
@@ -1793,10 +1663,6 @@
 
       const stage = document.querySelector(".coding-stage");
       stage.onclick = () => handleProjectClick(project);
-
-      if (reason === "click") {
-        gcEvent("coding", "select", project.title);
-      }
     }
 
     // Desktop list
@@ -1811,8 +1677,8 @@
       <div class="coding-chev">›</div>
     `;
 
-      btn.addEventListener("mouseenter", () => setActive(i, "hover"));
-      btn.addEventListener("click", () => setActive(i, "click"));
+      btn.addEventListener("mouseenter", () => setActive(i));
+      btn.addEventListener("click", () => setActive(i));
       list.appendChild(btn);
     });
 
@@ -1858,17 +1724,13 @@
           item.setAttribute("aria-expanded", "true");
           const body = item.querySelector(".coding-mobile-body");
           body.style.maxHeight = body.scrollHeight + "px";
-
-          gcEvent("coding", "mobile_open", p.title);
         }
       });
 
       mobile.appendChild(item);
     });
 
-    setActive(0, "boot");
-
-    gcEventOnce("coding_boot", "coding", "boot", "section");
+    setActive(0);
   }
 
   /* ==========================================================================
@@ -2182,8 +2044,6 @@
       hideInfo();
       state = State.RUN;
 
-      gcEvent("game", "start", "start");
-
       if (obstacles.length === 0) {
         spawnObstacle(OB.firstX);
         spawnObstacle(OB.firstX + rand(OB.gapMin, OB.gapMax));
@@ -2215,7 +2075,7 @@
       state = State.OVER;
       showInfo("GAME OVER", "Click to restart.");
 
-      gcEvent("game", "over", "over");
+      gcEvent("game", "over", "lost");
     }
 
     function lockFinish() {
@@ -2235,7 +2095,7 @@
         5000
       );
 
-      gcEvent("game", "win", "win");
+      gcEvent("game", "win", "won");
     }
 
     function update(dt) {
@@ -2419,8 +2279,6 @@
     reset();
     resizeCanvas();
     requestAnimationFrame(step);
-
-    gcEventOnce("game_boot", "game", "boot", "canvas");
   }
 
   /* ===========================
@@ -2428,17 +2286,37 @@
      =========================== */
 
   function initSectionTiming() {
-    const sections = Array.from(document.querySelectorAll("section.section[id]"));
+    if (!("IntersectionObserver" in window)) {
+      return;
+    }
 
-    if (!("IntersectionObserver" in window) || !sections.length) {
+    const trackIds = new Set(["photos", "videos", "coding"]);
+    const targets = [];
+
+    const sections = Array.from(document.querySelectorAll("section.section[id]"));
+    sections.forEach((s) => {
+      if (trackIds.has(s.id)) {
+        targets.push(s);
+      }
+    });
+
+    // Fallback: if photos is not a section id, track #gallery instead
+    if (!targets.some((t) => t.id === "photos")) {
+      const g = document.getElementById("gallery");
+      if (g) {
+        targets.push(g);
+        g.__gcTimeId = "photos";
+      }
+    }
+
+    if (!targets.length) {
       return;
     }
 
     const state =
     {
       activeId: null,
-      startMs: 0,
-      seen: new Set()
+      startMs: 0
     };
 
     function bucketSeconds(sec) {
@@ -2450,7 +2328,15 @@
       return "120p";
     }
 
+    function resolveId(el) {
+      return el.__gcTimeId || el.id || "";
+    }
+
     function enter(id) {
+      if (!id) {
+        return;
+      }
+
       if (state.activeId === id) {
         return;
       }
@@ -2461,11 +2347,6 @@
 
       state.activeId = id;
       state.startMs = performance.now();
-
-      if (!state.seen.has(id)) {
-        state.seen.add(id);
-        gcEventOnce(`sec_enter_${id}`, "section", "enter", id);
-      }
     }
 
     function leave(id) {
@@ -2474,13 +2355,11 @@
       }
 
       const durSec = Math.max(0, Math.round((performance.now() - state.startMs) / 1000));
-      const b = bucketSeconds(durSec);
 
-      gcEvent(
-        "section",
-        "time",
-        `${id} | ${b} | ${durSec}s`
-      );
+      if (durSec > 0) {
+        const b = bucketSeconds(durSec);
+        gcEvent("time", id, `${b} | ${durSec}s`);
+      }
 
       state.activeId = null;
       state.startMs = 0;
@@ -2488,7 +2367,11 @@
 
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
-        const id = e.target.id;
+        const id = resolveId(e.target);
+
+        if (!id) {
+          return;
+        }
 
         if (e.isIntersecting && e.intersectionRatio >= 0.55) {
           enter(id);
@@ -2502,7 +2385,7 @@
         threshold: [0.10, 0.55]
       });
 
-    sections.forEach((s) => io.observe(s));
+    targets.forEach((t) => io.observe(t));
 
     function flush() {
       if (state.activeId) {
@@ -2516,7 +2399,5 @@
         flush();
       }
     });
-
-    gcEventOnce("timing_boot", "timing", "boot", "section");
   }
 })();
