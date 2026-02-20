@@ -1055,7 +1055,6 @@ body.dark-mode #bikerCircle {
   border: 0;
   text-shadow: none;
   -webkit-text-stroke: 0;
-  transition: color 0.18s var(--ease);
 }
 
 .stage-index.index--dark {

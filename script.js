@@ -730,65 +730,6 @@ document.addEventListener('DOMContentLoaded', () => {
     stageCaption.style.left = `${Math.round(left) + 8}px`;
     const bottom = Math.round(ch - (top + dh)) + 8;
     stageCaption.style.bottom = `${bottom}px`;
-
-    if (CAN_SAMPLE) {
-      updateStageIndexContrast();
-    }
-    else {
-      stageIndex.classList.remove('index--dark');
-    }
-  }
-
-  function updateStageIndexContrast() {
-    if (!CAN_SAMPLE) {
-      return;
-    }
-
-    try {
-      const cw = stageBox.clientWidth;
-      const ch = stageBox.clientHeight;
-
-      const iw = stageImg.naturalWidth || 1;
-      const ih = stageImg.naturalHeight || 1;
-
-      const scale = Math.min(cw / iw, ch / ih);
-      const dw = iw * scale;
-      const dh = ih * scale;
-      const left = (cw - dw) / 2;
-      const top = (ch - dh) / 2;
-
-      const sx = Math.max(0, Math.floor(left + 14));
-      const sy = Math.max(0, Math.floor(top + 14));
-      const sw = 20;
-      const sh = 20;
-
-      const canvas = updateStageIndexContrast._c || (updateStageIndexContrast._c = document.createElement('canvas'));
-      const ctx = updateStageIndexContrast._x || (updateStageIndexContrast._x = canvas.getContext('2d', { willReadFrequently: true }));
-
-      canvas.width = cw;
-      canvas.height = ch;
-      ctx.clearRect(0, 0, cw, ch);
-      ctx.drawImage(stageImg, left, top, dw, dh);
-
-      const data = ctx.getImageData(sx, sy, sw, sh).data;
-      let sum = 0;
-      let count = 0;
-
-      for (let i = 0; i < data.length; i += 4) {
-        const r = data[i];
-        const g = data[i + 1];
-        const b = data[i + 2];
-        sum += 0.2126 * r + 0.7152 * g + 0.0722 * b;
-        count++;
-      }
-
-      const L = sum / count;
-      const lightBg = L > 150;
-      stageIndex.classList.toggle('index--dark', lightBg);
-    }
-    catch (_e) {
-      stageIndex.classList.remove('index--dark');
-    }
   }
 
   // ---------- Ribbon ----------
@@ -819,27 +760,14 @@ document.addEventListener('DOMContentLoaded', () => {
       item.appendChild(num);
       item.appendChild(thumb);
 
-      // --- inside renderRibbon(), replace the existing item.addEventListener("click", ...) ---
-      item.addEventListener('click', () => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
         const wasActive = (i === activeProject);
 
         if (!wasActive) {
           setActiveProject(i, 0, true);
-        }
-
-        // Scroll behavior
-        if (typeof window.scrollToPhotoSection === 'function') {
-          window.scrollToPhotoSection();
-        }
-        else {
-          const header = document.querySelector('.sticky-header');
-          const headerH = header ? header.offsetHeight : 60;
-          const gap = 16;
-
-          const photos = document.getElementById('photos');
-          const targetY = Math.max(0, (photos ? photos.offsetTop : 0) - headerH - gap);
-
-          window.scrollTo({ top: targetY, behavior: 'smooth' });
         }
       });
 
