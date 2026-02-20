@@ -356,7 +356,21 @@
   <div id="cursorOrb"></div>
   <div id="cursorFlashlight"></div>
   <script src="script.js"></script>
-  <script data-goatcounter="https://radim-theiner.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script>
+    (function () {
+      const host = location.hostname;
+
+      if (host === "localhost" || host === "127.0.0.1") {
+        return;
+      }
+
+      const s = document.createElement("script");
+      s.async = true;
+      s.dataset.goatcounter = "https://radim-theiner.goatcounter.com/count";
+      s.src = "https://gc.zgo.at/count.js";
+      document.body.appendChild(s);
+    })();
+  </script>
 </body>
 
 </html>
