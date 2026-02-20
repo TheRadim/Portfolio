@@ -6,7 +6,7 @@
    - Dark-mode cursor
    - Typewriter
    - Photo gallery + lightbox + mobile accordion + hash routing
-   - Video section (single preview player) + GoatCounter tracking + watch buckets
+   - Video section (single preview player) + tracking + watch buckets
    - Coding section (desktop list + mobile accordion) + private-project toast + tracking
    - Mini runner game + tracking
    - Section timing (IntersectionObserver) + tracking
@@ -20,6 +20,8 @@
      =========================== */
 
   const gcQueue = [];
+  const gcCooldown = new Map();
+  const gcSeen = new Set();
 
   function gcDeviceTag() {
     return window.matchMedia("(max-width: 1024px)").matches ? "__m" : "__d";
@@ -27,16 +29,6 @@
 
   function gcCanTrack() {
     return !!(window.goatcounter && location.protocol !== "file:");
-  }
-
-  function gcNormPath(path) {
-    const p = String(path || "").trim();
-
-    if (!p) {
-      return "";
-    }
-
-    return p.startsWith("/") ? p.slice(1) : p;
   }
 
   function gcFlush() {
@@ -49,18 +41,19 @@
     }
   }
 
-  function gcTrack(path, title, extra) {
-    const payload =
-    {
-      path: `${gcDeviceTag()}/${gcNormPath(path)}`,
-      title: title || undefined,
-      event: true
-    };
+  function gcSlug(s) {
+    return String(s || "")
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+  }
 
-    if (extra && typeof extra === "object") {
-      Object.assign(payload, extra);
-    }
+  function gcNow() {
+    return Date.now ? Date.now() : (new Date()).getTime();
+  }
 
+  function gcSend(payload) {
     if (!gcCanTrack()) {
       gcQueue.push(payload);
       return;
@@ -78,12 +71,78 @@
     setTimeout(gcWaitForGoatcounter, 250);
   })();
 
-  function gcSlug(s) {
-    return String(s || "")
-      .trim()
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "");
+  function gcTrackOnce(key, payload) {
+    if (gcSeen.has(key)) {
+      return;
+    }
+
+    gcSeen.add(key);
+    gcSend(payload);
+  }
+
+  function gcTrackCooldown(key, cooldownMs, payload) {
+    const t = gcNow();
+    const last = gcCooldown.get(key) || 0;
+
+    if ((t - last) < cooldownMs) {
+      return;
+    }
+
+    gcCooldown.set(key, t);
+    gcSend(payload);
+  }
+
+  /*
+    Event design (IMPORTANT):
+    - path is LOW-cardinality: "__d/ev/<category>/<action>"
+    - details go in title/referrer (so you don't blow up "visits")
+  */
+  function gcEvent(category, action, label, extra) {
+    const payload =
+    {
+      path: `${gcDeviceTag()}/ev/${gcSlug(category)}/${gcSlug(action)}`,
+      title: label ? String(label) : undefined,
+      referrer: `${location.pathname}${location.hash || ""}`,
+      event: true
+    };
+
+    if (extra && typeof extra === "object") {
+      Object.assign(payload, extra);
+    }
+
+    gcSend(payload);
+  }
+
+  function gcEventOnce(key, category, action, label, extra) {
+    const payload =
+    {
+      path: `${gcDeviceTag()}/ev/${gcSlug(category)}/${gcSlug(action)}`,
+      title: label ? String(label) : undefined,
+      referrer: `${location.pathname}${location.hash || ""}`,
+      event: true
+    };
+
+    if (extra && typeof extra === "object") {
+      Object.assign(payload, extra);
+    }
+
+    gcTrackOnce(key, payload);
+  }
+
+  function gcEventCooldown(key, cooldownMs, category, action, label, extra) {
+    const payload =
+    {
+      path: `${gcDeviceTag()}/ev/${gcSlug(category)}/${gcSlug(action)}`,
+      title: label ? String(label) : undefined,
+      referrer: `${location.pathname}${location.hash || ""}`,
+      event: true
+    };
+
+    if (extra && typeof extra === "object") {
+      Object.assign(payload, extra);
+    }
+
+    gcTrackCooldown(key, cooldownMs, payload);
   }
 
   function onReady(fn) {
@@ -134,7 +193,7 @@
       void themeToggle?.offsetWidth;
       themeToggle?.classList.add("animate");
 
-      gcTrack("/theme/toggle", `Theme Toggle: ${document.body.classList.contains("dark-mode") ? "dark" : "light"}`);
+      gcEvent("ui", "theme_toggle", document.body.classList.contains("dark-mode") ? "dark" : "light");
     }
 
     themeToggle?.addEventListener("click", toggleTheme);
@@ -155,7 +214,7 @@
       overlay?.classList.remove("hidden");
       overlay?.setAttribute("aria-hidden", "false");
 
-      gcTrack("/contact/open", "Contact Overlay Open");
+      gcEvent("ui", "contact_open", "open");
     }
 
     contactBtn?.addEventListener("click", (e) => {
@@ -170,13 +229,13 @@
       e.preventDefault();
       e.stopPropagation();
       closeOverlayFn();
-      gcTrack("/contact/close", "Contact Overlay Close");
+      gcEvent("ui", "contact_close", "button");
     });
 
     overlay?.addEventListener("click", (e) => {
       if (!e.target.closest(".contact-box")) {
         closeOverlayFn();
-        gcTrack("/contact/close/bg", "Contact Overlay Close (bg)");
+        gcEvent("ui", "contact_close", "bg");
       }
     });
 
@@ -184,7 +243,7 @@
       if (e.key === "Escape") {
         if (overlay && !overlay.classList.contains("hidden")) {
           closeOverlayFn();
-          gcTrack("/contact/close/esc", "Contact Overlay Close (esc)");
+          gcEvent("ui", "contact_close", "esc");
         }
       }
     });
@@ -282,14 +341,14 @@
 
           e.preventDefault();
           scrollToNextSection(el);
-          gcTrack("/scroll/next", "Scroll Next");
+          gcEvent("scroll", "next", "arrow");
           return;
         }
 
         if (mode === "top") {
           e.preventDefault();
           smoothScrollTo(0, 900);
-          gcTrack("/scroll/top", "Scroll Top");
+          gcEvent("scroll", "top", "arrow");
         }
       });
     });
@@ -312,7 +371,7 @@
       if (hash === "#" || hash === "#top") {
         e.preventDefault();
         smoothScrollTo(0, 900);
-        gcTrack("/hash/top", "Hash Scroll Top");
+        gcEvent("hash", "scroll", "top");
         return;
       }
 
@@ -321,7 +380,7 @@
       if (target) {
         e.preventDefault();
         scrollToElementTopWithGap(target);
-        gcTrack(`/hash/${hash.replace("#", "")}`, `Hash Scroll: ${hash}`);
+        gcEvent("hash", "scroll", hash.replace("#", ""));
       }
     });
 
@@ -959,7 +1018,7 @@
             setActiveProject(i, 0, true);
           }
 
-          gcTrack(`/photo/ribbon/${projects[i].id}`, `Photo Ribbon: ${projects[i].title}`);
+          gcEvent("photo", "ribbon_click", `${projects[i].id} | ${projects[i].title}`);
         });
 
         ribbonEl.appendChild(item);
@@ -1015,7 +1074,13 @@
       renderStrip(proj, activeSlide);
       setStage(proj.images[activeSlide], activeSlide);
 
-      gcTrack(`/photo/project/${proj.id}`, `Photo Project: ${proj.title}`);
+      gcEventCooldown(
+        `photo_project_${proj.id}`,
+        800,
+        "photo",
+        "project",
+        `${proj.id} | ${proj.title}`
+      );
 
       if (pushHash) {
         syncHash();
@@ -1033,7 +1098,13 @@
       });
 
       const proj2 = projects[activeProject];
-      gcTrack(`/photo/slide/${proj2.id}/${activeSlide + 1}`, `Photo Slide: ${proj2.title} #${activeSlide + 1}`);
+      gcEventCooldown(
+        `photo_slide_${proj2.id}`,
+        800,
+        "photo",
+        "slide",
+        `${proj2.id} #${activeSlide + 1}`
+      );
 
       if (pushHash) {
         syncHash();
@@ -1065,7 +1136,7 @@
 
       preloadNeighbors(proj, activeSlide);
 
-      gcTrack(`/photo/lightbox/open/${proj.id}/${activeSlide + 1}`, `Lightbox Open: ${proj.title} #${activeSlide + 1}`);
+      gcEvent("photo", "lightbox_open", `${proj.id} #${activeSlide + 1}`);
     }
 
     function closeLightbox() {
@@ -1074,7 +1145,7 @@
       lb.classList.add("hidden");
       lb.setAttribute("aria-hidden", "true");
 
-      gcTrack(`/photo/lightbox/close/${proj.id}`, `Lightbox Close: ${proj.title}`);
+      gcEvent("photo", "lightbox_close", proj.id);
     }
 
     lbPrev.addEventListener("click", () => {
@@ -1305,7 +1376,7 @@
             buildBody();
             animateOpen(item);
 
-            gcTrack(`/photo/mobile/open/${p.id}`, `Photo Mobile Open: ${p.title}`);
+            gcEvent("photo", "mobile_open", `${p.id} | ${p.title}`);
           }
         });
 
@@ -1323,7 +1394,7 @@
       clearPhotoHashFromUrl();
       positionStageOverlays();
 
-      gcTrack("/photo/boot", "Photo Gallery Boot");
+      gcEventOnce("photo_boot", "photo", "boot", "gallery");
     }
 
     boot();
@@ -1457,9 +1528,10 @@
         return;
       }
 
-      gcTrack(
-        `/video/preview/watch/${watchActiveSlug}/${watchBucket(sec)}`,
-        `Preview Watch: ${watchActiveSlug} (${sec}s)`,
+      gcEvent(
+        "video",
+        "preview_watch",
+        `${watchActiveSlug} | ${watchBucket(sec)} | ${sec}s`,
         { referrer: reason }
       );
 
@@ -1510,7 +1582,7 @@
     });
 
     /* ===== Selection ===== */
-    function setActive(row) {
+    function setActive(row, reason) {
       rows.forEach((r) => {
         r.classList.toggle("is-active", r === row);
       });
@@ -1534,7 +1606,9 @@
         openBtn.setAttribute("aria-label", `Open “${title}” on Vimeo`);
       }
 
-      gcTrack(`/video/select/${vidSlug(row)}`, `Video Select: ${title}`);
+      if (reason === "click") {
+        gcEvent("video", "select", `${vidSlug(row)} | ${title}`);
+      }
     }
 
     function maybeHoverSelect(row) {
@@ -1542,7 +1616,7 @@
         return;
       }
 
-      setActive(row);
+      setActive(row, "hover");
     }
 
     rows.forEach((row) => {
@@ -1551,12 +1625,12 @@
       });
 
       row.addEventListener("focus", () => {
-        setActive(row);
+        setActive(row, "focus");
       });
 
       row.addEventListener("click", (e) => {
         e.preventDefault();
-        setActive(row);
+        setActive(row, "click");
       });
     });
 
@@ -1564,7 +1638,7 @@
       const active = lines.querySelector(".video-row.is-active") || rows[0];
 
       if (active) {
-        setActive(active);
+        setActive(active, "resize");
       }
     });
 
@@ -1574,17 +1648,17 @@
       const slug = active ? vidSlug(active) : "video";
       const t = active ? (active.getAttribute("data-title") || "Video") : "Video";
 
-      gcTrack(`/video/open/${slug}`, `Vimeo Open: ${t}`);
+      gcEvent("video", "open_vimeo", `${slug} | ${t}`);
       watchFlush("open");
     });
 
     const first = lines.querySelector(".video-row.is-active") || rows[0];
 
     if (first) {
-      setActive(first);
+      setActive(first, "boot");
     }
 
-    gcTrack("/video/boot", "Video Section Boot");
+    gcEventOnce("video_boot", "video", "boot", "section");
   }
 
   /* ==========================================================================
@@ -1688,21 +1762,21 @@
     }
 
     function handleProjectClick(project) {
-      gcTrack(`/coding/click/${gcSlug(project.title)}`, `Coding Click: ${project.title}`);
+      gcEvent("coding", "click", project.title);
 
       if (project.private) {
-        gcTrack(`/coding/private/${gcSlug(project.title)}`, `Coding Private: ${project.title}`);
+        gcEvent("coding", "private", project.title);
         showInfoMessage();
         return;
       }
 
       if (project.link) {
-        gcTrack(`/coding/open/${gcSlug(project.title)}`, `Coding Open: ${project.title}`);
+        gcEvent("coding", "open", project.title);
         window.open(project.link, "_blank", "noopener");
       }
     }
 
-    function setActive(index) {
+    function setActive(index, reason) {
       const project = projects[index];
 
       document.getElementById("codingTitle").textContent = project.title;
@@ -1720,7 +1794,9 @@
       const stage = document.querySelector(".coding-stage");
       stage.onclick = () => handleProjectClick(project);
 
-      gcTrack(`/coding/select/${gcSlug(project.title)}`, `Coding Select: ${project.title}`);
+      if (reason === "click") {
+        gcEvent("coding", "select", project.title);
+      }
     }
 
     // Desktop list
@@ -1735,8 +1811,8 @@
       <div class="coding-chev">›</div>
     `;
 
-      btn.addEventListener("mouseenter", () => setActive(i));
-      btn.addEventListener("click", () => setActive(i));
+      btn.addEventListener("mouseenter", () => setActive(i, "hover"));
+      btn.addEventListener("click", () => setActive(i, "click"));
       list.appendChild(btn);
     });
 
@@ -1783,16 +1859,16 @@
           const body = item.querySelector(".coding-mobile-body");
           body.style.maxHeight = body.scrollHeight + "px";
 
-          gcTrack(`/coding/mobile/open/${gcSlug(p.title)}`, `Coding Mobile Open: ${p.title}`);
+          gcEvent("coding", "mobile_open", p.title);
         }
       });
 
       mobile.appendChild(item);
     });
 
-    setActive(0);
+    setActive(0, "boot");
 
-    gcTrack("/coding/boot", "Coding Section Boot");
+    gcEventOnce("coding_boot", "coding", "boot", "section");
   }
 
   /* ==========================================================================
@@ -2106,7 +2182,7 @@
       hideInfo();
       state = State.RUN;
 
-      gcTrack("/game/start", "Game Start");
+      gcEvent("game", "start", "start");
 
       if (obstacles.length === 0) {
         spawnObstacle(OB.firstX);
@@ -2139,7 +2215,7 @@
       state = State.OVER;
       showInfo("GAME OVER", "Click to restart.");
 
-      gcTrack("/game/over", "Game Over");
+      gcEvent("game", "over", "over");
     }
 
     function lockFinish() {
@@ -2159,7 +2235,7 @@
         5000
       );
 
-      gcTrack("/game/win", "Game Win");
+      gcEvent("game", "win", "win");
     }
 
     function update(dt) {
@@ -2344,7 +2420,7 @@
     resizeCanvas();
     requestAnimationFrame(step);
 
-    gcTrack("/game/boot", "Game Boot");
+    gcEventOnce("game_boot", "game", "boot", "canvas");
   }
 
   /* ===========================
@@ -2388,7 +2464,7 @@
 
       if (!state.seen.has(id)) {
         state.seen.add(id);
-        gcTrack(`/section/${id}/enter`, `Section Enter: ${id}`);
+        gcEventOnce(`sec_enter_${id}`, "section", "enter", id);
       }
     }
 
@@ -2400,10 +2476,10 @@
       const durSec = Math.max(0, Math.round((performance.now() - state.startMs) / 1000));
       const b = bucketSeconds(durSec);
 
-      gcTrack(
-        `/section/${id}/time/${b}`,
-        `Section Time: ${id} (${durSec}s)`,
-        { referrer: document.referrer || undefined }
+      gcEvent(
+        "section",
+        "time",
+        `${id} | ${b} | ${durSec}s`
       );
 
       state.activeId = null;
@@ -2441,6 +2517,6 @@
       }
     });
 
-    gcTrack("/timing/boot", "Section Timing Boot");
+    gcEventOnce("timing_boot", "timing", "boot", "section");
   }
 })();
