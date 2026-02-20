@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /cv
+
+Sitemap: https://www.radim-theiner.com/sitemap.xml
