@@ -10,8 +10,7 @@
   <link rel="stylesheet" href="/styles.css" />
 
   <style>
-    :root
-    {
+    :root {
       --cv-max: 860px;
       --cv-pad: 2rem;
       --cv-muted: rgba(0, 0, 0, 0.45);
@@ -22,48 +21,41 @@
       --cv-rule-dark: rgba(255, 255, 255, 0.14);
     }
 
-    body
-    {
+    body {
       color: var(--cv-ink);
     }
 
-    body.dark-mode
-    {
+    body.dark-mode {
       color: var(--cv-ink-dark);
     }
 
-    .cv-wrap
-    {
+    .cv-wrap {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
-    .cv-main
-    {
+    .cv-main {
       flex: 1;
       padding: clamp(2.5rem, 6vw, 5rem) var(--cv-pad) 7.5rem;
       display: flex;
       justify-content: center;
     }
 
-    .cv-inner
-    {
+    .cv-inner {
       width: 100%;
       max-width: var(--cv-max);
       text-align: left;
     }
 
-    .cv-top
-    {
+    .cv-top {
       display: flex;
       flex-direction: column;
       gap: 1.1rem;
       margin-bottom: 2.2rem;
     }
 
-    .cv-name
-    {
+    .cv-name {
       font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
       font-weight: 900;
       font-size: clamp(40px, 7vw, 86px);
@@ -72,8 +64,7 @@
       margin: 0;
     }
 
-    .cv-tagline
-    {
+    .cv-tagline {
       font-family: 'Courier New', Courier, monospace;
       font-size: 13px;
       letter-spacing: 0.12em;
@@ -83,39 +74,33 @@
       opacity: 0.55;
     }
 
-    body.dark-mode .cv-tagline
-    {
+    body.dark-mode .cv-tagline {
       opacity: 0.7;
     }
 
-    .cv-rule
-    {
+    .cv-rule {
       height: 1px;
       background: var(--cv-rule);
       margin: 2.2rem 0;
     }
 
-    body.dark-mode .cv-rule
-    {
+    body.dark-mode .cv-rule {
       background: var(--cv-rule-dark);
     }
 
-    .cv-grid
-    {
+    .cv-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 2.2rem;
     }
 
-    .cv-section
-    {
+    .cv-section {
       display: flex;
       flex-direction: column;
       gap: 1rem;
     }
 
-    .cv-h2
-    {
+    .cv-h2 {
       font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
       font-weight: 700;
       font-size: 12px;
@@ -125,13 +110,11 @@
       opacity: 0.55;
     }
 
-    body.dark-mode .cv-h2
-    {
+    body.dark-mode .cv-h2 {
       opacity: 0.7;
     }
 
-    .cv-p
-    {
+    .cv-p {
       font-family: 'Courier New', Courier, monospace;
       font-size: 14px;
       line-height: 1.75;
@@ -140,13 +123,11 @@
       max-width: 78ch;
     }
 
-    body.dark-mode .cv-p
-    {
+    body.dark-mode .cv-p {
       opacity: 0.85;
     }
 
-    .cv-list
-    {
+    .cv-list {
       list-style: none;
       padding: 0;
       margin: 0;
@@ -154,27 +135,23 @@
       gap: 1.2rem;
     }
 
-    .cv-item
-    {
+    .cv-item {
       display: grid;
       gap: 0.35rem;
       padding-top: 1.1rem;
       border-top: 1px solid var(--cv-rule);
     }
 
-    body.dark-mode .cv-item
-    {
+    body.dark-mode .cv-item {
       border-top: 1px solid var(--cv-rule-dark);
     }
 
-    .cv-item:first-child
-    {
+    .cv-item:first-child {
       border-top: 0;
       padding-top: 0;
     }
 
-    .cv-role
-    {
+    .cv-role {
       font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
       font-weight: 800;
       letter-spacing: -0.01em;
@@ -183,8 +160,7 @@
       line-height: 1.25;
     }
 
-    .cv-meta
-    {
+    .cv-meta {
       font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
       font-weight: 500;
       font-size: 12px;
@@ -194,13 +170,11 @@
       opacity: 0.45;
     }
 
-    body.dark-mode .cv-meta
-    {
+    body.dark-mode .cv-meta {
       opacity: 0.6;
     }
 
-    .cv-desc
-    {
+    .cv-desc {
       font-family: 'Courier New', Courier, monospace;
       font-size: 14px;
       line-height: 1.7;
@@ -209,13 +183,11 @@
       max-width: 90ch;
     }
 
-    body.dark-mode .cv-desc
-    {
+    body.dark-mode .cv-desc {
       opacity: 0.85;
     }
 
-    .cv-footer
-    {
+    .cv-footer {
       position: fixed;
       left: 0;
       right: 0;
@@ -226,14 +198,12 @@
       border-top: 1px solid var(--cv-rule);
     }
 
-    body.dark-mode .cv-footer
-    {
+    body.dark-mode .cv-footer {
       background: rgba(10, 10, 10, 0.72);
       border-top: 1px solid var(--cv-rule-dark);
     }
 
-    .cv-footer-inner
-    {
+    .cv-footer-inner {
       max-width: var(--cv-max);
       margin: 0 auto;
       display: flex;
@@ -242,24 +212,27 @@
       gap: 1rem;
     }
 
-    .cv-footer-note
-    {
+    .cv-footer-note {
       font-family: 'Courier New', Courier, monospace;
       font-size: 12px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       opacity: 0.55;
       margin: 0;
-      white-space: nowrap;
+      text-decoration: none;
+      color: inherit;
+      transition: opacity 0.25s ease;
     }
 
-    body.dark-mode .cv-footer-note
-    {
+    .cv-footer-note:hover {
+      opacity: 0.8;
+    }
+
+    body.dark-mode .cv-footer-note {
       opacity: 0.7;
     }
 
-    .cv-download
-    {
+    .cv-download {
       display: inline-block;
       color: inherit;
       text-decoration: none;
@@ -276,13 +249,11 @@
       transition: opacity 0.25s ease;
     }
 
-    .cv-download:hover
-    {
+    .cv-download:hover {
       opacity: 0.55;
     }
 
-    .cv-download:visited
-    {
+    .cv-download:visited {
       color: inherit;
     }
   </style>
@@ -302,7 +273,8 @@
         <section class="cv-section">
           <h2 class="cv-h2">Profile</h2>
           <p class="cv-p">
-            A product management and IT innovation specialist focused on blending business needs with creative solutions.
+            A product management and IT innovation specialist focused on blending business needs with creative
+            solutions.
             Experienced in web + mobile platforms, automation, and delivering projects in high-pressure environments.
           </p>
         </section>
@@ -316,12 +288,12 @@
             <ul class="cv-list">
               <li class="cv-item">
                 <p class="cv-role">BA — International Sales and Marketing</p>
-                <p class="cv-meta">VIA University College · 2023  · Denmark</p>
+                <p class="cv-meta">VIA University College · 2023 · Denmark</p>
               </li>
 
               <li class="cv-item">
                 <p class="cv-role">AP — International Marketing Management</p>
-                <p class="cv-meta">VIA University College · 2021  · Denmark</p>
+                <p class="cv-meta">VIA University College · 2021 · Denmark</p>
               </li>
             </ul>
           </section>
@@ -334,7 +306,8 @@
                 <p class="cv-role">Product Owner</p>
                 <p class="cv-meta">Papp Mobility ApS · Aug 2023 – Present</p>
                 <p class="cv-desc">
-                  Managing Angular platform and iOS app development. Leading product vision and strategy across web and mobile to ensure seamless integration and functionality.
+                  Managing Angular platform and iOS app development. Leading product vision and strategy across web and
+                  mobile to ensure seamless integration and functionality.
                 </p>
               </li>
 
@@ -342,7 +315,8 @@
                 <p class="cv-role">Innovation Lab Intern</p>
                 <p class="cv-meta">GroupM · Aug 2022 – Jan 2023</p>
                 <p class="cv-desc">
-                  Bringing innovations into a multinational media house and communicating practical usage to specialists and clients, with focus on AI, cookieless solutions, and web3 technologies.
+                  Bringing innovations into a multinational media house and communicating practical usage to specialists
+                  and clients, with focus on AI, cookieless solutions, and web3 technologies.
                 </p>
               </li>
 
@@ -350,7 +324,8 @@
                 <p class="cv-role">Student Mentor & Ambassador</p>
                 <p class="cv-meta">VIA University College · Mar 2021 – Jan 2023</p>
                 <p class="cv-desc">
-                  Student mentor and member of the multimedia team. In charge of planning and content creation for the VIA Horsens Campus.
+                  Student mentor and member of the multimedia team. In charge of planning and content creation for the
+                  VIA Horsens Campus.
                 </p>
               </li>
 
@@ -358,7 +333,8 @@
                 <p class="cv-role">IT Developer & Photographer</p>
                 <p class="cv-meta">Student Survival Guide · Sep 2019 – Jan 2023</p>
                 <p class="cv-desc">
-                  Maintenance of the website, process automations, data analysis, and optimization of CRM systems in a student-led project.
+                  Maintenance of the website, process automations, data analysis, and optimization of CRM systems in a
+                  student-led project.
                 </p>
               </li>
 
@@ -366,7 +342,8 @@
                 <p class="cv-role">CEO / Founder</p>
                 <p class="cv-meta">SNews · Mar 2021 – Nov 2022</p>
                 <p class="cv-desc">
-                  Founder of an AI-driven onboard technology for car infotainment. Ensured delivery on time while following the product vision and maintaining stakeholder alignment.
+                  Founder of an AI-driven onboard technology for car infotainment. Ensured delivery on time while
+                  following the product vision and maintaining stakeholder alignment.
                 </p>
               </li>
 
@@ -374,7 +351,8 @@
                 <p class="cv-role">Volunteer</p>
                 <p class="cv-meta">cesko.digital · Apr 2019 – Mar 2024</p>
                 <p class="cv-desc">
-                  Marketing management (innovations in news storytelling), video editing (remote education), and backend development (Cityvisor).
+                  Marketing management (innovations in news storytelling), video editing (remote education), and backend
+                  development (Cityvisor).
                 </p>
               </li>
             </ul>
@@ -384,12 +362,10 @@
     </main>
 
     <footer class="cv-footer">
-      <div class="cv-footer-inner">
-        <p class="cv-footer-note">Download PDF</p>
-        <a class="cv-download" href="/assets/cv.pdf">
-          CV.pdf →
-        </a>
-      </div>
+      <a class="cv-download-group" href="/assets/cv.pdf">
+        <span class="cv-footer-note">Download PDF</span>
+        <span class="cv-download">CV.pdf →</span>
+      </a>
     </footer>
   </div>
 </body>
