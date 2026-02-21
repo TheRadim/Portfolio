@@ -7,14 +7,6 @@
   <title>CV – Radim Theiner</title>
   <meta name="robots" content="noindex, nofollow" />
 
-  <script>
-    window.location.replace('/assets/cv.pdf');
-  </script>
-
-  <noscript>
-    <meta http-equiv="refresh" content="0; url=/assets/cv.pdf" />
-  </noscript>
-
   <link rel="stylesheet" href="/styles.css" />
 
   <style>
@@ -57,6 +49,45 @@
       color: #fafafa;
     }
 
+    .cv-fallback {
+      margin-top: 1.2rem;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.22;
+      max-width: 720px;
+      line-height: 1.6;
+    }
+
+    body.dark-mode .cv-fallback {
+      opacity: 0.35;
+      color: #fafafa;
+    }
+
+    .cv-biker {
+      margin-top: 7rem;
+      width: min(100px, 45vw);
+      height: auto;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .cv-biker--dark {
+      display: block;
+    }
+
+    .cv-biker--light {
+      display: none;
+    }
+
+    body.dark-mode .cv-biker--dark {
+      display: none;
+    }
+
+    body.dark-mode .cv-biker--light {
+      display: block;
+    }
+
     .cv-link {
       margin-top: 3.2rem;
       display: inline-block;
@@ -83,21 +114,39 @@
       color: inherit;
     }
   </style>
+
+  <noscript>
+    <meta http-equiv="refresh" content="0; url=/assets/cv.pdf" />
+  </noscript>
 </head>
 
 <body>
-  <!-- Fallback only (in case redirect is blocked) -->
   <main class="cv-hero">
     <h1 class="cv-title">CV</h1>
 
     <div class="cv-message">
-      If the PDF didn’t open, download it here.
+      Preparing the download.
     </div>
 
-    <a class="cv-link" href="/assets/cv.pdf">
+    <div class="cv-fallback">
+      If nothing happens, use the button below.
+    </div>
+
+    <img class="cv-biker cv-biker--dark" src="/assets/biker-dark.gif" alt="" aria-hidden="true" />
+    <img class="cv-biker cv-biker--light" src="/assets/biker-light.gif" alt="" aria-hidden="true" />
+
+    <a class="cv-link" href="/assets/cv.pdf" id="cvDownload">
       Download manually →
     </a>
   </main>
+
+  <script>
+    (function () {
+      setTimeout(function () {
+        window.location.href = '/assets/cv.pdf';
+      }, 600);
+    })();
+  </script>
 </body>
 
 </html>
