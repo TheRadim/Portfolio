@@ -35,7 +35,7 @@
     }
 
     .cv-message {
-      margin-top: 3.5rem;
+      margin-top: 3.2rem;
       font-size: clamp(15px, 1.3vw, 20px);
       opacity: 0.22;
       text-transform: uppercase;
@@ -49,8 +49,23 @@
       color: #fafafa;
     }
 
+    .cv-fallback {
+      margin-top: 1.2rem;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.22;
+      max-width: 720px;
+      line-height: 1.6;
+    }
+
+    body.dark-mode .cv-fallback {
+      opacity: 0.35;
+      color: #fafafa;
+    }
+
     .cv-biker {
-      margin-top: 8rem;
+      margin-top: 7rem;
       width: min(100px, 45vw);
       height: auto;
       opacity: 0.9;
@@ -74,7 +89,7 @@
     }
 
     .cv-link {
-      margin-top: 3.8rem;
+      margin-top: 3.2rem;
       display: inline-block;
       color: inherit;
       text-decoration: none;
@@ -109,10 +124,14 @@
       Preparing the download.
     </div>
 
+    <div class="cv-fallback">
+      If nothing happens, use the button below.
+    </div>
+
     <img class="cv-biker cv-biker--dark" src="/assets/biker-dark.gif" alt="" aria-hidden="true" />
     <img class="cv-biker cv-biker--light" src="/assets/biker-light.gif" alt="" aria-hidden="true" />
 
-    <a class="cv-link" href="/assets/cv.pdf" id="cvDownload" download>
+    <a class="cv-link" href="/assets/cv.pdf" id="cvDownload">
       Download manually →
     </a>
   </main>
@@ -121,7 +140,7 @@
     (function () {
       setTimeout(function () {
         window.location.href = '/assets/cv.pdf';
-      }, 800);
+      }, 900);
     })();
   </script>
 </body>
