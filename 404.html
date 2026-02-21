@@ -1,16 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>404 – Radim Theiner</title>
-  <link rel="stylesheet" href="/styles.css" />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    .error-hero {
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      justify-content: center;
+    }
+
+    .error-code {
+      font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      font-weight: 900;
+      font-size: clamp(50px, 10vw, 180px);
+      line-height: 0.88;
+      margin: 0;
+      letter-spacing: -0.03em;
+      color: #111;
+    }
+
+    body.dark-mode .error-code {
+      color: #fafafa;
+    }
+
+    .error-message {
+      margin-top: 3.5rem;
+      font-size: clamp(15px, 1.3vw, 20px);
+      opacity: 0.22;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      max-width: 720px;
+      line-height: 1.6;
+    }
+
+    body.dark-mode .error-message {
+      opacity: 0.35;
+      color: #fafafa;
+    }
+
+    .error-biker {
+      margin-top: 8rem;
+      width: min(100px, 45vw);
+      height: auto;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .error-biker--dark {
+      display: block;
+    }
+
+    .error-biker--light {
+      display: none;
+    }
+
+    body.dark-mode .error-biker--dark {
+      display: none;
+    }
+
+    body.dark-mode .error-biker--light {
+      display: block;
+    }
+
+    .error-link {
+      margin-top: 3.8rem;
+
+      display: inline-block;
+      color: inherit;
+      text-decoration: none;
+
+      font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+
+      padding: 16px 26px;
+
+      opacity: 0.85;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .error-link:hover {
+      opacity: 0.5;
+    }
+
+    .error-link:visited {
+      color: inherit;
+    }
+  </style>
 </head>
+
 <body>
-  <main style="padding: 4rem; text-align: center;">
-    <h1>404</h1>
-    <p>This page doesn’t exist.</p>
-    <p><a href="/">Back to homepage</a></p>
+  <main class="error-hero">
+    <h1 class="error-code">404</h1>
+
+    <div class="error-message">
+      No bike path here. Come back on the road.
+    </div>
+
+    <!-- Use RELATIVE paths (matches your existing CSS usage) -->
+    <img class="error-biker error-biker--dark" src="assets/biker-dark.gif" alt="" aria-hidden="true" />
+
+    <img class="error-biker error-biker--light" src="assets/biker-light.gif" alt="" aria-hidden="true" />
+
+    <!-- Absolute URL = always goes to homepage -->
+    <a class="error-link" href="https://www.radim-theiner.com/" id="goHome">
+      Back to homepage →
+    </a>
   </main>
+
+  <script>
+    (function () {
+      const link = document.getElementById('goHome');
+
+      if (!link) {
+        return;
+      }
+
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.location.href = 'https://www.radim-theiner.com/';
+      });
+    })();
+  </script>
 </body>
+
 </html>
