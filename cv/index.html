@@ -203,15 +203,6 @@
       border-top: 1px solid var(--cv-rule-dark);
     }
 
-    .cv-footer-inner {
-      max-width: var(--cv-max);
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
     .cv-footer-note {
       font-family: 'Courier New', Courier, monospace;
       font-size: 12px;
@@ -249,6 +240,39 @@
 
     .cv-download:visited {
       color: inherit;
+    }
+
+    .cv-footer-inner {
+      max-width: var(--cv-max);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 48px;
+      /* Bigger gap */
+    }
+
+    .cv-footer-link {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: inherit;
+      opacity: 0.55;
+      transition: opacity 0.25s ease;
+    }
+
+    .cv-footer-link:hover {
+      opacity: 0.9;
+    }
+
+    body.dark-mode .cv-footer-link {
+      opacity: 0.7;
+    }
+
+    body.dark-mode .cv-footer-link:hover {
+      opacity: 1;
     }
   </style>
 </head>
@@ -357,11 +381,11 @@
 
     <footer class="cv-footer">
       <div class="cv-footer-inner">
-        <a class="cv-footer-note cv-download" href="/assets/cv.pdf">
+        <a class="cv-footer-link" href="/assets/cv.pdf">
           Download PDF
         </a>
 
-        <a class="cv-download" href="/assets/cv.pdf">
+        <a class="cv-footer-link" href="/assets/cv.pdf">
           CV.pdf →
         </a>
       </div>
