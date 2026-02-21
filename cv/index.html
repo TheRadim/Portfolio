@@ -1,12 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="robots" content="noindex, nofollow" />
-  <meta http-equiv="refresh" content="0; url=/assets/cv.pdf" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CV – Radim Theiner</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    .cv-hero {
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .cv-title {
+      font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      font-weight: 900;
+      font-size: clamp(40px, 8vw, 120px);
+      line-height: 0.9;
+      margin: 0;
+      letter-spacing: -0.03em;
+      color: #111;
+    }
+
+    body.dark-mode .cv-title {
+      color: #fafafa;
+    }
+
+    .cv-message {
+      margin-top: 3.5rem;
+      font-size: clamp(15px, 1.3vw, 20px);
+      opacity: 0.22;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      max-width: 720px;
+      line-height: 1.6;
+    }
+
+    body.dark-mode .cv-message {
+      opacity: 0.35;
+      color: #fafafa;
+    }
+
+    .cv-biker {
+      margin-top: 8rem;
+      width: min(100px, 45vw);
+      height: auto;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .cv-biker--dark {
+      display: block;
+    }
+
+    .cv-biker--light {
+      display: none;
+    }
+
+    body.dark-mode .cv-biker--dark {
+      display: none;
+    }
+
+    body.dark-mode .cv-biker--light {
+      display: block;
+    }
+
+    .cv-link {
+      margin-top: 3.8rem;
+      display: inline-block;
+      color: inherit;
+      text-decoration: none;
+
+      font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+
+      padding: 16px 26px;
+
+      opacity: 0.85;
+      transition: opacity 0.25s ease;
+    }
+
+    .cv-link:hover {
+      opacity: 0.5;
+    }
+
+    .cv-link:visited {
+      color: inherit;
+    }
+  </style>
 </head>
+
 <body>
-  <p>If the download doesn’t start, <a href="/assets/cv.pdf">click here</a>.</p>
+  <main class="cv-hero">
+    <h1 class="cv-title">CV</h1>
+
+    <div class="cv-message">
+      Preparing the download.
+    </div>
+
+    <img class="cv-biker cv-biker--dark" src="/assets/biker-dark.gif" alt="" aria-hidden="true" />
+    <img class="cv-biker cv-biker--light" src="/assets/biker-light.gif" alt="" aria-hidden="true" />
+
+    <a class="cv-link" href="/assets/cv.pdf" id="cvDownload" download>
+      Download manually →
+    </a>
+  </main>
+
+  <script>
+    (function () {
+      setTimeout(function () {
+        window.location.href = '/assets/cv.pdf';
+      }, 800);
+    })();
+  </script>
 </body>
+
 </html>
