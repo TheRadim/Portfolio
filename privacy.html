@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Privacy – Radim Theiner</title>
+
+  <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    .privacy-hero {
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+    }
+
+    .privacy-inner {
+      width: 100%;
+      max-width: 640px;
+      text-align: left;
+    }
+
+    .privacy-title {
+      font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      font-weight: 800;
+      font-size: clamp(28px, 5vw, 52px);
+      letter-spacing: -0.02em;
+      margin: 0 0 2.2rem 0;
+      color: #111;
+    }
+
+    body.dark-mode .privacy-title {
+      color: #fafafa;
+    }
+
+    .privacy-content {
+      font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      font-size: clamp(14px, 1.1vw, 16px);
+      line-height: 1.6;
+      opacity: 0.75;
+    }
+
+    body.dark-mode .privacy-content {
+      color: #fafafa;
+      opacity: 0.85;
+    }
+
+    .privacy-content p {
+      margin: 0 0 1.2rem 0;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .privacy-content h2 {
+      margin: 2rem 0 0.8rem 0;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 600;
+      opacity: 0.6;
+    }
+
+    body.dark-mode .privacy-content h2 {
+      opacity: 0.75;
+    }
+
+    .privacy-meta {
+      margin-top: 2rem;
+      font-size: 12px;
+      opacity: 0.5;
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    .privacy-link {
+      margin-top: 3rem;
+      display: inline-block;
+      text-decoration: none;
+      color: inherit;
+
+      font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      font-weight: 500;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+
+      padding: 14px 22px;
+
+      opacity: 0.85;
+      transition: opacity 0.25s ease;
+    }
+
+    .privacy-link:hover {
+      opacity: 0.5;
+    }
+
+    .privacy-link:visited {
+      color: inherit;
+    }
+
+    /* Fixed biker layer (bottom-right) */
+    .privacy-biker-layer {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .privacy-biker {
+      width: clamp(70px, 8vw, 110px);
+      height: auto;
+      opacity: 0.9;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .privacy-biker-layer {
+        right: 16px;
+        bottom: 16px;
+      }
+
+      .privacy-biker {
+        width: 70px;
+      }
+    }
+
+    .privacy-biker--dark {
+      display: block;
+    }
+
+    .privacy-biker--light {
+      display: none;
+    }
+
+    body.dark-mode .privacy-biker--dark {
+      display: none;
+    }
+
+    body.dark-mode .privacy-biker--light {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="privacy-hero">
+    <div class="privacy-inner">
+      <h1 class="privacy-title">Privacy</h1>
+
+      <div class="privacy-content">
+        <p>This website is a personal portfolio operated by Radim Theiner.</p>
+
+        <h2>Analytics</h2>
+        <p>This website uses GoatCounter, a privacy-friendly analytics service.</p>
+        <p>No cookies are used and no personal data is collected.</p>
+
+        <h2>Contact</h2>
+        <p>If you contact me via email, your message will only be used to respond to your inquiry.</p>
+
+        <div class="privacy-meta">
+          Last updated: 2026
+        </div>
+      </div>
+
+      <a class="privacy-link" href="https://www.radim-theiner.com/">
+        Back to homepage →
+      </a>
+    </div>
+  </main>
+
+  <div class="privacy-biker-layer" aria-hidden="true">
+    <img class="privacy-biker privacy-biker--dark" src="assets/biker-dark.gif" alt="" />
+    <img class="privacy-biker privacy-biker--light" src="assets/biker-light.gif" alt="" />
+  </div>
+</body>
+
+</html>
