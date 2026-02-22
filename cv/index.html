@@ -98,8 +98,6 @@
       line-height: 1.6;
       white-space: nowrap;
       padding-top: 34px;
-      text-decoration: none;
-      color: inherit;
     }
 
     .meta a {
@@ -197,9 +195,9 @@
 
     .footer {
       margin-top: 18px;
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
       align-items: center;
-      justify-content: space-between;
       gap: 18px;
       padding-top: 12px;
       border-top: 1px solid var(--rule);
@@ -217,6 +215,18 @@
 
     .footer a:hover {
       opacity: 1;
+    }
+
+    .footer-left {
+      justify-self: start;
+    }
+
+    .footer-mid {
+      justify-self: center;
+    }
+
+    .footer-right {
+      justify-self: end;
     }
 
     .no-break {
@@ -397,8 +407,9 @@
     </div>
 
     <footer class="footer">
-      <a href="https://www.radim-theiner.com/">Website →</a>
-      <a href="https://www.linkedin.com/in/therad/">LinkedIn →</a>
+      <a class="footer-left" href="https://www.radim-theiner.com/">Website</a>
+      <a class="footer-mid" href="https://www.linkedin.com/in/therad/">LinkedIn →</a>
+      <a class="footer-right" href="../assets/cv.pdf" download>Download PDF →</a>
     </footer>
   </div>
 </body>
