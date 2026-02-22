@@ -4,391 +4,401 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CV – Radim Theiner</title>
-  <meta name="robots" content="noindex, nofollow" />
+  <title>Radim Theiner — CV</title>
 
-  <link rel="stylesheet" href="/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&family=IBM+Plex+Sans:wght@500;700;800;900&display=swap"
+    rel="stylesheet" />
 
   <style>
     :root {
-      --cv-max: 860px;
-      --cv-pad: 2rem;
-      --cv-muted: rgba(0, 0, 0, 0.45);
-      --cv-muted-dark: rgba(255, 255, 255, 0.55);
-      --cv-ink: #111;
-      --cv-ink-dark: #fafafa;
-      --cv-rule: rgba(0, 0, 0, 0.10);
-      --cv-rule-dark: rgba(255, 255, 255, 0.14);
+      --ink: #111;
+      --rule: rgba(0, 0, 0, 0.10);
+      --paper: #fff;
+
+      --max: 820px;
+      --pad: 34px;
+    }
+
+    @page {
+      size: A4;
+      margin: 14mm;
+    }
+
+    html,
+    body {
+      height: 100%;
+      background: var(--paper);
+      color: var(--ink);
     }
 
     body {
-      color: var(--cv-ink);
-    }
-
-    body.dark-mode {
-      color: var(--cv-ink-dark);
-    }
-
-    .cv-wrap {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .cv-main {
-      flex: 1;
-      padding: clamp(2.5rem, 6vw, 5rem) var(--cv-pad) 7.5rem;
-      display: flex;
-      justify-content: center;
-    }
-
-    .cv-inner {
-      width: 100%;
-      max-width: var(--cv-max);
-      text-align: left;
-    }
-
-    .cv-top {
-      display: flex;
-      flex-direction: column;
-      gap: 1.1rem;
-      margin-bottom: 2.2rem;
-    }
-
-    .cv-name {
+      margin: 0;
       font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    }
+
+    .page {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: var(--pad);
+      box-sizing: border-box;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .brand img {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      image-rendering: auto;
+      flex: 0 0 auto;
+    }
+
+    .name {
+      margin: 0 0 10px 0;
       font-weight: 900;
-      font-size: clamp(40px, 7vw, 86px);
-      line-height: 0.92;
-      letter-spacing: -0.04em;
-      margin: 0;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      font-size: 36px;
+      white-space: nowrap;
     }
 
-    .cv-tagline {
+    .tagline {
+      margin: 0;
       font-family: 'Courier New', Courier, monospace;
-      font-size: 13px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      line-height: 1.6;
-      margin: 0;
-      opacity: 0.55;
-    }
-
-    body.dark-mode .cv-tagline {
-      opacity: 0.7;
-    }
-
-    .cv-rule {
-      height: 1px;
-      background: var(--cv-rule);
-      margin: 2.2rem 0;
-    }
-
-    body.dark-mode .cv-rule {
-      background: var(--cv-rule-dark);
-    }
-
-    .cv-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2.2rem;
-    }
-
-    .cv-section {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .cv-h2 {
-      font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-      font-weight: 700;
-      font-size: 12px;
+      font-size: 11px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
+      opacity: 0.75;
+      line-height: 1.5;
+    }
+
+    .meta {
+      text-align: right;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      line-height: 1.6;
+      white-space: nowrap;
+      padding-top: 34px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .meta a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .meta a:visited {
+      color: inherit;
+    }
+
+    .meta a:hover {
+      opacity: 0.9;
+    }
+
+    .rule {
+      height: 1px;
+      background: var(--rule);
+      margin: 22px 0 26px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 32px;
+    }
+
+    .section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .h2 {
       margin: 0;
+      font-weight: 800;
+      font-size: 15px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       opacity: 0.55;
     }
 
-    body.dark-mode .cv-h2 {
-      opacity: 0.7;
-    }
-
-    .cv-p {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 14px;
-      line-height: 1.75;
+    .p {
       margin: 0;
-      opacity: 0.75;
-      max-width: 78ch;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 12px;
+      line-height: 1.65;
+      opacity: 0.78;
     }
 
-    body.dark-mode .cv-p {
-      opacity: 0.85;
-    }
-
-    .cv-list {
+    .list {
       list-style: none;
       padding: 0;
       margin: 0;
       display: grid;
-      gap: 1.2rem;
+      gap: 14px;
     }
 
-    .cv-item {
+    .item {
+      padding-top: 14px;
+      border-top: 1px solid var(--rule);
       display: grid;
-      gap: 0.35rem;
-      padding-top: 1.1rem;
-      border-top: 1px solid var(--cv-rule);
+      gap: 4px;
     }
 
-    body.dark-mode .cv-item {
-      border-top: 1px solid var(--cv-rule-dark);
-    }
-
-    .cv-item:first-child {
+    .item:first-child {
       border-top: 0;
       padding-top: 0;
     }
 
-    .cv-role {
-      font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-      font-weight: 800;
-      letter-spacing: -0.01em;
+    .role {
       margin: 0;
-      font-size: 18px;
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: -0.01em;
       line-height: 1.25;
     }
 
-    .cv-meta {
-      font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-      font-weight: 500;
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+    .where {
       margin: 0;
-      opacity: 0.45;
-    }
-
-    body.dark-mode .cv-meta {
-      opacity: 0.6;
-    }
-
-    .cv-desc {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 14px;
-      line-height: 1.7;
-      margin: 0;
-      opacity: 0.72;
-      max-width: 90ch;
-    }
-
-    body.dark-mode .cv-desc {
-      opacity: 0.85;
-    }
-
-    .cv-footer {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding: 14px var(--cv-pad);
-      background: rgba(255, 255, 255, 0.86);
-      backdrop-filter: blur(10px);
-      border-top: 1px solid var(--cv-rule);
-    }
-
-    body.dark-mode .cv-footer {
-      background: rgba(10, 10, 10, 0.72);
-      border-top: 1px solid var(--cv-rule-dark);
-    }
-
-    .cv-footer-note {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      opacity: 0.55;
-      margin: 0;
-      white-space: nowrap;
-    }
-
-    body.dark-mode .cv-footer-note {
-      opacity: 0.7;
-    }
-
-    .cv-download {
-      display: inline-block;
-      color: inherit;
-      text-decoration: none;
-
-      font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
       font-weight: 600;
-      font-size: 12px;
-      letter-spacing: 0.14em;
+      font-size: 10px;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-
-      padding: 12px 18px;
-
-      opacity: 0.9;
-      transition: opacity 0.25s ease;
-    }
-
-    .cv-download:hover {
       opacity: 0.55;
     }
 
-    .cv-download:visited {
-      color: inherit;
+    .desc {
+      margin: 0;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 11.5px;
+      line-height: 1.6;
+      opacity: 0.78;
     }
 
-    .cv-footer-inner {
-      max-width: var(--cv-max);
-      margin: 0 auto;
+    .footer {
+      margin-top: 18px;
       display: flex;
       align-items: center;
-      justify-content: flex-end;
-      gap: 48px;
-      /* Bigger gap */
+      justify-content: space-between;
+      gap: 18px;
+      padding-top: 12px;
+      border-top: 1px solid var(--rule);
     }
 
-    .cv-footer-link {
+    .footer a {
       font-family: 'Courier New', Courier, monospace;
-      font-size: 12px;
+      font-size: 10px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       text-decoration: none;
       color: inherit;
-      opacity: 0.55;
-      transition: opacity 0.25s ease;
+      opacity: 0.65;
     }
 
-    .cv-footer-link:hover {
-      opacity: 0.9;
-    }
-
-    body.dark-mode .cv-footer-link {
-      opacity: 0.7;
-    }
-
-    body.dark-mode .cv-footer-link:hover {
+    .footer a:hover {
       opacity: 1;
+    }
+
+    .no-break {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .tools-group {
+      margin-bottom: 14px;
+    }
+
+    .tools-label {
+      margin: 0 0 4px 0;
+      font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+
+    @media print {
+      .page {
+        padding: 0;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="cv-wrap">
-    <main class="cv-main">
-      <div class="cv-inner">
-        <header class="cv-top">
-          <h1 class="cv-name">Radim Theiner</h1>
-          <p class="cv-tagline">Product owner · creative developer · visual storyteller</p>
-        </header>
-
-        <div class="cv-rule"></div>
-
-        <section class="cv-section">
-          <h2 class="cv-h2">Profile</h2>
-          <p class="cv-p">
-            A product management and IT innovation specialist focused on blending business needs with creative
-            solutions.
-            Experienced in web + mobile platforms, automation, and delivering projects in high-pressure environments.
-          </p>
-        </section>
-
-        <div class="cv-rule"></div>
-
-        <div class="cv-grid">
-          <section class="cv-section">
-            <h2 class="cv-h2">Education</h2>
-
-            <ul class="cv-list">
-              <li class="cv-item">
-                <p class="cv-role">BA — International Sales and Marketing</p>
-                <p class="cv-meta">VIA University College · 2023 · Denmark</p>
-              </li>
-
-              <li class="cv-item">
-                <p class="cv-role">AP — International Marketing Management</p>
-                <p class="cv-meta">VIA University College · 2021 · Denmark</p>
-              </li>
-            </ul>
-          </section>
-
-          <section class="cv-section">
-            <h2 class="cv-h2">Work experience</h2>
-
-            <ul class="cv-list">
-              <li class="cv-item">
-                <p class="cv-role">Product Owner/ Project Manager</p>
-                <p class="cv-meta">Papp Mobility ApS · Aug 2023 – Present</p>
-                <p class="cv-desc">
-                  Managing Angular platform and iOS app development. Leading product vision and strategy across web and
-                  mobile to ensure seamless integration and functionality.
-                </p>
-              </li>
-
-              <li class="cv-item">
-                <p class="cv-role">Innovation Lab Intern</p>
-                <p class="cv-meta">GroupM · Aug 2022 – Jan 2023</p>
-                <p class="cv-desc">
-                  Bringing innovations into a multinational media house and communicating practical usage to specialists
-                  and clients, with focus on AI, cookieless solutions, and web3 technologies.
-                </p>
-              </li>
-
-              <li class="cv-item">
-                <p class="cv-role">Student Mentor & Ambassador</p>
-                <p class="cv-meta">VIA University College · Mar 2021 – Jan 2023</p>
-                <p class="cv-desc">
-                  Student mentor and member of the multimedia team. In charge of planning and content creation for the
-                  VIA Horsens Campus.
-                </p>
-              </li>
-
-              <li class="cv-item">
-                <p class="cv-role">IT Developer & Photographer</p>
-                <p class="cv-meta">Student Survival Guide · Sep 2019 – Jan 2023</p>
-                <p class="cv-desc">
-                  Maintenance of the website, process automations, data analysis, and optimization of CRM systems in a
-                  student-led project.
-                </p>
-              </li>
-
-              <li class="cv-item">
-                <p class="cv-role">CEO / Founder</p>
-                <p class="cv-meta">SNews · Mar 2021 – Nov 2022</p>
-                <p class="cv-desc">
-                  Founder of an AI-driven onboard technology for car infotainment. Ensured delivery on time while
-                  following the product vision and maintaining stakeholder alignment.
-                </p>
-              </li>
-
-              <li class="cv-item">
-                <p class="cv-role">Volunteer</p>
-                <p class="cv-meta">cesko.digital · Apr 2019 – Mar 2024</p>
-                <p class="cv-desc">
-                  Marketing management (innovations in news storytelling), video editing (remote education), and backend
-                  development (Cityvisor).
-                </p>
-              </li>
-            </ul>
-          </section>
+  <div class="page">
+    <header class="top">
+      <div class="brand">
+        <img src="../favico.png" alt="" aria-hidden="true" />
+        <div>
+          <h1 class="name">Radim Theiner</h1>
+          <p class="tagline">Product owner · creative developer · visual storyteller</p>
         </div>
       </div>
-    </main>
 
-    <footer class="cv-footer">
-      <div class="cv-footer-inner">
-        <a class="cv-footer-link" href="/assets/cv.pdf">
-          Download PDF
-        </a>
-
-        <a class="cv-footer-link" href="/assets/cv.pdf">
-          CV.pdf →
-        </a>
+      <div class="meta">
+        Copenhagen<br />
+        <a href="https://www.radim-theiner.com">www.radim-theiner.com</a>
       </div>
+    </header>
+
+    <div class="rule"></div>
+
+    <div class="grid">
+      <aside class="section no-break">
+        <h2 class="h2">Profile</h2>
+        <p class="p">
+          A product management and IT innovation specialist focused on blending business needs with creative solutions.
+          Experienced in web + mobile platforms, automation, and delivering projects in high-pressure environments.
+        </p>
+
+        <div class="rule"></div>
+
+        <h2 class="h2">Education</h2>
+        <ul class="list">
+          <li class="item">
+            <p class="role">BA — International Sales and Marketing</p>
+            <p class="where">VIA University College · 2023 · Denmark</p>
+          </li>
+
+          <li class="item">
+            <p class="role">AP — International Marketing Management</p>
+            <p class="where">VIA University College · 2021 · Denmark</p>
+          </li>
+        </ul>
+
+        <div class="rule"></div>
+
+        <h2 class="h2">Tools</h2>
+
+        <div class="tools-group">
+          <p class="tools-label">Photo</p>
+          <p class="p">
+            Lightroom · Photoshop · Pixelmator
+          </p>
+        </div>
+
+        <div class="tools-group">
+          <p class="tools-label">Video</p>
+          <p class="p">
+            Final Cut Pro · Motion · Logic Pro
+          </p>
+        </div>
+
+        <div class="tools-group">
+          <p class="tools-label">Coding</p>
+          <p class="p">
+            Angular · TypeScript · HTML/CSS/JS · Swift · Firebase · Xcode
+          </p>
+        </div>
+
+        <div class="tools-group">
+          <p class="tools-label">Product</p>
+          <p class="p">
+            Jira · ClickUp · Trello · Miro · Notion · Confluence
+          </p>
+        </div>
+
+        <div class="tools-group">
+          <p class="tools-label">Marketing</p>
+          <p class="p">
+            Meta Ads · Google Ads · Google Analytics · Mailchimp · HubSpot
+          </p>
+        </div>
+      </aside>
+
+      <section class="section no-break">
+        <h2 class="h2">Work experience</h2>
+        <ul class="list">
+          <li class="item">
+            <p class="role">Product Owner / Project Manager</p>
+            <p class="where">Papp Mobility ApS · Aug 2023 – Present</p>
+            <p class="desc">
+              Managing Angular platform and iOS app development. Leading product vision and strategy across web and
+              mobile.
+            </p>
+          </li>
+
+          <li class="item">
+            <p class="role">Innovation Lab</p>
+            <p class="where">GroupM · Aug 2022 – Jan 2023</p>
+            <p class="desc">
+              Innovation research and client communication with focus on AI, cookieless solutions, and web3
+              technologies in multimedia agency.
+            </p>
+          </li>
+
+          <li class="item">
+            <p class="role">IT Developer & Photographer</p>
+            <p class="where">Student Survival Guide · Sep 2019 – Jan 2023</p>
+            <p class="desc">
+              Video production, photos, website maintenance, process automation, data analysis, and CRM optimization in
+              a student-led project.
+            </p>
+          </li>
+
+          <li class="item">
+            <p class="role">CEO / Founder</p>
+            <p class="where">SNews · Mar 2021 – Nov 2022</p>
+            <p class="desc">
+              Founder of an AI-driven onboard infotainment product. Delivered on time while maintaining product vision
+              and stakeholder alignment.
+            </p>
+          </li>
+
+          <li class="item">
+            <p class="role">Volunteer</p>
+            <p class="where">cesko.digital · Apr 2019 – Mar 2024</p>
+            <p class="desc">
+              Marketing management, video editing for remote education, and backend development.
+            </p>
+          </li>
+
+          <li class="item">
+            <p class="role">App Review Team</p>
+            <p class="where">Apple · Contract · Sep 2017 – Sep 2019</p>
+            <p class="desc">
+              Reviewed and evaluated applications to ensure compliance with Apple's guidelines,
+              focusing on quality, usability, and performance.
+            </p>
+          </li>
+
+          <li class="item">
+            <p class="role">iOS Developer</p>
+            <p class="where">Etnetera · Part-time · Feb 2019 – Jul 2019</p>
+            <p class="desc">
+              Developed and maintained iOS applications. Implemented features, fixed bugs,
+              and collaborated cross-functionally to deliver high-quality mobile solutions.
+            </p>
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <footer class="footer">
+      <a href="https://www.radim-theiner.com/">Website →</a>
+      <a href="https://www.linkedin.com/in/therad/">LinkedIn →</a>
     </footer>
   </div>
 </body>
