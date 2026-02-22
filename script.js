@@ -634,7 +634,7 @@
           id: "pas-normal",
           title: "PAS NORMAL STUDIOS",
           description:
-            "Late-summer roll with the Pas Normal Studios crew in Copenhagen’s late summer.\n\nSnapping fast-paced action and laid-back evening hangs with the Panormal crew. Just good vibes, cool people, and a brand that loves its racers.",
+            "Late-summer roll with the Pas Normal Studios crew in Copenhagen’s late summer.\n\nSnapping fast-paced action and laid-back evening hangs with the PNS crew. Just good vibes, cool people, and a brand that loves its racers.",
           count: 10,
           ext: "webp",
           thumbExt: "webp",
@@ -715,7 +715,7 @@
           id: "kmen-coffee",
           title: "KMEN COFFEE",
           description:
-            "Specialty coffee by friends. Shots of the daily grind at Kemn Coffee, from roasting to brewing.\n\nIt’s all about the aroma, the community, and the love of a good cup shared with friends.",
+            "Specialty coffee by friends. Shots of the daily grind at Kmen Coffee, from roasting to brewing.\n\nIt’s all about the aroma, the community, and the love of a good cup shared with friends.",
           count: 8,
           ext: "webp",
           thumbExt: "webp",
