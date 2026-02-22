@@ -248,6 +248,60 @@
       opacity: 0.5;
     }
 
+    /* Fixed biker layer (bottom-right) */
+    .privacy-biker-layer {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .privacy-biker {
+      width: clamp(70px, 8vw, 110px);
+      height: auto;
+      opacity: 0.9;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      .privacy-biker-layer {
+        right: 16px;
+        bottom: 16px;
+      }
+
+      .privacy-biker {
+        width: 70px;
+      }
+    }
+
+    .privacy-biker--dark {
+      display: block;
+    }
+
+    .privacy-biker--light {
+      display: none;
+    }
+
+    body.dark-mode .privacy-biker--dark {
+      display: none;
+    }
+
+    body.dark-mode .privacy-biker--light {
+      display: block;
+    }
+
+    .privacy-biker-layer {
+      opacity: 0.9;
+      mix-blend-mode: multiply;
+    }
+
+    @media (max-width: 1000px) {
+      .privacy-biker-layer {
+        display: none;
+      }
+    }
+
     @media print {
       .page {
         padding: 0;
@@ -411,6 +465,10 @@
       <a class="footer-mid" href="https://www.linkedin.com/in/therad/">LinkedIn →</a>
       <a class="footer-right" href="../assets/cv.pdf" download>Download PDF →</a>
     </footer>
+  </div>
+
+  <div class="privacy-biker-layer" aria-hidden="true">
+    <img class="privacy-biker" src="../assets/biker-dark.gif" alt="" />
   </div>
 </body>
 
