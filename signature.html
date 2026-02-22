@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signature – Radim Theiner</title>
+    <meta name="robots" content="noindex, nofollow" />
+
+    <link rel="stylesheet" href="/styles.css" />
+
+    <style>
+        :root {
+            --sig-max: 860px;
+            --sig-pad: 2rem;
+
+            --sig-ink: #111;
+            --sig-ink-dark: #fafafa;
+
+            --sig-muted: rgba(0, 0, 0, 0.55);
+            --sig-muted-dark: rgba(255, 255, 255, 0.70);
+
+            --sig-rule: rgba(0, 0, 0, 0.10);
+            --sig-rule-dark: rgba(255, 255, 255, 0.14);
+
+            --sig-card: rgba(255, 255, 255, 0.86);
+            --sig-card-dark: rgba(10, 10, 10, 0.72);
+
+            --sig-btn: rgba(0, 0, 0, 0.08);
+            --sig-btn-dark: rgba(255, 255, 255, 0.10);
+
+            --sig-focus: rgba(0, 0, 0, 0.16);
+            --sig-focus-dark: rgba(255, 255, 255, 0.18);
+
+            --sig-border: rgba(0, 0, 0, 0.12);
+            --sig-border-dark: rgba(255, 255, 255, 0.16);
+        }
+
+        body {
+            color: var(--sig-ink);
+        }
+
+        body.dark-mode {
+            color: var(--sig-ink-dark);
+        }
+
+        .sig-wrap {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sig-main {
+            flex: 1;
+            padding: clamp(2.5rem, 6vw, 5rem) var(--sig-pad) 7.5rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .sig-inner {
+            width: 100%;
+            max-width: var(--sig-max);
+            text-align: left;
+        }
+
+        .sig-top {
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+            margin-bottom: 2.2rem;
+        }
+
+        .sig-name {
+            font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+            font-weight: 900;
+            font-size: clamp(40px, 7vw, 86px);
+            line-height: 0.92;
+            letter-spacing: -0.04em;
+            margin: 0;
+        }
+
+        .sig-tagline {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            line-height: 1.6;
+            margin: 0;
+            opacity: 0.55;
+        }
+
+        body.dark-mode .sig-tagline {
+            opacity: 0.7;
+        }
+
+        .sig-rule {
+            height: 1px;
+            background: var(--sig-rule);
+            margin: 2.2rem 0;
+        }
+
+        body.dark-mode .sig-rule {
+            background: var(--sig-rule-dark);
+        }
+
+        .sig-h2 {
+            font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin: 0;
+            opacity: 0.55;
+        }
+
+        body.dark-mode .sig-h2 {
+            opacity: 0.7;
+        }
+
+        .sig-p {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.75;
+            margin: 0;
+            opacity: 0.75;
+            max-width: 82ch;
+        }
+
+        body.dark-mode .sig-p {
+            opacity: 0.85;
+        }
+
+        .sig-preview {
+            margin-top: 1.2rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        /* UPDATED: super thin grey border + no card fill */
+        .sig-card {
+            background: transparent;
+            border: 1px solid var(--sig-border);
+            border-radius: 18px;
+            padding: 16px 16px;
+        }
+
+        body.dark-mode .sig-card {
+            border: 1px solid var(--sig-border-dark);
+        }
+
+        .sig-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: flex-start;
+            margin-top: 14px;
+        }
+
+        .sig-btn {
+            appearance: none;
+            border: 1px solid var(--sig-rule);
+            background: var(--sig-btn);
+            color: inherit;
+            border-radius: 999px;
+            padding: 11px 14px;
+            cursor: pointer;
+
+            font-family: 'IBM Plex Sans', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+            font-weight: 650;
+            font-size: 12px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+
+            opacity: 0.92;
+            transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        body.dark-mode .sig-btn {
+            border: 1px solid var(--sig-rule-dark);
+            background: var(--sig-btn-dark);
+        }
+
+        .sig-btn:hover {
+            opacity: 0.65;
+            transform: translateY(-1px);
+        }
+
+        .sig-btn:active {
+            transform: translateY(0);
+            opacity: 0.85;
+        }
+
+        .sig-btn:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 4px var(--sig-focus);
+        }
+
+        body.dark-mode .sig-btn:focus-visible {
+            box-shadow: 0 0 0 4px var(--sig-focus-dark);
+        }
+
+        .sig-note {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            opacity: 0.55;
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        body.dark-mode .sig-note {
+            opacity: 0.7;
+        }
+
+        .sig-footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 14px var(--sig-pad);
+            background: rgba(255, 255, 255, 0.86);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--sig-rule);
+        }
+
+        body.dark-mode .sig-footer {
+            background: rgba(10, 10, 10, 0.72);
+            border-top: 1px solid var(--sig-rule-dark);
+        }
+
+        .sig-footer-inner {
+            max-width: var(--sig-max);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .sig-footer-link {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: inherit;
+            opacity: 0.55;
+            transition: opacity 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .sig-footer-link:hover {
+            opacity: 0.9;
+        }
+
+        body.dark-mode .sig-footer-link {
+            opacity: 0.7;
+        }
+
+        body.dark-mode .sig-footer-link:hover {
+            opacity: 1;
+        }
+
+        .sig-toast {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            opacity: 0.55;
+            margin: 0;
+            text-align: right;
+            min-width: 11ch;
+        }
+
+        body.dark-mode .sig-toast {
+            opacity: 0.7;
+        }
+
+        .sig-render {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        padding: 12px 5px 8px 5px;
+        }
+
+        .sig-avatar {
+            width: 60px;
+            height: 60px;
+            image-rendering: pixelated;
+            border-radius: 10px;
+            display: block;
+        }
+
+        .sig-block {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        /* keep name normal (as in most email clients) */
+        .sig-title {
+            font-family: Arial, sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            margin: 0;
+            line-height: 1.25;
+        }
+
+        /* UPDATED: typewriter style + grey */
+        .sig-sub {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            margin: 0;
+            line-height: 1.4;
+            letter-spacing: 0.08em;
+            color: rgba(0, 0, 0, 0.55);
+            text-transform: uppercase;
+        }
+
+        body.dark-mode .sig-sub {
+            color: rgba(255, 255, 255, 0.70);
+        }
+
+        .sig-links {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        /* UPDATED: typewriter style + black (inherit) */
+        .sig-a {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: inherit;
+            text-decoration: none;
+            line-height: 1.35;
+        }
+
+        .sig-a:hover {
+            text-decoration: underline;
+        }
+
+        .sig-clip {
+            position: absolute;
+            left: -99999px;
+            top: -99999px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        @media (max-width: 520px) {
+            .sig-card {
+                border-radius: 16px;
+                padding: 14px 14px;
+            }
+
+            .sig-render {
+                gap: 12px;
+            }
+
+            .sig-avatar {
+                width: 42px;
+                height: 42px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="sig-wrap">
+        <main class="sig-main">
+            <div class="sig-inner">
+                <header class="sig-top">
+                    <h1 class="sig-name">Signature</h1>
+                    <p class="sig-tagline">copy-paste friendly · gmail + apple mail</p>
+                </header>
+
+                <div class="sig-rule"></div>
+
+                <section>
+                    <h2 class="sig-h2">Preview</h2>
+
+                    <div class="sig-preview">
+                        <div class="sig-card" id="sigCard">
+                            <div class="sig-render" aria-label="Email signature preview">
+                                <a href="https://radim-theiner.com" aria-label="Open portfolio">
+                                    <img class="sig-avatar" src="https://radim-theiner.com/assets/pixel-face.png"
+                                        alt="Radim pixel face" width="60" height="60" />
+                                </a>
+
+                                <div class="sig-block">
+                                    <p class="sig-title">Radim Theiner</p>
+
+                                    <p class="sig-sub">Creative developer &amp; visual storyteller</p>
+
+                                    <div class="sig-links">
+                                        <a class="sig-a" href="https://radim-theiner.com">www.radim-theiner.com</a>
+                                        <!-- removed email (signature already implies it) -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sig-actions">
+                                <button class="sig-btn" id="copyRich" type="button">Copy for Gmail</button>
+                                <button class="sig-btn" id="copyPlain" type="button">Copy as Text</button>
+                                <p class="sig-note" id="copyNote">ready</p>
+                            </div>
+                        </div>
+
+                        <div class="sig-rule"></div>
+
+                        <h2 class="sig-h2">Notes</h2>
+                        <p class="sig-p">
+                            Use “Copy for Gmail”, then paste directly into Gmail signature editor. If a mail client
+                            strips formatting,
+                            use “Copy as Text”.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Clipboard payload (EMAIL-SAFE HTML: table + inline styles) -->
+                <div class="sig-clip" aria-hidden="true">
+                    <div id="sigHtml">
+                        <table cellpadding="0" cellspacing="0"
+                            style="font-family: Arial, sans-serif; line-height: 1.4;">
+                            <tr>
+                                <td style="padding-right: 14px; vertical-align: top;">
+                                    <a href="https://radim-theiner.com" style="text-decoration: none;">
+                                        <img src="https://radim-theiner.com/assets/pixel-face.png" width="60"
+                                            height="60"
+                                            style="display: block; border-radius: 10px; image-rendering: pixelated;"
+                                            alt="Radim" />
+                                    </a>
+                                </td>
+
+                                <td style="vertical-align: top;">
+                                    <strong style="font-size: 17px;">Radim Theiner</strong><br />
+                                    <span
+                                        style="font-family: 'Courier New', Courier, monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #777;">
+                                        Creative developer &amp; visual storyteller
+                                    </span><br />
+
+                                    <a href="https://radim-theiner.com"
+                                        style="font-family: 'Courier New', Courier, monospace; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: #000; text-decoration: none;">
+                                        www.radim-theiner.com
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="sig-footer">
+            <div class="sig-footer-inner">
+                <a class="sig-footer-link" href="https://radim-theiner.com">radim-theiner.com</a>
+                <p class="sig-toast" id="toast">—</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        (() => {
+            "use strict";
+
+            const copyRichBtn = document.getElementById("copyRich");
+            const copyPlainBtn = document.getElementById("copyPlain");
+            const copyNote = document.getElementById("copyNote");
+            const toast = document.getElementById("toast");
+
+            const sigHtmlEl = document.getElementById("sigHtml");
+
+            function setStatus(text) {
+                copyNote.textContent = text;
+                toast.textContent = text;
+            }
+
+            function htmlToPlainText(html) {
+                const tmp = document.createElement("div");
+                tmp.innerHTML = html;
+
+                const text = (tmp.textContent || tmp.innerText || "")
+                    .replace(/\u00A0/g, " ")
+                    .replace(/[ \t]+\n/g, "\n")
+                    .replace(/\n{3,}/g, "\n\n")
+                    .trim();
+
+                return text;
+            }
+
+            async function copyRich() {
+                const html = sigHtmlEl.innerHTML.trim();
+                const text = htmlToPlainText(html);
+
+                if (!navigator.clipboard || !window.ClipboardItem) {
+                    await navigator.clipboard.writeText(text);
+                    setStatus("copied (text fallback)");
+                    return;
+                }
+
+                const item = new ClipboardItem(
+                    {
+                        "text/html": new Blob([html], { type: "text/html" }),
+                        "text/plain": new Blob([text], { type: "text/plain" })
+                    });
+
+                await navigator.clipboard.write([item]);
+                setStatus("copied");
+            }
+
+            async function copyPlain() {
+                const html = sigHtmlEl.innerHTML.trim();
+                const text = htmlToPlainText(html);
+
+                await navigator.clipboard.writeText(text);
+                setStatus("copied (text)");
+            }
+
+            copyRichBtn.addEventListener("click", async () => {
+                try {
+                    await copyRich();
+                }
+                catch (err) {
+                    setStatus("copy failed");
+                }
+            });
+
+            copyPlainBtn.addEventListener("click", async () => {
+                try {
+                    await copyPlain();
+                }
+                catch (err) {
+                    setStatus("copy failed");
+                }
+            });
+
+            setStatus("ready");
+        })();
+    </script>
+</body>
+
+</html>
