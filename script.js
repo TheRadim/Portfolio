@@ -1597,7 +1597,7 @@
           link: "https://simona-cerna.com/pyntet"
         },
         {
-          title: "Jeezis Portal",
+          title: "Exchange gift",
           tech: "Angular",
           description:
             "Family chaos, but organized.\n\nA private gift-exchange app to keep Christmas civil. Logic, secrets, and a bit of fun behind the scenes.",
