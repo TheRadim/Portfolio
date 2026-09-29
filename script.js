@@ -715,13 +715,13 @@
           id: "sports",
           title: "SPORTS",
           description:
-            "Race days, team efforts, and moments on the trails.\n\nPLH Cup, Sunshine Crit Running Relay, and Trail Fox Series.",
+            "I love all kinds of sports—the motion, the energy, and the moments in between.\n\nRace days, team efforts, and adventures on the trails. Here you’ll find more snaps from different sports, from PLH Cup and Sunshine Crit Running Relay to Trail Fox Series and running in the Swiss Alps.\n\nAs long as there’s motion, I’m enjoying it—with or without a camera in hand.",
           count: 12,
           ext: "webp",
           thumbExt: "webp",
           captions: [
-            "PLH Cup 2025",
             "Sunshine Crit Running Relay",
+            "PLH Cup 2026",
             "Trail Fox Series",
             "PLH Cup 2026",
             "Trail Fox Series",
@@ -730,9 +730,9 @@
             "PLH Cup 2026",
             "Sunshine Crit Running Relay",
             "PLH Cup 2026",
-            "Trail Fox Series",
+            "Running in Swiss Alps",
             "Sunshine Crit Running Relay"
-            ]
+          ]
         },
         {
           dir: "7",
