@@ -8,7 +8,9 @@ Local, ignored evidence in `stories/test/artifacts/`:
 - `stories-desktop.png`: desktop visitor layout at 1515 × 850.
 - `stories-mobile.png`: mobile visitor layout at 553 × 1205.
 - `mobile-comparison.png`: supplied mobile reference beside the implementation.
-- `upload-success.png`: successful browser upload and compression.
+- `upload-success.png`: successful local browser upload and compression.
+- `live-upload-success.png`: successful production browser upload and compression.
+- `live-stories.png`: production visitor page after temporary test content was removed.
 
 Preview events are local fixtures, not production content.
 
@@ -22,4 +24,4 @@ The timeline retains visible gaps but uses continuous full-row pointer targets. 
 
 Browser checks covered timeline navigation, native wheel input, thumbnails, upload, successful publication, and deletion of the temporary preview fixture. Tablet document bounds were checked at 600×800, 768×1024, 820×1180, 1024×768, 1180×820, and 1366×1024 with no page overflow. Unusually long tablet copy has an internal reading area. Reduced-motion preferences and keyboard focus styles are supported.
 
-Five automated tests pass, including proportional wheel navigation, continuous timeline hit testing, authentication and lockout, real photo/video processing, publication failure cleanup, persistence, and deletion. Live Firebase verification passed: new password accepted, old password rejected, photo and video uploaded through resumable storage with the production CORS origin, compressed successfully, published together, then deleted. The production diary was left empty for the owner’s content. GitHub Pages and live admin browser checks follow publication.
+Five automated tests pass, including proportional wheel navigation, continuous timeline hit testing, authentication and lockout, real photo/video processing, publication failure cleanup, persistence, and deletion. Live Firebase verification passed: new password accepted, old password rejected, photo and video uploaded through resumable storage with the production CORS origin, compressed successfully, published together, then deleted. The production diary was left empty for the owner’s content. GitHub Pages published successfully. The live browser accepted the new password and published a photo/video story; the visitor page displayed it and its video had looping enabled, audio muted, and native controls disabled. Browser deletion was verified separately. A final native wheel test advanced four events on the first vigorous scroll; desktop navigation does not depend on reaching the document bottom.

@@ -129,7 +129,7 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
     const copy = e.target.closest(".story-copy");
     if (copy && copy.scrollHeight > copy.clientHeight + 2) return;
     const bottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 3;
-    if ((e.deltaY > 0 && !bottom) || (e.deltaY < 0 && window.scrollY > 3)) return;
+    if (window.innerWidth < 600 && ((e.deltaY > 0 && !bottom) || (e.deltaY < 0 && window.scrollY > 3))) return;
     e.preventDefault();
     const distance = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1);
     const next = wheel.consume(distance, performance.now());
