@@ -338,25 +338,24 @@ body {
   position: relative;
 }
 
-/* A separate diary link; the portfolio's scroll controls keep their behavior. */
+/* Align the diary link with the right edge of the hero introduction. */
 .stories-entry {
   position: absolute;
   top: 92vh;
-  right: 30px;
+  right: calc(var(--octo-offset) - max(0px, (100vw - var(--container-max)) / 2));
   z-index: 3;
   display: inline-flex;
   align-items: center;
-  gap: 13px;
-  min-height: 32px;
+  gap: 10px;
   color: var(--fg);
   text-decoration: none;
-  font-size: 14px;
+  font: 400 .9rem/1 'Courier New', Courier, monospace;
 }
-.stories-entry span:first-child { font-size: 24px; transition: transform .2s ease; }
-.stories-entry:hover span:first-child { transform: translateX(4px); }
+.stories-entry-arrow { font: 400 1.5rem/1 Arial, sans-serif; transition: transform .2s ease; }
+.stories-entry:hover .stories-entry-arrow { transform: translateX(4px); }
 .stories-entry:focus-visible { outline: 2px solid currentColor; outline-offset: 6px; }
-@media (max-width: 1024px) {
-  .stories-entry { top: 85svh; right: 28px; }
+@media (max-width: 768px) {
+  .stories-entry { top: 92svh; right: 32px; }
 }
 
 .scroll-text {
