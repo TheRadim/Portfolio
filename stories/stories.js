@@ -111,10 +111,11 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
     try {
       const response = await fetch(`${base}/stories`, { signal: AbortSignal.timeout(20000) });
       if (!response.ok) throw new Error("load");
-      stories = (await response.json()).stories.filter((s) => Array.isArray(s.media) && s.media.length);
+      stories = (await response.json()).stories.filter((s) => Array.isArray(s.media) && s.media.length).sort((a, b) => a.date.localeCompare(b.date));
       if (!stories.length) { showMessage("The in-between.", "A visual diary of everyday moments. The first stories are on their way."); return; }
       buildTimeline(); let id = ""; try { id = decodeURIComponent(location.hash.slice(1)); } catch {}
-      await selectStory(Math.max(0, stories.findIndex((s) => s.id === id)));
+      const linked = stories.findIndex((s) => s.id === id);
+      await selectStory(linked < 0 ? stories.length - 1 : linked);
     } catch { showMessage("A little pause.", "The diary couldn’t load right now. Please try again in a moment.", true); }
   }
   $("previousStory").onclick = () => selectStory(requested - 1);

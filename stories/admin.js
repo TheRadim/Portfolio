@@ -1,6 +1,7 @@
 (() => {
   "use strict";
   const $ = (id) => document.getElementById(id), base = window.STORIES_CONFIG.apiBase.replace(/\/$/, "");
+  let editing = null, editOrder = [];
   let token = "", files = [], previewURLs = [], busy = false, jobId = null;
   function message(text) { $("adminMessage").textContent = text; }
   async function api(path, method = "GET", data) {
@@ -14,7 +15,7 @@
     e.preventDefault(); message("");
     if (!base) { message("The diary service hasn’t been connected yet."); return; }
     const button = e.currentTarget.querySelector("button"); button.disabled = true;
-    try { const result = await api("/login", "POST", { password: $("password").value }); token = result.token; $("password").value = ""; $("loginPanel").hidden = true; $("adminPanel").hidden = false; if (document.body.dataset.mode === "delete") await loadDeleteList(); }
+    try { const result = await api("/login", "POST", { password: $("password").value }); token = result.token; $("password").value = ""; $("loginPanel").hidden = true; $("adminPanel").hidden = false; if (document.body.dataset.mode === "delete") { closeEditor(); await loadDeleteList(); } }
     catch (error) { message(error.message); } finally { button.disabled = false; }
   };
   $("logout").onclick = async () => { if (busy) return; try { await api("/logout", "POST"); } catch {} lock(); message(""); };
@@ -30,8 +31,48 @@
         try { await api(`/stories/${story.id}`, "DELETE"); await loadDeleteList(); message("Story deleted."); }
         catch (error) { message(error.message); button.disabled = false; }
       };
-      li.append(title, button); $("deleteList").append(li);
+      const edit = document.createElement("button"); edit.type = "button"; edit.textContent = "Edit"; edit.className = "edit-story-button"; edit.setAttribute("aria-label", `Edit ${story.title}`);
+      edit.onclick = async () => {
+        edit.disabled = true; message("");
+        try {
+          editing = await api(`/stories/${story.id}`); editOrder = editing.media.map((_, i) => i);
+          $("editTitle").value = editing.title; $("editDate").value = editing.date; $("editText").value = editing.text;
+          renderEditMedia(); $("manageOverview").hidden = true; $("editPanel").hidden = false; $("editTitle").focus();
+        } catch (error) { message(error.message); } finally { edit.disabled = false; }
+      };
+      const actions = document.createElement("div"); actions.className = "story-actions"; actions.append(edit, button);
+      li.append(title, actions); $("deleteList").append(li);
     });
+  }
+  function closeEditor() { editing = null; editOrder = []; $("editPanel").hidden = true; $("manageOverview").hidden = false; }
+  function renderEditMedia() {
+    $("editMedia").replaceChildren();
+    editOrder.forEach((original, position) => {
+      const item = editing.media[original], li = document.createElement("li"), img = document.createElement("img");
+      img.src = new URL(item.thumb, new URL(base + "/", location.href)).href; img.alt = "";
+      const name = document.createElement("span"); name.className = "file-name"; name.textContent = `${position + 1}. ${item.type === "video" ? "Video" : "Photo"} ${original + 1}`;
+      li.append(img, name);
+      for (const [label, offset] of [["Earlier", -1], ["Later", 1]]) {
+        const b = document.createElement("button"); b.type = "button"; b.textContent = label;
+        b.disabled = position + offset < 0 || position + offset >= editOrder.length;
+        b.setAttribute("aria-label", `${label}: ${item.type === "video" ? "Video" : "Photo"} ${original + 1}`);
+        b.onclick = () => { [editOrder[position], editOrder[position + offset]] = [editOrder[position + offset], editOrder[position]]; renderEditMedia(); };
+        li.append(b);
+      }
+      $("editMedia").append(li);
+    });
+  }
+  if (document.body.dataset.mode === "delete") {
+    $("cancelEdit").onclick = () => { closeEditor(); message(""); };
+    $("editForm").onsubmit = async (e) => {
+      e.preventDefault(); if (busy || !editing) return; busy = true; message("");
+      const controls = [...$("editForm").querySelectorAll("input,textarea,button")]; controls.forEach(el => el.disabled = true); $("logout").disabled = true;
+      try {
+        await api(`/stories/${editing.id}`, "PATCH", { title: $("editTitle").value, date: $("editDate").value, text: $("editText").value, mediaOrder: editOrder, revision: editing.revision });
+        closeEditor(); await loadDeleteList(); message("Story updated.");
+      } catch (error) { message(error.message); }
+      finally { busy = false; controls.forEach(el => el.disabled = false); $("logout").disabled = false; if (editing) renderEditMedia(); }
+    };
   }
   if (document.body.dataset.mode !== "add") return;
   $("eventDate").value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0,10);

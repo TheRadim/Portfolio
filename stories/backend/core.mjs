@@ -14,14 +14,18 @@ const digest = (value) => createHash('sha256').update(value).digest('hex');
 export const passwordHash = (password, salt = randomBytes(16).toString('hex')) => `${salt}:${scryptSync(password, salt, 64).toString('hex')}`;
 const verifyPassword = (password, hash) => { const [salt, expected] = hash.split(':'); if (!salt || !/^[a-f0-9]{128}$/.test(expected || '')) return false; return timingSafeEqual(scryptSync(password, salt, 64), Buffer.from(expected, 'hex')); };
 export class PublicError extends Error { constructor(message, status = 400) { super(message); this.status = status; } }
-export function validateStory(body) {
+export function validateDetails(body) {
   if (!body || typeof body.title !== 'string' || !body.title.trim() || body.title.length > 120) throw new PublicError('Give your story a name, up to 120 characters.');
   if (typeof body.text !== 'string' || body.text.length > 5000) throw new PublicError('Keep the story text under 5,000 characters.');
   if (!/^\d{4}-\d{2}-\d{2}$/.test(body.date || '') || !Number.isFinite(Date.parse(body.date)) || new Date(body.date).toISOString().slice(0,10) !== body.date) throw new PublicError('Choose a valid date.');
+  return { title: body.title.trim(), date: body.date, text: body.text.trim() };
+}
+export function validateStory(body) {
+  const details = validateDetails(body);
   if (!Array.isArray(body.files) || !body.files.length || body.files.length > limits.files) throw new PublicError('Choose between 1 and 20 photos or videos.');
   if (body.files.some((f) => !types.has(f.type) || !Number.isSafeInteger(f.size) || f.size <= 0 || f.size > limits.fileBytes)) throw new PublicError('Use JPG, PNG, WebP, HEIC, MP4, MOV or WebM files, up to 100 MB each.');
   if (body.files.reduce((sum, f) => sum + f.size, 0) > limits.totalBytes) throw new PublicError('Keep the total upload under 500 MB.');
-  return { title: body.title.trim(), date: body.date, text: body.text.trim(), files: body.files.map((f, index) => ({ index, size: f.size, type: f.type })) };
+  return { ...details, files: body.files.map((f, index) => ({ index, size: f.size, type: f.type })) };
 }
 export function createAPI({ repo, media, getPasswordHash, originList, queue, trustProxy = false }) {
   const app = express(); app.disable('x-powered-by'); app.set('trust proxy', trustProxy);
@@ -31,7 +35,7 @@ export function createAPI({ repo, media, getPasswordHash, originList, queue, tru
     if (origin && !originList.includes(origin)) return res.status(403).json({ error: 'This origin is not allowed.' });
     if (origin) { res.set('Access-Control-Allow-Origin', origin); res.vary('Origin'); }
     res.set('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-    res.set('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+    res.set('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
     if (req.method === 'OPTIONS') return res.sendStatus(204);
     next();
   });
@@ -61,9 +65,27 @@ export function createAPI({ repo, media, getPasswordHash, originList, queue, tru
   }
   app.post('/logout', authenticate, async (req, res) => { await repo.remove('sessions', req.sessionId); res.json({ ok: true }); });
   app.get('/stories', async (_req, res) => {
-    const stories = (await repo.list('stories')).sort((a,b) => b.date.localeCompare(a.date) || b.createdAt - a.createdAt);
+    const stories = (await repo.list('stories')).sort((a,b) => a.date.localeCompare(b.date) || a.createdAt - b.createdAt);
     // Expose only visitor content, never upload metadata or credentials.
     res.json({ stories: stories.map(({ id, title, date, text, media }) => ({ id, title, date, text, media })) });
+  });
+  app.get('/stories/:id', authenticate, async (req, res) => {
+    if (!validID(req.params.id)) throw new PublicError('Story not found.', 404);
+    const story = await repo.get('stories', req.params.id);
+    if (!story) throw new PublicError('Story not found.', 404);
+    const { id, title, date, text, media, createdAt, updatedAt } = story;
+    res.json({ id, title, date, text, media, revision: updatedAt || createdAt });
+  });
+  app.patch('/stories/:id', authenticate, async (req, res) => {
+    if (!validID(req.params.id)) throw new PublicError('Story not found.', 404);
+    const details = validateDetails(req.body), order = req.body.mediaOrder;
+    const story = await repo.mutate('stories', req.params.id, (old) => {
+      if (!old) throw new PublicError('Story not found.', 404);
+      if (req.body.revision !== (old.updatedAt || old.createdAt)) throw new PublicError('This story has changed. Open it again before saving.', 409);
+      if (!Array.isArray(order) || order.length !== old.media.length || new Set(order).size !== old.media.length || order.some(i => !Number.isInteger(i) || i < 0 || i >= old.media.length)) throw new PublicError('Keep each photo or video exactly once in the order.');
+      return { ...old, ...details, media: order.map(i => old.media[i]), updatedAt: Math.max(Date.now(), (old.updatedAt || old.createdAt) + 1) };
+    });
+    res.json({ ok: true, revision: story.updatedAt });
   });
   app.post('/uploads', authenticate, async (req, res) => {
     const input = validateStory(req.body), id = randomUUID(), now = Date.now();

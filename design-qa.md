@@ -31,3 +31,9 @@ Five automated tests pass, including proportional wheel navigation, continuous t
 Updated the homepage link to “stories →”, using the existing 24px Arial arrow and 14.4px Courier label. Desktop right alignment shares the intro block’s viewport offset, including screens wider than the 1600px container. Phones place the link at 92svh with a 32px right inset, below the introduction. Verified at 1515×850, 2000×1156, 439×955 and 372×666.
 
 Stories now shares the portfolio’s #fafafa background, Inter heading family, logo size clamp, uppercase 600-weight project titles and Courier body sizing/line height. Admin headings follow the same family. Tablet checks at 768×1024 and 1024×768 remain free of document overflow. Evidence: `home-372.png`, `home-1515.png`, `home-2000.png`, and `stories-restyled.png` in the ignored artifacts directory.
+
+## Management and gallery refinement
+
+Removed focus outlines from Stories and its admin/password fields. The gallery stage is transparent and retains a fixed aspect-ratio area; its controls reserve a fixed height. Browser checks with portrait, landscape and square fixtures verified identical gallery, title, copy, thumbnails and pagination bounds when switching media at 1515×850, 768×1024, 1024×768 and 439×955.
+
+The timeline is ascending by date and opens at its latest (bottom) event. Management now opens a prefilled editor for the event title, date, text and media order. Local browser checks verified reordered items, saved edits, reopening and the chronological timeline. Automated service checks cover authenticated editing, invalid permutations, unchanged media URLs, stale-edit rejection and date sorting.

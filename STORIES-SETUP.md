@@ -2,9 +2,9 @@
 
 The portfolio remains a static GitHub Pages site. Only `index.html` and a scoped block in `styles.css` change there. Stories uses separate scripts and styles:
 
-- `/stories.html`: visitor diary, newest date first; thumbnail navigation, swipe, timeline and wheel navigation.
+- `/stories.html`: visitor diary, oldest date at the top and newest at the bottom, opening on the latest event; thumbnail navigation, swipe, timeline and wheel navigation.
 - `/add-content.html`: password-only upload, metadata and file ordering, compression progress, publication.
-- `/delete-content.html`: password-only names list with one permanent-delete confirmation.
+- `/delete-content.html`: password-only management list, prefilled editing of title/date/text and media order, plus one permanent-delete confirmation.
 
 ## Firebase project
 
@@ -56,6 +56,8 @@ node password.mjs
 9. Publish the frontend through the existing GitHub Pages main branch. Verify a real upload and delete in the deployed admin UI; then verify the visitor page from both apex and www origins.
 
 Keep incoming upload sessions private. API writes require a valid session and browser requests require an allowed origin. The public API only returns title, date, text and compressed media URLs. Max uploads: 20 files, 100 MB each, 500 MB total. The processing function has one concurrent worker and bounded runtime. Very large sets of videos may need to be split across stories.
+
+Edits use an authenticated PATCH endpoint. The server accepts only a complete permutation of existing media and checks a revision before saving, so stale editors cannot silently overwrite newer edits. Images are reused without recompression. New uploads can be reordered before publication.
 
 ## Validation
 
