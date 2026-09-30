@@ -1,0 +1,8 @@
+exclude:
+  - stories/backend
+  - stories/test
+  - firebase.json
+  - firestore.rules
+  - storage.rules
+  - design-qa.md
+  - STORIES-SETUP.md

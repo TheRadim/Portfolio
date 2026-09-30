@@ -1,0 +1,21 @@
+[
+  {
+    "name": "remove-old-builds",
+    "action": {
+      "type": "Delete"
+    },
+    "condition": {
+      "tagState": "any",
+      "olderThan": "7d"
+    }
+  },
+  {
+    "name": "keep-latest-builds",
+    "action": {
+      "type": "Keep"
+    },
+    "mostRecentVersions": {
+      "keepCount": 2
+    }
+  }
+]

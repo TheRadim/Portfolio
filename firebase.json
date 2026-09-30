@@ -1,0 +1,5 @@
+{
+  "functions": [{ "source": "stories/backend", "codebase": "stories", "runtime": "nodejs22", "ignore": ["node_modules", ".env", ".env.*", ".secret.local", "local-data", "test", "*-debug.log"] }],
+  "firestore": { "rules": "firestore.rules" },
+  "storage": { "rules": "storage.rules" }
+}

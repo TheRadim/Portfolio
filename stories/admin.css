@@ -1,0 +1,39 @@
+.admin-shell { max-width: 760px; margin: 11vh auto 80px; padding: 0 30px; }
+.admin-shell h1 { font-weight: 400; font-size: clamp(30px,4vw,44px); letter-spacing: -1.5px; line-height: 1.15; margin: 10px 0 14px; }
+.eyebrow { color: var(--muted); font-size: 10px; letter-spacing: .12em; margin: 0; }
+.admin-intro { color: var(--muted); margin: 0 0 40px; font-size: 13px; }
+.admin-topline { display: flex; justify-content: space-between; align-items: center; }
+.admin-shell label { display: block; font-size: 12px; margin-bottom: 9px; }
+.admin-shell input:not([type=file]), .admin-shell textarea { display: block; width: 100%; background: #fafafa; border: 1px solid #dedede; border-radius: 0; padding: 13px; color: var(--ink); min-width: 0; font-size: 16px; }
+.admin-shell textarea { resize: vertical; margin-bottom: 28px; }
+.password-row { display: flex; gap: 10px; }
+.password-row input { flex: 1; min-width: 0; }
+.solid-button { background: #111; color: #fff; padding: 13px 24px; border: 1px solid #111; font-size: 12px; white-space: nowrap; }
+.solid-button:hover { background: #343434; }
+.text-button { border: 0; background: none; padding: 6px 0; text-decoration: underline; font-size: 12px; }
+.form-row { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; margin-bottom: 24px; }
+.upload-zone { border: 1px dashed #bbb; padding: 35px 20px; text-align: center; background: #fafafa; cursor: pointer; }
+.upload-zone.is-over { border-color: #111; background: #f0f0ee; }
+.upload-zone strong { display: block; font-size: 16px; font-weight: 400; }
+.upload-zone span { display: block; color: var(--muted); margin: 5px 0 15px; }
+.upload-zone input { display: block; width: 100%; max-width: 270px; margin: 0 auto; font-size: 12px; }
+.field-hint { color: var(--muted); font-size: 10px; line-height: 1.7; }
+.form-actions { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 30px; font-size: 12px; }
+.admin-message { font-size: 13px; color: #a92a25; overflow-wrap: anywhere; }
+.upload-preview { list-style: none; padding: 0; margin: 20px 0; }
+.upload-preview li { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #eee; }
+.upload-preview img, .upload-preview video { width: 64px; height: 46px; object-fit: cover; }
+.upload-preview .file-name { flex: 1; overflow-wrap: anywhere; min-width: 0; font-size: 11px; }
+.upload-preview button { border: 0; background: transparent; font-size: 11px; padding: 8px 3px; }
+progress { width: 100%; height: 3px; accent-color: #111; }
+#progressText { font-size: 12px; color: var(--muted); }
+.success-panel { padding: 28px 0; border-top: 1px solid #ddd; }
+.success-panel h2 { font-size: 24px; font-weight: 400; margin: 0; }
+.success-panel p { color: var(--muted); }
+.success-panel button { margin-left: 25px; }
+.delete-list { list-style: none; padding: 0; margin: 0 0 30px; }
+.delete-list li { display: flex; justify-content: space-between; gap: 24px; padding: 20px 0; border-bottom: 1px solid #e4e4e4; }
+.delete-list span { overflow-wrap: anywhere; }
+.delete-list button { background: none; border: 0; font-size: 11px; color: #a92a25; }
+.admin-back { font-size: 12px; }
+@media (max-width: 600px) { .admin-shell { margin-top: 9vh; padding: 0 24px; } .form-row { grid-template-columns: 1fr; } .password-row { gap: 8px; } .solid-button { padding: 13px 18px; } }

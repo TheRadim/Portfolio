@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Stories by Radim Theiner. A visual diary of everyday moments, somewhere between the planned and the unexpected.">
+  <meta name="theme-color" content="#ffffff">
+  <title>Stories — Radim Theiner</title>
+  <link rel="canonical" href="https://radim-theiner.com/stories.html">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/stories/stories.css">
+  <script src="/stories/config.js" defer></script>
+  <script src="/stories/stories.js" type="module"></script>
+</head>
+<body class="diary-page">
+  <a class="skip-link" href="#story">Skip to story</a>
+  <header class="stories-header">
+    <a class="rad-logo" href="/" aria-label="The Rad — back to portfolio"><span>THE</span> RAD</a>
+    <a class="stories-wordmark" href="/stories.html" aria-label="Stories, visual diary">stories</a>
+  </header>
+  <nav class="timeline" aria-label="Story timeline" id="timeline" hidden></nav>
+  <main id="story" class="story-shell" tabindex="-1">
+    <div class="story-message" id="storyMessage" role="status">Opening the diary…</div>
+    <article class="story-layout" id="storyLayout" hidden>
+      <div class="story-heading">
+        <h1 id="storyTitle"></h1>
+        <time id="storyDate"></time>
+      </div>
+      <div class="story-gallery">
+        <div class="story-stage" id="storyStage" tabindex="0" aria-label="Story media. Use left and right arrows to browse."></div>
+        <div class="story-thumbnails" id="storyThumbnails" role="group" aria-label="Photos and videos"></div>
+        <div class="gallery-footer"><span id="mediaCount"></span><button id="motionToggle" type="button" hidden>Pause video</button></div>
+      </div>
+      <div class="story-copy" id="storyCopy"></div>
+    </article>
+    <nav class="story-pagination" id="storyPagination" aria-label="Browse stories" hidden>
+      <button type="button" id="previousStory">Newer story</button>
+      <span id="storyCount" aria-live="polite"></span>
+      <button type="button" id="nextStory">Older story</button>
+    </nav>
+    <p class="visually-hidden" id="storyAnnouncement" aria-live="polite"></p>
+  </main>
+  <noscript><p class="story-message">Please enable JavaScript to browse the diary.</p></noscript>
+</body>
+</html>

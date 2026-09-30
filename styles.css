@@ -338,6 +338,27 @@ body {
   position: relative;
 }
 
+/* A separate diary link; the portfolio's scroll controls keep their behavior. */
+.stories-entry {
+  position: absolute;
+  top: 92vh;
+  right: 30px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 32px;
+  color: var(--fg);
+  text-decoration: none;
+  font-size: 14px;
+}
+.stories-entry span:first-child { font-size: 24px; transition: transform .2s ease; }
+.stories-entry:hover span:first-child { transform: translateX(4px); }
+.stories-entry:focus-visible { outline: 2px solid currentColor; outline-offset: 6px; }
+@media (max-width: 1024px) {
+  .stories-entry { top: 85svh; right: 28px; }
+}
+
 .scroll-text {
   position: absolute;
   top: 0.2rem;

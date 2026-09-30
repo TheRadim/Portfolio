@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow"><meta name="referrer" content="same-origin">
+  <title>Add a story — Radim Theiner</title><link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/stories/stories.css"><link rel="stylesheet" href="/stories/admin.css">
+  <script src="/stories/config.js" defer></script><script src="/stories/admin.js" defer></script>
+</head>
+<body data-mode="add">
+  <header class="stories-header"><a class="rad-logo" href="/" aria-label="The Rad — back to portfolio"><span>THE</span> RAD</a><a class="stories-wordmark" href="/stories.html">stories</a></header>
+  <main class="admin-shell">
+    <section id="loginPanel"><p class="eyebrow">JUST FOR YOU</p><h1>A place for the in-between.</h1><p class="admin-intro">Unlock your diary to add a story.</p>
+      <form id="loginForm"><label for="password">Password</label><div class="password-row"><input type="password" id="password" name="password" autocomplete="current-password" required maxlength="256"><button class="solid-button" type="submit">Unlock</button></div></form>
+    </section>
+    <section id="adminPanel" hidden>
+      <div class="admin-topline"><p class="eyebrow">YOUR DIARY</p><button id="logout" class="text-button" type="button">Lock</button></div>
+      <h1>One more story.</h1><p class="admin-intro">A few frames. A little context. Something to remember.</p>
+      <form id="uploadForm">
+        <div class="form-row"><div><label for="eventTitle">Event name</label><input id="eventTitle" name="title" maxlength="120" required placeholder="A day in the mountains"></div><div><label for="eventDate">Date</label><input id="eventDate" name="date" type="date" required></div></div>
+        <label for="eventText">The story</label><textarea id="eventText" name="text" rows="5" maxlength="5000" placeholder="What happened, what caught your eye…"></textarea>
+        <label class="upload-zone" for="mediaFiles"><strong>Add photos & videos</strong><span>Choose files, or drop them here</span><input id="mediaFiles" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple required></label>
+        <p class="field-hint">Up to 20 files · 100 MB each · 500 MB total · videos up to 3 minutes.<br>They’ll appear in the order below. Photos and silent looping videos are compressed for you.</p>
+        <ol id="uploadPreview" class="upload-preview"></ol>
+        <div id="uploadProgress" hidden><progress id="progressBar" max="100" value="0"></progress><p id="progressText" role="status"></p></div>
+        <div class="form-actions"><button class="solid-button" id="publishButton" type="submit">Publish story</button><a href="/delete-content.html">Manage stories</a></div>
+      </form>
+      <div id="successPanel" class="success-panel" hidden><h2>In the diary.</h2><p>Your story is ready to see.</p><a id="viewStory" href="/stories.html">View story</a><button type="button" class="text-button" id="addAnother">Add another</button></div>
+    </section>
+    <p id="adminMessage" class="admin-message" role="status" aria-live="polite"></p>
+  </main>
+</body>
+</html>

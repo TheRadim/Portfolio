@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow"><meta name="referrer" content="same-origin">
+  <title>Manage stories — Radim Theiner</title><link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/stories/stories.css"><link rel="stylesheet" href="/stories/admin.css">
+  <script src="/stories/config.js" defer></script><script src="/stories/admin.js" defer></script>
+</head>
+<body data-mode="delete">
+  <header class="stories-header"><a class="rad-logo" href="/" aria-label="The Rad — back to portfolio"><span>THE</span> RAD</a><a class="stories-wordmark" href="/stories.html">stories</a></header>
+  <main class="admin-shell">
+    <section id="loginPanel"><p class="eyebrow">JUST FOR YOU</p><h1>A little housekeeping.</h1><p class="admin-intro">Unlock your diary to remove a story.</p>
+      <form id="loginForm"><label for="password">Password</label><div class="password-row"><input type="password" id="password" name="password" autocomplete="current-password" required maxlength="256"><button class="solid-button" type="submit">Unlock</button></div></form>
+    </section>
+    <section id="adminPanel" hidden>
+      <div class="admin-topline"><p class="eyebrow">YOUR DIARY</p><button id="logout" class="text-button" type="button">Lock</button></div>
+      <h1>Keep what matters.</h1><p class="admin-intro">Remove a story and its photos and videos.</p>
+      <ul id="deleteList" class="delete-list"></ul><a class="admin-back" href="/add-content.html">Add a story</a>
+    </section>
+    <p id="adminMessage" class="admin-message" role="status" aria-live="polite"></p>
+  </main>
+</body>
+</html>
