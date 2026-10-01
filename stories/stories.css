@@ -11,9 +11,9 @@ button:focus, a:focus, input:focus, textarea:focus, [tabindex]:focus { outline: 
 .skip-link { position: fixed; top: -100px; left: 20px; z-index: 100; background: white; padding: 12px; }
 .skip-link:focus { top: 10px; }
 .stories-header { height: 96px; padding: 24px 50px; display: flex; align-items: flex-start; gap: clamp(80px,13.2vw,210px); background: var(--paper); position: relative; z-index: 10; }
-.rad-logo { font-family: var(--font-heading); font-size: clamp(22px, 2.2vw, 28px); font-weight: 900; line-height: 1; letter-spacing: 0; text-decoration: none; white-space: nowrap; }
+.rad-logo { font-family: var(--font-heading); font-size: clamp(18px, 1.8vw, 24px); font-weight: 900; line-height: 1; letter-spacing: 0; text-decoration: none; white-space: nowrap; }
 .rad-logo span { color: #b9b9b9; }
-.stories-wordmark { font-size: 14px; line-height: 1; letter-spacing: 0; text-transform: uppercase; padding-top: 6px; text-decoration: none; font-weight: 400; }
+.stories-wordmark { position: absolute; left: 50%; transform: translateX(-50%); font-size: 14px; line-height: 1; letter-spacing: 0; text-transform: uppercase; padding-top: 6px; text-decoration: none; font-weight: 400; }
 .story-shell { margin: 0 14.2vw 0 24vw; min-height: calc(100svh - 96px); display: flex; flex-direction: column; padding: max(65px, calc(31vh - 96px)) 0 65px; }
 .story-layout { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(0,1fr); grid-template-rows: auto 1fr; column-gap: clamp(38px,5.6vw,86px); align-items: start; transition: opacity 100ms ease, transform 140ms var(--ease); }
 .story-layout.is-changing { opacity: 0; transform: translateY(7px); }
@@ -55,8 +55,8 @@ button:focus, a:focus, input:focus, textarea:focus, [tabindex]:focus { outline: 
 @media (min-width: 1700px) { .story-shell { max-width: 1100px; margin-left: auto; margin-right: auto; } }
 @media (max-width: 900px) {
   .stories-header { padding: 28px 28px; height: 90px; justify-content: space-between; gap: 20px; }
-  .rad-logo { font-size: clamp(22px,2.2vw,28px); }
-  .stories-wordmark { font-size: 14px; position: absolute; left: 44%; }
+  .rad-logo { font-size: clamp(18px,1.8vw,24px); }
+  .stories-wordmark { font-size: 14px; position: absolute; left: 50%; }
   .story-shell { margin: 0 14.5%; padding: 18.6vh 0 60px; display: block; min-height: calc(100svh - 90px); }
   .story-layout { display: flex; flex-direction: column; gap: 0; }
   .story-heading { order: 0; margin: 0 0 13vw; padding-left: 8px; }
@@ -106,7 +106,7 @@ button:focus, a:focus, input:focus, textarea:focus, [tabindex]:focus { outline: 
 .timeline-preview { position: fixed; left: 58px; z-index: 30; max-width: calc(100vw - 76px); padding: 6px 10px; background: var(--paper); font-size: 12px; pointer-events: none; }
 @media (pointer: coarse) {
   .timeline { touch-action: none; user-select: none; -webkit-user-select: none; }
-  .touch-timeline-hint { display: block; font-size: 10px; color: var(--muted); margin: 0 0 16px; }
+  .touch-timeline-hint { display: block; position: fixed; bottom: max(20px,env(safe-area-inset-bottom)); left: 56px; right: 20px; z-index: 30; width: fit-content; max-width: calc(100vw - 76px); font-size: 11px; color: var(--muted); background: var(--paper); padding: 8px 10px; margin: 0; pointer-events: none; }
   .timeline.is-scrubbing .timeline-stop::before { transition-duration: 60ms; }
 }
 @media (max-width: 599px) {

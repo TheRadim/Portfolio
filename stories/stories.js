@@ -6,10 +6,29 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   let stories = [], current = -1, selectedMedia = 0, mediaRevision = 0;
   let requested = -1, transitionVersion = 0, hoveredIndex = -1;
-  let scrub = null, suppressClickUntil = 0;
+  let scrub = null, suppressClickUntil = 0, scrubFrame = 0;
   const wheel = new WheelNavigator();
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const mediaURL = (path) => new URL(path, base ? new URL(base + "/", location.href) : location.href).href;
+  const hintKey = "radim-stories-timeline-tip-v1";
+  let hintDone = false, hintTimer = 0;
+  try { hintDone = Boolean(localStorage.getItem(hintKey)); } catch {}
+  function dismissHint() {
+    hintDone = true; clearTimeout(hintTimer); $("timelineHint").hidden = true;
+    try { localStorage.setItem(hintKey, "dismissed"); } catch {}
+  }
+  function scheduleHint() {
+    clearTimeout(hintTimer);
+    if (hintDone || current < 0 || stories.length < 2 || document.hidden || !matchMedia("(pointer: coarse)").matches) return;
+    hintTimer = setTimeout(() => {
+      hintDone = true; $("timelineHint").hidden = false;
+      try { localStorage.setItem(hintKey, "seen"); } catch {}
+    }, 5000);
+  }
+  document.addEventListener("pointermove", scheduleHint, { passive: true });
+  for (const type of ["pointerdown", "click", "keydown", "wheel"]) document.addEventListener(type, dismissHint, { passive: true, capture: true });
+  document.addEventListener("scroll", scheduleHint, { passive: true });
+  document.addEventListener("visibilitychange", scheduleHint);
   function showMessage(title, text, retry = false) {
     $("storyMessage").replaceChildren();
     const h = document.createElement("h1"); h.textContent = title;
@@ -45,38 +64,50 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
       $("timelinePreview").textContent = stories[index].title;
       $("timelinePreview").style.top = `${Math.max(76, Math.min(innerHeight - 52, y - 18))}px`;
       $("timelinePreview").hidden = false;
-      selectStory(index);
+      selectStory(index, true, true);
     }
     nav.onpointerdown = event => {
       if (event.pointerType === "mouse") return;
       event.preventDefault();
       const index = nearestTimelineIndex(event.clientY, [...nav.children].map(b => b.getBoundingClientRect()));
       if (index < 0) return;
-      scrub = { id: event.pointerId, y: event.clientY, index, step: Math.max(12, Math.min(24, nav.clientHeight / Math.max(1, stories.length - 1))) };
+      scrub = { id: event.pointerId, y: event.clientY, lastFrame: performance.now() };
       suppressClickUntil = Date.now() + 1000; nav.setPointerCapture(event.pointerId); nav.classList.add("is-scrubbing");
       preview(index, event.clientY);
+      scrubFrame = requestAnimationFrame(scrollAtEdge);
     };
     nav.onpointermove = event => {
       if (scrub && scrub.id === event.pointerId) {
         event.preventDefault();
-        const index = Math.max(0, Math.min(stories.length - 1, scrub.index + Math.round((event.clientY - scrub.y) / scrub.step)));
-        preview(index, event.clientY); return;
+        scrub.y = event.clientY;
+        const index = nearestTimelineIndex(scrub.y, [...nav.children].map(b => b.getBoundingClientRect()));
+        preview(index, scrub.y); return;
       }
       if (event.pointerType !== "mouse") return;
       hoveredIndex = nearestTimelineIndex(event.clientY, [...nav.children].map(b => b.getBoundingClientRect()));
       emphasize(hoveredIndex);
     };
+    function scrollAtEdge(now) {
+      if (!scrub) return;
+      const rect = nav.getBoundingClientRect(), zone = 28;
+      const direction = scrub.y < rect.top + zone ? -Math.min(1, (rect.top + zone - scrub.y) / zone) : scrub.y > rect.bottom - zone ? Math.min(1, (scrub.y - rect.bottom + zone) / zone) : 0;
+      const elapsed = Math.min(40, now - scrub.lastFrame); scrub.lastFrame = now;
+      if (direction) {
+        nav.scrollTop += direction * elapsed * .25;
+        const index = nearestTimelineIndex(scrub.y, [...nav.children].map(b => b.getBoundingClientRect()));
+        preview(index, scrub.y);
+      }
+      scrubFrame = requestAnimationFrame(scrollAtEdge);
+    }
     const finishScrub = event => {
       if (!scrub || scrub.id !== event.pointerId) return;
-      scrub = null; suppressClickUntil = Date.now() + 400; nav.classList.remove("is-scrubbing");
+      scrub = null; cancelAnimationFrame(scrubFrame); suppressClickUntil = Date.now() + 400; nav.classList.remove("is-scrubbing");
       $("timelinePreview").hidden = true; hoveredIndex = -1; emphasize(-1);
       if (nav.hasPointerCapture(event.pointerId)) nav.releasePointerCapture(event.pointerId);
-      const stop = nav.children[requested];
-      if (stop) nav.scrollTop = Math.max(0, stop.offsetTop - nav.clientHeight / 2);
     };
     nav.onpointerup = finishScrub; nav.onpointercancel = finishScrub; nav.onlostpointercapture = finishScrub;
     nav.onpointerleave = () => { if (!scrub) { hoveredIndex = -1; emphasize(-1); } };
-    $("timelineHint").hidden = stories.length < 2;
+    $("timelineHint").hidden = true;
     $("timeline").hidden = false;
   }
   async function showMedia(index) {
@@ -98,7 +129,7 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
     [...$("storyThumbnails").children].forEach((b, i) => b.setAttribute("aria-pressed", String(i === selectedMedia)));
     $("mediaCount").textContent = `${String(selectedMedia + 1).padStart(2, "0")} / ${String(media.length).padStart(2, "0")}`;
   }
-  async function selectStory(index, updateHistory = true) {
+  async function selectStory(index, updateHistory = true, keepTimelinePosition = false) {
     if (index < 0 || index >= stories.length || (index === requested && current >= 0)) return;
     requested = index;
     wheel.setIndex(index, stories.length);
@@ -129,7 +160,7 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
       [...$("timeline").children].forEach((b, i) => { b.setAttribute("aria-current", String(i === index)); });
       const stop = $("timeline").children[index];
       const stopTop = stop.offsetTop, nav = $("timeline");
-      if (!scrub && (stopTop < nav.scrollTop || stopTop > nav.scrollTop + nav.clientHeight - 24)) nav.scrollTop = stopTop - nav.clientHeight / 2;
+      if (!keepTimelinePosition && !scrub && (stopTop < nav.scrollTop || stopTop > nav.scrollTop + nav.clientHeight - 24)) nav.scrollTop = stopTop - nav.clientHeight / 2;
       $("previousStory").disabled = index === 0; $("nextStory").disabled = index === stories.length - 1;
       $("storyCount").textContent = `${String(index + 1).padStart(2,"0")} / ${String(stories.length).padStart(2,"0")}`;
       $("storyAnnouncement").textContent = `${story.title}. Story ${index + 1} of ${stories.length}.`;
@@ -137,6 +168,7 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
       if (updateHistory) history.replaceState(null, "", location.pathname + location.search);
       $("storyMessage").hidden = true; $("storyLayout").hidden = false; $("storyPagination").hidden = false;
       if (innerWidth < 600) window.scrollTo({ top: 0, behavior: "instant" });
+      scheduleHint();
       requestAnimationFrame(() => { if (version === transitionVersion) $("storyLayout").classList.remove("is-changing"); });
     }
   }

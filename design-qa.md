@@ -51,3 +51,11 @@ Six service/navigation tests pass, including atomic media additions, physical re
 Thumbnail galleries now use a wrapping grid (eight columns on desktop/tablet, six on phones), without horizontal scrolling. Phone header and content spacing are compact, with natural document scrolling only when content requires it. Browser checks verified twenty images in four rows fit at 390×844; eight images fit at 375×667; twenty images at that smaller size need only a short document scroll. Tablet checks at 768×1024 and 1024×768 retain viewport bounds with twenty images.
 
 Touch timeline navigation captures a held pointer and maps vertical movement to event indexes, with a floating event title, continuous selection and suppression of accidental release clicks. Native Chromium touch input moved five events in one upward drag; release retained the final selection. An unobtrusive hint and larger Older/Newer buttons make navigation discoverable. Ordinary navigation no longer writes the current story into the URL, so a refresh opens the newest date. Explicit event links still open their target. Verified with thirty out-of-order fixtures and a fresh reload. Evidence: `stories/test/artifacts/phone-thumbnail-rows.png`.
+
+## Idle-only help and aligned touch timeline
+
+The touch hint stays hidden until five seconds of inactivity, appears outside document flow, and is remembered in local storage after being shown or dismissed. Pointer/click, keyboard or wheel interaction dismisses it; subsequent visits do not repeat it. Browser checks verified initial hiding, five-second reveal without layout movement, dismissal and no return after reload.
+
+Touch selection now uses each timeline row’s measured screen coordinates instead of estimated gesture steps. Holding near the list edge scrolls the marks while continuously remeasuring the nearest row; release does not recenter. Native Chromium touch checks with eighty events kept the selected tick within half a row (eight pixels) of the finger, including edge scrolling.
+
+The smaller THE RAD logo leaves space for an absolutely centered Stories wordmark. Measured center error was zero at 320, 390, 768 and 1515px widths, with no logo overlap. Evidence: `stories/test/artifacts/timeline-alignment-phone.png`.
