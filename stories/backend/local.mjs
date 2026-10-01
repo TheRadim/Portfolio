@@ -22,6 +22,13 @@ export function localServices(root, origin) {
     async inputSize(id,index) { try { return (await stat(join(root,'incoming',id,String(index)))).size; } catch { return 0; } },
     async download(id,index,path) { await copyFile(join(root,'incoming',id,String(index)),path); },
     async publish(path,id,name) { const dir = join(root,'media',id); mkdirSync(dir,{recursive:true}); await copyFile(path,join(dir,name)); return `/media/${id}/${name}`; },
+    async removeItems(items) {
+      for (const path of new Set(items.flatMap(item => [item.src,item.thumb]).filter(Boolean))) {
+        const target = resolve(root, '.' + path);
+        if (!target.startsWith(resolve(root,'media') + '/')) throw new Error('Unexpected media path');
+        await rm(target,{force:true});
+      }
+    },
     async removeInputs(id) { await rm(join(root,'incoming',id),{recursive:true,force:true}); },
     async removePublished(id) { await rm(join(root,'media',id),{recursive:true,force:true}); }
   };

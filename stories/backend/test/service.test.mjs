@@ -50,7 +50,7 @@ test('password, uploads, processing, ordering, persistence and deletion', async 
     const editable = await (await request(`/stories/${job.id}`)).json();
     const edit = {title:'Renamed story',date:'2026-01-10',text:'Updated words',mediaOrder:[1,0],revision:editable.revision};
     assert.equal((await fetch(base+`/api/stories/${job.id}`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(edit)})).status,401);
-    for (const mediaOrder of [[0,0],[0],[0,2],['0',1]]) assert.equal((await request(`/stories/${job.id}`,'PATCH',{...edit,mediaOrder})).status,400);
+    for (const mediaOrder of [[0,0],[],[0,2],['0',1]]) assert.equal((await request(`/stories/${job.id}`,'PATCH',{...edit,mediaOrder})).status,400);
     assert.equal((await request(`/stories/${job.id}`,'PATCH',edit)).status,200);
     const updated = await (await request(`/stories/${job.id}`)).json();
     assert.equal(updated.title,edit.title); assert.equal(updated.date,edit.date); assert.equal(updated.text,edit.text);
@@ -82,4 +82,48 @@ test('bad image never publishes partial content and releases upload lock', async
     const {processJob} = await import('../core.mjs'); await processJob(id,service);
     assert.equal((await service.repo.get('jobs',id)).status,'failed'); assert.equal((await service.repo.list('stories')).length,0);
   } finally {await rm(root,{recursive:true,force:true});}
+});
+
+
+test('editing adds and removes media atomically, preserving the story on failure or conflict', async () => {
+  const root = await mkdtemp(join(tmpdir(),'stories-edit-'));
+  const service = createLocalApp({root,origin:'http://localhost',hash:passwordHash('test')});
+  const server = service.app.listen(0,'127.0.0.1'); await new Promise(r=>server.once('listening',r));
+  const base = `http://127.0.0.1:${server.address().port}`; let token;
+  const request = (path,method='GET',body) => fetch(base+'/api'+path,{method,headers:{...(token?{Authorization:`Bearer ${token}`} : {}),...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined});
+  const photo = await sharp({create:{width:400,height:600,channels:3,background:'#ccddee'}}).jpeg().toBuffer();
+  const details = {title:'Original story',date:'2026-10-01',text:'Original words'};
+  async function jobFor(body, blobs) {
+    const response = await request('/uploads','POST',{...details,...body,files:blobs.map(b=>({type:'image/jpeg',size:b.length}))});
+    assert.equal(response.status,201); const job = await response.json();
+    for (let i=0;i<blobs.length;i++) assert.equal((await fetch(job.uploads[i].replace('http://localhost',base),{method:'PUT',body:blobs[i]})).status,200);
+    return job;
+  }
+  async function publish(job) { assert.equal((await request(`/uploads/${job.id}/publish`,'POST')).status,202); await service.idle(); return (await (await request(`/uploads/${job.id}`)).json()).status; }
+  try {
+    token=(await(await request('/login','POST',{password:'test'})).json()).token;
+    const first=await jobFor({},[photo,photo]); assert.equal(await publish(first),'published');
+    const original=await (await request(`/stories/${first.id}`)).json();
+    assert.equal((await request(`/stories/${first.id}`,'PATCH',{...details,revision:original.revision,mediaOrder:[]})).status,400);
+    assert.equal((await request(`/stories/${first.id}`,'PATCH',{...details,revision:original.revision,mediaOrder:[1]})).status,200);
+    assert.equal((await fetch(base+original.media[0].src)).status,404);
+    assert.equal((await fetch(base+original.media[0].thumb)).status,404);
+    let current=await(await request(`/stories/${first.id}`)).json();
+    const addition=await jobFor({storyId:first.id,revision:current.revision,mediaOrder:['new:0',0],title:'Updated story'},[photo]);
+    assert.deepEqual((await(await request(`/stories/${first.id}`)).json()).media,current.media);
+    assert.equal(await publish(addition),'published');
+    current=await(await request(`/stories/${first.id}`)).json(); assert.equal(current.title,'Updated story'); assert.equal(current.media.length,2);
+    assert.equal(current.media[1].src,original.media[1].src); assert.ok(current.media[0].src.includes(first.id));
+    assert.equal((await(await request('/stories')).json()).stories.length,1);
+    const snapshot=structuredClone(current);
+    const failed=await jobFor({storyId:first.id,revision:current.revision,mediaOrder:['new:0']},[Buffer.from('bad photo')]);
+    assert.equal(await publish(failed),'failed'); assert.deepEqual(await(await request(`/stories/${first.id}`)).json(),snapshot);
+    const conflict=await jobFor({storyId:first.id,revision:current.revision,mediaOrder:['new:0']},[photo]);
+    assert.equal((await request(`/stories/${first.id}`,'PATCH',{...details,title:'Concurrent change',revision:current.revision,mediaOrder:[0,1]})).status,200);
+    assert.equal(await publish(conflict),'failed');
+    current=await(await request(`/stories/${first.id}`)).json(); assert.equal(current.title,'Concurrent change'); assert.deepEqual(current.media,snapshot.media);
+    const {readdir}=await import('node:fs/promises'); const names=await readdir(join(root,'media',first.id)); assert.ok(!names.some(name=>name.startsWith(conflict.id)));
+    assert.equal((await request(`/stories/${first.id}`,'DELETE')).status,200);
+    assert.equal((await fetch(base+snapshot.media[0].src)).status,404);
+  } finally { await new Promise(r=>server.close(r)); await rm(root,{recursive:true,force:true}); }
 });

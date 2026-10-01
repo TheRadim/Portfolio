@@ -37,6 +37,16 @@ export const media = {
     await bucket().upload(path, { destination, resumable: false, metadata: { contentType: type, cacheControl: 'public,max-age=86400', metadata: { firebaseStorageDownloadTokens: token } } });
     return `https://firebasestorage.googleapis.com/v0/b/${bucket().name}/o/${encodeURIComponent(destination)}?alt=media&token=${token}`;
   },
+  async removeItems(items) {
+    const names = new Set(items.flatMap(item => [item.src, item.thumb]).filter(Boolean).map(url => {
+      const parsed = new URL(url), marker = `/v0/b/${bucket().name}/o/`;
+      if (!parsed.pathname.startsWith(marker)) throw new Error('Unexpected media bucket');
+      const name = decodeURIComponent(parsed.pathname.slice(marker.length));
+      if (!name.startsWith('media/')) throw new Error('Unexpected media path');
+      return name;
+    }));
+    await Promise.all([...names].map(name => bucket().file(name).delete({ ignoreNotFound: true })));
+  },
   async removeInputs(id) { await bucket().deleteFiles({ prefix: `incoming/${id}/` }); },
   async removePublished(id) { await bucket().deleteFiles({ prefix: `media/${id}/` }); }
 };

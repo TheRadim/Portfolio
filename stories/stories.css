@@ -42,7 +42,7 @@ button:focus, a:focus, input:focus, textarea:focus, [tabindex]:focus { outline: 
 .timeline-stop[data-distance="2"]::before { width: 37px; }
 .timeline-stop[data-distance="1"]::before { width: 66px; }
 .timeline-stop[data-distance="0"]::before { width: 94px; }
-.timeline-label { position: absolute; left: 106px; top: 50%; transform: translateY(-50%) translateX(-5px); opacity: 0; white-space: nowrap; background: #fffffff2; padding: 3px 6px 3px 0; font-size: 13px; transition: opacity 150ms, transform 180ms; pointer-events: none; }
+.timeline-label { position: absolute; left: 106px; top: 50%; transform: translateY(-50%) translateX(-5px); opacity: 0; white-space: nowrap; background: var(--paper); padding: 3px 6px 3px 0; font-size: 13px; transition: opacity 150ms, transform 180ms; pointer-events: none; }
 .timeline-stop[data-distance="0"] .timeline-label { opacity: 1; transform: translateY(-50%); }
 .timeline-stop[aria-current="true"] .timeline-label { display: none; }
 .timeline-stop:focus-visible { outline: none; }

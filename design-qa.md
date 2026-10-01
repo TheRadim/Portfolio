@@ -37,3 +37,11 @@ Stories now shares the portfolio’s #fafafa background, Inter heading family, l
 Removed focus outlines from Stories and its admin/password fields. The gallery stage is transparent and retains a fixed aspect-ratio area; its controls reserve a fixed height. Browser checks with portrait, landscape and square fixtures verified identical gallery, title, copy, thumbnails and pagination bounds when switching media at 1515×850, 768×1024, 1024×768 and 439×955.
 
 The timeline is ascending by date and opens at its latest (bottom) event. Management now opens a prefilled editor for the event title, date, text and media order. Local browser checks verified reordered items, saved edits, reopening and the chronological timeline. Automated service checks cover authenticated editing, invalid permutations, unchanged media URLs, stale-edit rejection and date sorting.
+
+## Editing media and timeline label background
+
+The timeline label uses the same `--paper` background as the page. Browser-computed colors both resolve to rgb(250, 250, 250).
+
+The editor now supports selecting or dropping new photos/videos, removing existing or newly selected frames, and reordering the combined list. Changes apply on Save. The local browser verified adding a photo, removing an existing photo, placing the new photo first, saving and retaining the unchanged second photo URL. Removed media returned 404. Evidence: `stories/test/artifacts/edit-add-remove.png`.
+
+Six service/navigation tests pass, including atomic media additions, physical removal, preservation of the original story after a bad new image, and rejection/cleanup of uploads whose story changed while processing.

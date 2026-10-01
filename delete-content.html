@@ -24,8 +24,10 @@
         <form id="editForm">
           <div class="form-row"><div><label for="editTitle">Event name</label><input id="editTitle" maxlength="120" required></div><div><label for="editDate">Date</label><input id="editDate" type="date" required></div></div>
           <label for="editText">The story</label><textarea id="editText" rows="5" maxlength="5000"></textarea>
-          <p class="field-hint">Use Earlier and Later to change the order. The first frame opens the story.</p>
+          <label class="upload-zone" id="editUploadZone" for="editFiles"><strong>Add photos & videos</strong><span>Choose files, or drop them here</span><input id="editFiles" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif,video/mp4,video/quicktime,video/webm" multiple></label>
+          <p class="field-hint">Use Earlier and Later to change the order, or Remove to leave a frame out. Changes apply when you save.<br>Up to 20 files in total · 100 MB per new file · videos up to 3 minutes. New uploads are compressed for you.</p>
           <ol id="editMedia" class="upload-preview"></ol>
+          <p id="editProgress" role="status" hidden></p>
           <div class="form-actions"><button class="solid-button" type="submit">Save changes</button><button class="text-button" id="cancelEdit" type="button">Cancel</button></div>
         </form>
       </section>

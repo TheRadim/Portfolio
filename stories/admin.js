@@ -1,7 +1,7 @@
 (() => {
   "use strict";
   const $ = (id) => document.getElementById(id), base = window.STORIES_CONFIG.apiBase.replace(/\/$/, "");
-  let editing = null, editOrder = [];
+  let editing = null, editOrder = [], editFiles = [], editURLs = [];
   let token = "", files = [], previewURLs = [], busy = false, jobId = null;
   function message(text) { $("adminMessage").textContent = text; }
   async function api(path, method = "GET", data) {
@@ -35,7 +35,7 @@
       edit.onclick = async () => {
         edit.disabled = true; message("");
         try {
-          editing = await api(`/stories/${story.id}`); editOrder = editing.media.map((_, i) => i);
+          closeEditor(); editing = await api(`/stories/${story.id}`); editOrder = editing.media.map((_, i) => i);
           $("editTitle").value = editing.title; $("editDate").value = editing.date; $("editText").value = editing.text;
           renderEditMedia(); $("manageOverview").hidden = true; $("editPanel").hidden = false; $("editTitle").focus();
         } catch (error) { message(error.message); } finally { edit.disabled = false; }
@@ -44,36 +44,68 @@
       li.append(title, actions); $("deleteList").append(li);
     });
   }
-  function closeEditor() { editing = null; editOrder = []; $("editPanel").hidden = true; $("manageOverview").hidden = false; }
+  function closeEditor() { editURLs.forEach(URL.revokeObjectURL); editURLs = []; editFiles = []; $("editFiles").value = ""; $("editProgress").hidden = true; editing = null; editOrder = []; $("editPanel").hidden = true; $("manageOverview").hidden = false; }
   function renderEditMedia() {
     $("editMedia").replaceChildren();
     editOrder.forEach((original, position) => {
-      const item = editing.media[original], li = document.createElement("li"), img = document.createElement("img");
-      img.src = new URL(item.thumb, new URL(base + "/", location.href)).href; img.alt = "";
-      const name = document.createElement("span"); name.className = "file-name"; name.textContent = `${position + 1}. ${item.type === "video" ? "Video" : "Photo"} ${original + 1}`;
+      const isNew = typeof original === "string", fileIndex = isNew ? Number(original.slice(4)) : -1;
+      const item = isNew ? editFiles[fileIndex] : editing.media[original];
+      const label = isNew ? item.name : `${item.type === "video" ? "Video" : "Photo"} ${original + 1}`;
+      const li = document.createElement("li"), img = document.createElement(isNew && item.type.startsWith("video/") ? "video" : "img");
+      img.src = isNew ? editURLs[fileIndex] : new URL(item.thumb, new URL(base + "/", location.href)).href; img.alt = "";
+      if (img.tagName === "VIDEO") { img.muted = true; img.preload = "metadata"; }
+      const name = document.createElement("span"); name.className = "file-name"; name.textContent = `${position + 1}. ${label}${isNew ? " (new)" : ""}`;
       li.append(img, name);
-      for (const [label, offset] of [["Earlier", -1], ["Later", 1]]) {
-        const b = document.createElement("button"); b.type = "button"; b.textContent = label;
+      for (const [action, offset] of [["Earlier", -1], ["Later", 1], ["Remove", 0]]) {
+        const b = document.createElement("button"); b.type = "button"; b.textContent = action;
         b.disabled = position + offset < 0 || position + offset >= editOrder.length;
-        b.setAttribute("aria-label", `${label}: ${item.type === "video" ? "Video" : "Photo"} ${original + 1}`);
-        b.onclick = () => { [editOrder[position], editOrder[position + offset]] = [editOrder[position + offset], editOrder[position]]; renderEditMedia(); };
+        b.setAttribute("aria-label", `${action}: ${label}`);
+        b.onclick = () => { if (offset) [editOrder[position], editOrder[position + offset]] = [editOrder[position + offset], editOrder[position]]; else editOrder.splice(position, 1); renderEditMedia(); };
         li.append(b);
       }
       $("editMedia").append(li);
     });
   }
   if (document.body.dataset.mode === "delete") {
+    const addEditFiles = incoming => {
+      if (busy) return;
+      for (const file of incoming) { editOrder.push(`new:${editFiles.length}`); editFiles.push(file); editURLs.push(URL.createObjectURL(file)); }
+      renderEditMedia();
+    };
+    $("editFiles").onchange = e => { addEditFiles([...e.target.files]); e.target.value = ""; };
+    $("editUploadZone").ondragover = e => { e.preventDefault(); if (!busy) $("editUploadZone").classList.add("is-over"); };
+    $("editUploadZone").ondragleave = () => $("editUploadZone").classList.remove("is-over");
+    $("editUploadZone").ondrop = e => { e.preventDefault(); $("editUploadZone").classList.remove("is-over"); addEditFiles([...e.dataTransfer.files]); };
     $("cancelEdit").onclick = () => { closeEditor(); message(""); };
     $("editForm").onsubmit = async (e) => {
-      e.preventDefault(); if (busy || !editing) return; busy = true; message("");
+      e.preventDefault(); if (busy || !editing) return; message("");
+      if (!editOrder.length || editOrder.length > 20) { message("Keep between 1 and 20 photos or videos."); return; }
+      const newKeys = editOrder.filter(i => typeof i === "string"), additions = newKeys.map(i => editFiles[Number(i.slice(4))]);
+      if (additions.some(f => f.size > 100 * 1024 ** 2) || additions.reduce((sum,f) => sum + f.size,0) > 500 * 1024 ** 2) { message("Please keep each new file under 100 MB and the total upload under 500 MB."); return; }
+      busy = true; let editJob = null, submitted = false;
       const controls = [...$("editForm").querySelectorAll("input,textarea,button")]; controls.forEach(el => el.disabled = true); $("logout").disabled = true;
       try {
-        await api(`/stories/${editing.id}`, "PATCH", { title: $("editTitle").value, date: $("editDate").value, text: $("editText").value, mediaOrder: editOrder, revision: editing.revision });
+        const details = { title: $("editTitle").value, date: $("editDate").value, text: $("editText").value, mediaOrder: editOrder.map(i => typeof i === "string" ? `new:${newKeys.indexOf(i)}` : i), revision: editing.revision };
+        if (additions.length) {
+          $("editProgress").hidden = false; $("editProgress").textContent = "Preparing your new photos and videos…";
+          const job = await api("/uploads", "POST", { ...details, storyId: editing.id, files: additions.map(f => ({size:f.size,type:f.type})) }); editJob = job.id;
+          for (let i=0; i<additions.length; i++) await upload(job.uploads[i], additions[i], fraction => { $("editProgress").textContent = `Uploading ${i+1} of ${additions.length} — ${Math.round(fraction*100)}%`; });
+          await api(`/uploads/${editJob}/publish`, "POST"); submitted = true;
+          $("editProgress").textContent = "Compressing the new media and saving your changes…";
+          const deadline = Date.now() + 20 * 60 * 1000; let complete = false;
+          while (Date.now() < deadline) {
+            await new Promise(resolve => setTimeout(resolve,1800)); const state = await api(`/uploads/${editJob}`);
+            if (state.status === "failed") throw new Error(state.error || "The new media could not be prepared. Your original story is unchanged.");
+            if (state.status === "published") { complete = true; break; }
+          }
+          if (!complete) throw new Error("Processing is taking longer than expected. Check the diary before retrying.");
+        } else await api(`/stories/${editing.id}`, "PATCH", details);
         closeEditor(); await loadDeleteList(); message("Story updated.");
-      } catch (error) { message(error.message); }
-      finally { busy = false; controls.forEach(el => el.disabled = false); $("logout").disabled = false; if (editing) renderEditMedia(); }
+      } catch (error) { if (editJob && !submitted) { try { await api(`/uploads/${editJob}`, "DELETE"); } catch {} } message(error.message); }
+      finally { busy = false; $("editProgress").hidden = true; controls.forEach(el => el.disabled = false); $("logout").disabled = false; if (editing) renderEditMedia(); }
     };
   }
+  window.addEventListener("beforeunload", (e) => { if (busy) { e.preventDefault(); e.returnValue = ""; } });
   if (document.body.dataset.mode !== "add") return;
   $("eventDate").value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0,10);
   function renderFiles() {
@@ -141,5 +173,5 @@
     finally { setBusy(false); }
   };
   $("addAnother").onclick = () => { files = []; renderFiles(); $("uploadForm").reset(); $("eventDate").value = new Date().toISOString().slice(0,10); $("uploadForm").hidden = false; $("successPanel").hidden = true; $("uploadProgress").hidden = true; message(""); };
-  window.addEventListener("beforeunload", (e) => { if (busy) { e.preventDefault(); e.returnValue = ""; } });
+
 })();

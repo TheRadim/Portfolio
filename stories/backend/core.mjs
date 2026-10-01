@@ -27,6 +27,20 @@ export function validateStory(body) {
   if (body.files.reduce((sum, f) => sum + f.size, 0) > limits.totalBytes) throw new PublicError('Keep the total upload under 500 MB.');
   return { ...details, files: body.files.map((f, index) => ({ index, size: f.size, type: f.type })) };
 }
+function validateMediaOrder(order, existingCount, newCount = 0) {
+  if (!Array.isArray(order) || !order.length || order.length > limits.files || new Set(order).size !== order.length) throw new PublicError('Keep between 1 and 20 photos or videos, without duplicates.');
+  for (const item of order) {
+    if (Number.isInteger(item) && item >= 0 && item < existingCount) continue;
+    if (typeof item === 'string' && /^new:\d+$/.test(item) && Number(item.slice(4)) < newCount) continue;
+    throw new PublicError('The photo order is invalid. Open the story again.');
+  }
+  for (let i = 0; i < newCount; i++) if (!order.includes(`new:${i}`)) throw new PublicError('Include each new photo or video in the order.');
+  return order;
+}
+async function removeUnused(media, items) {
+  if (!items.length) return;
+  try { await media.removeItems(items); } catch (error) { console.error('Unused story media cleanup failed:', error.message); }
+}
 export function createAPI({ repo, media, getPasswordHash, originList, queue, trustProxy = false }) {
   const app = express(); app.disable('x-powered-by'); app.set('trust proxy', trustProxy);
   app.use((req, res, next) => {
@@ -79,21 +93,33 @@ export function createAPI({ repo, media, getPasswordHash, originList, queue, tru
   app.patch('/stories/:id', authenticate, async (req, res) => {
     if (!validID(req.params.id)) throw new PublicError('Story not found.', 404);
     const details = validateDetails(req.body), order = req.body.mediaOrder;
+    let removed = [];
     const story = await repo.mutate('stories', req.params.id, (old) => {
       if (!old) throw new PublicError('Story not found.', 404);
       if (req.body.revision !== (old.updatedAt || old.createdAt)) throw new PublicError('This story has changed. Open it again before saving.', 409);
-      if (!Array.isArray(order) || order.length !== old.media.length || new Set(order).size !== old.media.length || order.some(i => !Number.isInteger(i) || i < 0 || i >= old.media.length)) throw new PublicError('Keep each photo or video exactly once in the order.');
+      validateMediaOrder(order, old.media.length);
+      removed = old.media.filter((_, i) => !order.includes(i));
       return { ...old, ...details, media: order.map(i => old.media[i]), updatedAt: Math.max(Date.now(), (old.updatedAt || old.createdAt) + 1) };
     });
+    await removeUnused(media, removed);
     res.json({ ok: true, revision: story.updatedAt });
   });
   app.post('/uploads', authenticate, async (req, res) => {
     const input = validateStory(req.body), id = randomUUID(), now = Date.now();
+    let edit = {};
+    if (req.body.storyId !== undefined) {
+      if (!validID(req.body.storyId)) throw new PublicError('Story not found.', 404);
+      const old = await repo.get('stories', req.body.storyId);
+      if (!old) throw new PublicError('Story not found.', 404);
+      if (req.body.revision !== (old.updatedAt || old.createdAt)) throw new PublicError('This story has changed. Open it again before saving.', 409);
+      validateMediaOrder(req.body.mediaOrder, old.media.length, input.files.length);
+      edit = { storyId: old.id, revision: req.body.revision, mediaOrder: req.body.mediaOrder };
+    }
     // One outstanding upload per session prevents accidental duplicate clicks and resource bursts.
     const lock = await repo.mutate('uploadLocks', req.sessionId, (old) => old && old.until > now ? old : { id, until: now + 30 * 60 * 1000 });
     if (lock.id !== id) throw new PublicError('An upload is already in progress. Wait for it to finish, or lock and unlock the diary to start again.', 409);
     try {
-      const job = { id, ...input, status: 'uploading', createdAt: now, sessionId: req.sessionId, completed: 0 };
+      const job = { id, ...input, ...edit, status: 'uploading', createdAt: now, sessionId: req.sessionId, completed: 0 };
       await repo.set('jobs', id, job);
       const uploads = [];
       for (const file of input.files) uploads.push(await media.uploadURL(id, file, req.get('Origin')));
@@ -166,7 +192,9 @@ export async function processJob(id, { repo, media }) {
     claimed = true; return { ...old, status: 'processing', startedAt: Date.now() };
   });
   if (!claimed) return;
-  const temp = await mkdtemp(join(tmpdir(), 'radim-story-')), started = Date.now(), results = [];
+  const temp = await mkdtemp(join(tmpdir(), 'radim-story-')), started = Date.now(), results = [], uploaded = [];
+  const targetID = job.storyId || id, prefix = job.storyId ? `${id}-` : '';
+  let committed = false;
   try {
     for (const file of job.files) {
       if (Date.now() - started > 380000) throw new PublicError('This story is too large to process in one go. Please try fewer videos.');
@@ -178,7 +206,7 @@ export async function processJob(id, { repo, media }) {
           await sharp(input, { limitInputPixels: 80000000 }).rotate().resize({ width: 2400, withoutEnlargement: true }).webp({ quality: 75 }).toFile(full);
           await sharp(input, { limitInputPixels: 80000000 }).rotate().resize({ width: 250, withoutEnlargement: true }).webp({ quality: 75 }).toFile(thumb);
         } catch { throw new PublicError('One photo could not be read. Try exporting it as a JPG and uploading again.'); }
-        src = await media.publish(full, id, `${file.index}.webp`, 'image/webp');
+        src = await media.publish(full, targetID, `${prefix}${file.index}.webp`, 'image/webp');
       } else {
         const probe = await command(['-nostdin','-protocol_whitelist','file,pipe','-i',input], 15000);
         const duration = probe.stderr.match(/Duration: (\d+):(\d+):(\d+(?:\.\d+)?)/);
@@ -189,21 +217,40 @@ export async function processJob(id, { repo, media }) {
         const posterResult = await command(['-nostdin','-y','-i',video,'-frames:v','1',poster], 15000);
         if (posterResult.code !== 0) throw new PublicError('The video preview could not be created.');
         await sharp(poster).resize({ width: 250 }).webp({ quality: 75 }).toFile(thumb);
-        src = await media.publish(video, id, `${file.index}.mp4`, 'video/mp4');
+        src = await media.publish(video, targetID, `${prefix}${file.index}.mp4`, 'video/mp4');
         await rm(video, { force: true }); await rm(poster, { force: true });
       }
-      const thumbnail = await media.publish(thumb, id, `${file.index}-thumb.webp`, 'image/webp');
+      uploaded.push({ src });
+      const thumbnail = await media.publish(thumb, targetID, `${prefix}${file.index}-thumb.webp`, 'image/webp');
+      uploaded.push({ src: thumbnail });
       results.push({ type, src, thumb: thumbnail });
       await repo.mutate('jobs', id, (old) => ({ ...old, completed: results.length }));
       await rm(input, { force: true }); await rm(full, { force: true }); await rm(thumb, { force: true });
     }
-    await repo.set('stories', id, { id, title: job.title, date: job.date, text: job.text, createdAt: job.createdAt, media: results });
+    let removed = [];
+    if (job.storyId) {
+      await repo.mutate('stories', targetID, old => {
+        if (!old) throw new PublicError('This story was deleted while the upload was processing.');
+        if ((old.updatedAt || old.createdAt) !== job.revision) throw new PublicError('This story changed while uploading. Open it again to apply your changes.');
+        validateMediaOrder(job.mediaOrder, old.media.length, results.length);
+        removed = old.media.filter((_, i) => !job.mediaOrder.includes(i));
+        return { ...old, title: job.title, date: job.date, text: job.text, media: job.mediaOrder.map(i => typeof i === 'number' ? old.media[i] : results[Number(i.slice(4))]), updatedAt: Math.max(Date.now(), job.revision + 1) };
+      });
+    } else {
+      await repo.set('stories', id, { id, title: job.title, date: job.date, text: job.text, createdAt: job.createdAt, media: results });
+    }
+    committed = true;
+    await removeUnused(media, removed);
     await repo.mutate('jobs', id, (old) => ({ ...old, status: 'published', finishedAt: Date.now() }));
   } catch (error) {
     console.error('Story processing failed:', id, error.message);
-    await repo.remove('stories', id).catch(() => {});
-    await media.removePublished(id).catch(() => {});
-    await repo.mutate('jobs', id, (old) => ({ ...old, status: 'failed', error: error instanceof PublicError ? error.message : 'This story could not be prepared. Please try again.', finishedAt: Date.now() }));
+    if (committed) {
+      await repo.mutate('jobs', id, old => ({ ...old, status: 'published', finishedAt: Date.now() }));
+    } else {
+      if (job.storyId) await removeUnused(media, uploaded);
+      else { await repo.remove('stories', id).catch(() => {}); await media.removePublished(id).catch(() => {}); }
+      await repo.mutate('jobs', id, (old) => ({ ...old, status: 'failed', error: error instanceof PublicError ? error.message : 'This story could not be prepared. Please try again.', finishedAt: Date.now() }));
+    }
   } finally {
     await media.removeInputs(id).catch(() => {});
     await repo.remove('uploadLocks', job.sessionId);
