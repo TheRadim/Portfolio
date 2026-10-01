@@ -145,6 +145,8 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
       $("storyCopy").replaceChildren();
       story.text.split(/\n\s*\n/).filter(Boolean).forEach((text) => { const p = document.createElement("p"); p.textContent = text; $("storyCopy").append(p); });
       $("storyThumbnails").replaceChildren();
+      $("storyThumbnails").style.setProperty("--thumbnail-columns", Math.max(6, Math.min(8, story.media.length)));
+      $("storyThumbnails").style.setProperty("--thumbnail-columns-mobile", Math.max(4, Math.min(6, story.media.length)));
       story.media.forEach((m, i) => {
         const b = document.createElement("button"); b.type = "button"; b.className = "story-thumbnail";
         b.setAttribute("aria-label", `${m.type === "video" ? "Video" : "Photo"} ${i + 1}`);

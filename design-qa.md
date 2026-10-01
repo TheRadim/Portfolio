@@ -65,3 +65,9 @@ The smaller THE RAD logo leaves space for an absolutely centered Stories wordmar
 Hint dismissal now lasts only for the current page load. Browser checks verified it remains hidden initially, appears after five idle seconds, dismisses on touch, stays dismissed during that load, and becomes eligible again after reload—even with the old local-storage dismissal present.
 
 On phones the intro text and Stories link now share a vertical layout with a guaranteed 40px gap, rather than separate viewport positions. Measured at 320×568, 375×667, 390×844, 439×955 and 667×375: 40px separation and 32px right inset throughout. Short screens can place the link below the initial viewport. Desktop placement remains at 92vh with its existing 123px right inset. Screenshot reviewed: `stories/test/artifacts/home-mobile-spacing.png`.
+
+## Consistent gallery left alignment
+
+Contained photos and videos now anchor to the left of the stable gallery stage, removing the variable left inset on narrower media. Tablet headings and copy also use the gallery's left edge. Seven-image galleries use seven thumbnail columns, avoiding the unused eighth slot; smaller sets retain compact thumbnails and larger sets continue wrapping.
+
+Browser checks at 1515×850, 768×1024 and 390×844 confirmed matching stage/thumbnail left edges, left-aligned media, and unchanged stage size and thumbnail position after switching images. Screenshot reviewed: `stories/test/artifacts/gallery-left-aligned.png`. JavaScript syntax and whitespace checks passed.
