@@ -59,3 +59,9 @@ The touch hint stays hidden until five seconds of inactivity, appears outside do
 Touch selection now uses each timeline row’s measured screen coordinates instead of estimated gesture steps. Holding near the list edge scrolls the marks while continuously remeasuring the nearest row; release does not recenter. Native Chromium touch checks with eighty events kept the selected tick within half a row (eight pixels) of the finger, including edge scrolling.
 
 The smaller THE RAD logo leaves space for an absolutely centered Stories wordmark. Measured center error was zero at 320, 390, 768 and 1515px widths, with no logo overlap. Evidence: `stories/test/artifacts/timeline-alignment-phone.png`.
+
+## Reloadable hint and mobile homepage spacing
+
+Hint dismissal now lasts only for the current page load. Browser checks verified it remains hidden initially, appears after five idle seconds, dismisses on touch, stays dismissed during that load, and becomes eligible again after reload—even with the old local-storage dismissal present.
+
+On phones the intro text and Stories link now share a vertical layout with a guaranteed 40px gap, rather than separate viewport positions. Measured at 320×568, 375×667, 390×844, 439×955 and 667×375: 40px separation and 32px right inset throughout. Short screens can place the link below the initial viewport. Desktop placement remains at 92vh with its existing 123px right inset. Screenshot reviewed: `stories/test/artifacts/home-mobile-spacing.png`.

@@ -354,9 +354,6 @@ body {
 .stories-entry-arrow { font: 400 1.5rem/1 Arial, sans-serif; transition: transform .2s ease; }
 .stories-entry:hover .stories-entry-arrow { transform: translateX(4px); }
 .stories-entry:focus-visible { outline: 2px solid currentColor; outline-offset: 6px; }
-@media (max-width: 768px) {
-  .stories-entry { top: 92svh; right: 32px; }
-}
 
 .scroll-text {
   position: absolute;
@@ -838,11 +835,24 @@ body.dark-mode .typewriter-container {
 
 /* Mobile fallback */
 @media (max-width: 768px) {
-  .intro-text {
-    right: 16px;
+  .sticky-intro-wrapper {
+    position: absolute;
+    top: 80vh;
     left: 16px;
+    right: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .intro-text {
+    position: static;
     max-width: none;
     text-align: left;
+  }
+  .stories-entry {
+    position: static;
+    align-self: flex-end;
+    margin-right: 16px;
   }
 }
 

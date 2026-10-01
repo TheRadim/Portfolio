@@ -10,19 +10,15 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
   const wheel = new WheelNavigator();
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const mediaURL = (path) => new URL(path, base ? new URL(base + "/", location.href) : location.href).href;
-  const hintKey = "radim-stories-timeline-tip-v1";
   let hintDone = false, hintTimer = 0;
-  try { hintDone = Boolean(localStorage.getItem(hintKey)); } catch {}
   function dismissHint() {
     hintDone = true; clearTimeout(hintTimer); $("timelineHint").hidden = true;
-    try { localStorage.setItem(hintKey, "dismissed"); } catch {}
   }
   function scheduleHint() {
     clearTimeout(hintTimer);
     if (hintDone || current < 0 || stories.length < 2 || document.hidden || !matchMedia("(pointer: coarse)").matches) return;
     hintTimer = setTimeout(() => {
       hintDone = true; $("timelineHint").hidden = false;
-      try { localStorage.setItem(hintKey, "seen"); } catch {}
     }, 5000);
   }
   document.addEventListener("pointermove", scheduleHint, { passive: true });
