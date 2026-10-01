@@ -6,6 +6,7 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
   let stories = [], current = -1, selectedMedia = 0, mediaRevision = 0;
   let requested = -1, transitionVersion = 0, hoveredIndex = -1;
+  let scrub = null, suppressClickUntil = 0;
   const wheel = new WheelNavigator();
   const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const mediaURL = (path) => new URL(path, base ? new URL(base + "/", location.href) : location.href).href;
@@ -29,7 +30,7 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
       const b = document.createElement("button"); b.type = "button"; b.className = "timeline-stop";
       b.setAttribute("aria-label", `${story.title}, ${story.date}`);
       const label = document.createElement("span"); label.className = "timeline-label"; label.textContent = story.title;
-      b.append(label); b.onclick = () => selectStory(i);
+      b.append(label); b.onclick = () => { if (Date.now() >= suppressClickUntil) selectStory(i); };
       b.onfocus = () => emphasize(i);
       b.onblur = () => { if (hoveredIndex < 0) emphasize(-1); };
       b.onkeydown = (e) => {
@@ -38,12 +39,44 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
       };
       $("timeline").append(b);
     });
-    $("timeline").onpointermove = (event) => {
-      const rows = [...$("timeline").children].map((b) => b.getBoundingClientRect());
-      hoveredIndex = nearestTimelineIndex(event.clientY, rows);
+    const nav = $("timeline");
+    function preview(index, y) {
+      hoveredIndex = index; emphasize(index);
+      $("timelinePreview").textContent = stories[index].title;
+      $("timelinePreview").style.top = `${Math.max(76, Math.min(innerHeight - 52, y - 18))}px`;
+      $("timelinePreview").hidden = false;
+      selectStory(index);
+    }
+    nav.onpointerdown = event => {
+      if (event.pointerType === "mouse") return;
+      event.preventDefault();
+      const index = nearestTimelineIndex(event.clientY, [...nav.children].map(b => b.getBoundingClientRect()));
+      if (index < 0) return;
+      scrub = { id: event.pointerId, y: event.clientY, index, step: Math.max(12, Math.min(24, nav.clientHeight / Math.max(1, stories.length - 1))) };
+      suppressClickUntil = Date.now() + 1000; nav.setPointerCapture(event.pointerId); nav.classList.add("is-scrubbing");
+      preview(index, event.clientY);
+    };
+    nav.onpointermove = event => {
+      if (scrub && scrub.id === event.pointerId) {
+        event.preventDefault();
+        const index = Math.max(0, Math.min(stories.length - 1, scrub.index + Math.round((event.clientY - scrub.y) / scrub.step)));
+        preview(index, event.clientY); return;
+      }
+      if (event.pointerType !== "mouse") return;
+      hoveredIndex = nearestTimelineIndex(event.clientY, [...nav.children].map(b => b.getBoundingClientRect()));
       emphasize(hoveredIndex);
     };
-    $("timeline").onpointerleave = () => { hoveredIndex = -1; emphasize(-1); };
+    const finishScrub = event => {
+      if (!scrub || scrub.id !== event.pointerId) return;
+      scrub = null; suppressClickUntil = Date.now() + 400; nav.classList.remove("is-scrubbing");
+      $("timelinePreview").hidden = true; hoveredIndex = -1; emphasize(-1);
+      if (nav.hasPointerCapture(event.pointerId)) nav.releasePointerCapture(event.pointerId);
+      const stop = nav.children[requested];
+      if (stop) nav.scrollTop = Math.max(0, stop.offsetTop - nav.clientHeight / 2);
+    };
+    nav.onpointerup = finishScrub; nav.onpointercancel = finishScrub; nav.onlostpointercapture = finishScrub;
+    nav.onpointerleave = () => { if (!scrub) { hoveredIndex = -1; emphasize(-1); } };
+    $("timelineHint").hidden = stories.length < 2;
     $("timeline").hidden = false;
   }
   async function showMedia(index) {
@@ -96,13 +129,14 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
       [...$("timeline").children].forEach((b, i) => { b.setAttribute("aria-current", String(i === index)); });
       const stop = $("timeline").children[index];
       const stopTop = stop.offsetTop, nav = $("timeline");
-      if (stopTop < nav.scrollTop || stopTop > nav.scrollTop + nav.clientHeight - 24) nav.scrollTop = stopTop - nav.clientHeight / 2;
+      if (!scrub && (stopTop < nav.scrollTop || stopTop > nav.scrollTop + nav.clientHeight - 24)) nav.scrollTop = stopTop - nav.clientHeight / 2;
       $("previousStory").disabled = index === 0; $("nextStory").disabled = index === stories.length - 1;
       $("storyCount").textContent = `${String(index + 1).padStart(2,"0")} / ${String(stories.length).padStart(2,"0")}`;
       $("storyAnnouncement").textContent = `${story.title}. Story ${index + 1} of ${stories.length}.`;
       document.title = `${story.title} — Stories by Radim Theiner`;
-      if (updateHistory) history.replaceState(null, "", `#${encodeURIComponent(story.id)}`);
+      if (updateHistory) history.replaceState(null, "", location.pathname + location.search);
       $("storyMessage").hidden = true; $("storyLayout").hidden = false; $("storyPagination").hidden = false;
+      if (innerWidth < 600) window.scrollTo({ top: 0, behavior: "instant" });
       requestAnimationFrame(() => { if (version === transitionVersion) $("storyLayout").classList.remove("is-changing"); });
     }
   }

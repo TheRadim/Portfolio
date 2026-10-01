@@ -2,7 +2,7 @@
 
 The portfolio remains a static GitHub Pages site. Only `index.html` and a scoped block in `styles.css` change there. Stories uses separate scripts and styles:
 
-- `/stories.html`: visitor diary, oldest date at the top and newest at the bottom, opening on the latest event; thumbnail navigation, swipe, timeline and wheel navigation.
+- `/stories.html`: visitor diary, oldest date at the top and newest at the bottom, opening on the latest event; wrapping thumbnail rows, photo swipes, touch-and-drag timeline and wheel navigation. Ordinary reloads start on the newest date; explicit event links open their target.
 - `/add-content.html`: password-only upload, metadata and file ordering, compression progress, publication.
 - `/delete-content.html`: password-only management list, prefilled editing of title/date/text, media order, and adding/removing media, plus one permanent-delete confirmation.
 

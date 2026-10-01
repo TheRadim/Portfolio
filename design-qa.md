@@ -45,3 +45,9 @@ The timeline label uses the same `--paper` background as the page. Browser-compu
 The editor now supports selecting or dropping new photos/videos, removing existing or newly selected frames, and reordering the combined list. Changes apply on Save. The local browser verified adding a photo, removing an existing photo, placing the new photo first, saving and retaining the unchanged second photo URL. Removed media returned 404. Evidence: `stories/test/artifacts/edit-add-remove.png`.
 
 Six service/navigation tests pass, including atomic media additions, physical removal, preservation of the original story after a bad new image, and rejection/cleanup of uploads whose story changed while processing.
+
+## Thumbnail rows and phone navigation
+
+Thumbnail galleries now use a wrapping grid (eight columns on desktop/tablet, six on phones), without horizontal scrolling. Phone header and content spacing are compact, with natural document scrolling only when content requires it. Browser checks verified twenty images in four rows fit at 390×844; eight images fit at 375×667; twenty images at that smaller size need only a short document scroll. Tablet checks at 768×1024 and 1024×768 retain viewport bounds with twenty images.
+
+Touch timeline navigation captures a held pointer and maps vertical movement to event indexes, with a floating event title, continuous selection and suppression of accidental release clicks. Native Chromium touch input moved five events in one upward drag; release retained the final selection. An unobtrusive hint and larger Older/Newer buttons make navigation discoverable. Ordinary navigation no longer writes the current story into the URL, so a refresh opens the newest date. Explicit event links still open their target. Verified with thirty out-of-order fixtures and a fresh reload. Evidence: `stories/test/artifacts/phone-thumbnail-rows.png`.

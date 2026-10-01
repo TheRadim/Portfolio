@@ -22,7 +22,9 @@
     <a class="stories-wordmark" href="/stories.html" aria-label="Stories, visual diary">stories</a>
   </header>
   <nav class="timeline" aria-label="Story timeline" id="timeline" hidden></nav>
+  <div class="timeline-preview" id="timelinePreview" hidden aria-hidden="true"></div>
   <main id="story" class="story-shell" tabindex="-1">
+    <p class="touch-timeline-hint" id="timelineHint" hidden>↕ Hold & slide the timeline to browse</p>
     <div class="story-message" id="storyMessage" role="status">Opening the diary…</div>
     <article class="story-layout" id="storyLayout" hidden>
       <div class="story-heading">
@@ -37,9 +39,9 @@
       <div class="story-copy" id="storyCopy"></div>
     </article>
     <nav class="story-pagination" id="storyPagination" aria-label="Browse stories" hidden>
-      <button type="button" id="previousStory">Older story</button>
+      <button type="button" id="previousStory">↑ Older story</button>
       <span id="storyCount" aria-live="polite"></span>
-      <button type="button" id="nextStory">Newer story</button>
+      <button type="button" id="nextStory">Newer story ↓</button>
     </nav>
     <p class="visually-hidden" id="storyAnnouncement" aria-live="polite"></p>
   </main>

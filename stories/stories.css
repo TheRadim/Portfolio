@@ -24,8 +24,8 @@ button:focus, a:focus, input:focus, textarea:focus, [tabindex]:focus { outline: 
 .story-stage { display: grid; place-items: center; width: 100%; aspect-ratio: 3/2; overflow: hidden; position: relative; background: transparent; }
 .story-stage img, .story-stage video { width: 100%; height: 100%; object-fit: contain; min-height: 0; position: absolute; inset: 0; }
 .story-stage .media-error { padding: 20px; text-align: center; font-size: 12px; }
-.story-thumbnails { display: flex; overflow-x: auto; gap: 8px; padding: 12px 0 5px; scrollbar-width: thin; scrollbar-color: #d5d5d5 transparent; }
-.story-thumbnail { position: relative; flex: 0 0 calc((100% - 56px) / 8); min-width: 42px; aspect-ratio: 3/2; padding: 0; border: 0; background: #f3f3f3; opacity: .58; transition: opacity .15s; }
+.story-thumbnails { display: grid; grid-template-columns: repeat(8, minmax(0,1fr)); gap: 10px 8px; padding: 12px 0 5px; overflow: visible; }
+.story-thumbnail { position: relative; min-width: 0; width: 100%; aspect-ratio: 3/2; padding: 0; border: 0; background: #f3f3f3; opacity: .58; transition: opacity .15s; }
 .story-thumbnail:hover, .story-thumbnail[aria-pressed="true"] { opacity: 1; }
 .story-thumbnail[aria-pressed="true"]::after { content: ""; position: absolute; inset: auto 0 -5px; height: 2px; background: var(--ink); }
 .story-thumbnail img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -64,7 +64,7 @@ button:focus, a:focus, input:focus, textarea:focus, [tabindex]:focus { outline: 
   .story-gallery { width: 100%; order: 1; }
   .story-copy { width: 100%; order: 2; margin-top: 8.4vw; padding: 0 8px; font-size: inherit; line-height: 1.35; }
   .story-thumbnails { gap: 6px; padding-top: 10px; }
-  .story-thumbnail { flex-basis: calc((100% - 42px) / 8); min-width: 30px; }
+  .story-thumbnail { min-width: 0; }
   .timeline { top: 52vh; bottom: 9vh; width: 48px; }
   .timeline-stop { flex-basis: 16px; height: 16px; }
   .timeline-stop::before { width: 12px; height: 3px; top: 6px; }
@@ -101,3 +101,24 @@ button:focus, a:focus, input:focus, textarea:focus, [tabindex]:focus { outline: 
   .timeline { width: 12vw; top: 38vh; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; } }
+
+.touch-timeline-hint { display: none; }
+.timeline-preview { position: fixed; left: 58px; z-index: 30; max-width: calc(100vw - 76px); padding: 6px 10px; background: var(--paper); font-size: 12px; pointer-events: none; }
+@media (pointer: coarse) {
+  .timeline { touch-action: none; user-select: none; -webkit-user-select: none; }
+  .touch-timeline-hint { display: block; font-size: 10px; color: var(--muted); margin: 0 0 16px; }
+  .timeline.is-scrubbing .timeline-stop::before { transition-duration: 60ms; }
+}
+@media (max-width: 599px) {
+  .diary-page .stories-header { height: 68px; padding: 22px 24px; }
+  .story-shell { margin: 0 24px 0 56px; padding: 16px 0 max(16px,env(safe-area-inset-bottom)); min-height: calc(100svh - 68px); }
+  .story-heading { margin: 0 0 16px; padding: 0; }
+  .story-stage { max-height: 34svh; }
+  .story-thumbnails { grid-template-columns: repeat(6,minmax(0,1fr)); gap: 9px 6px; padding-top: 9px; }
+  .gallery-footer { height: 28px; min-height: 28px; }
+  .story-copy { margin-top: 12px; padding: 0; }
+  .story-copy p:last-child { margin-bottom: 0; }
+  .story-pagination { margin-top: 16px; gap: 8px; }
+  .story-pagination button { min-height: 44px; padding: 10px 0; font-size: 12px; }
+  .timeline { top: 132px; bottom: 24px; width: 48px; }
+}
