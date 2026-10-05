@@ -71,3 +71,9 @@ On phones the intro text and Stories link now share a vertical layout with a gua
 Contained photos and videos now anchor to the left of the stable gallery stage, removing the variable left inset on narrower media. Tablet headings and copy also use the gallery's left edge. Seven-image galleries use seven thumbnail columns, avoiding the unused eighth slot; smaller sets retain compact thumbnails and larger sets continue wrapping.
 
 Browser checks at 1515×850, 768×1024 and 390×844 confirmed matching stage/thumbnail left edges, left-aligned media, and unchanged stage size and thumbnail position after switching images. Screenshot reviewed: `stories/test/artifacts/gallery-left-aligned.png`. JavaScript syntax and whitespace checks passed.
+
+## Text blocks, lighter timeline and portrait centering
+
+Story paragraphs use justified alignment with the final line left-aligned. Timeline marks reduce from 4px to 3px on desktop and 3px to 2px on smaller screens; row spacing reduces from 18px to 16px and 16px to 14px respectively, retaining continuous hit areas. Thumbnail video badges are removed while accessible video names remain. Portrait images and videos center based on their loaded dimensions; landscape media stays left-aligned.
+
+Browser checks at 1515×850, 768×1024 and 390×844 verified portrait centering, justified paragraphs, mark thickness/spacing, absent badges and stable thumbnail positioning after switching from portrait to landscape. JavaScript syntax and diff checks passed.

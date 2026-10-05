@@ -116,6 +116,9 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
       node.autoplay = !reduced.matches; node.poster = mediaURL(item.thumb);
       node.setAttribute("aria-label", `${stories[current].title}, video ${selectedMedia + 1}`);
     } else { node.alt = `${stories[current].title} — photograph ${selectedMedia + 1}`; node.decoding = "async"; }
+    const alignMedia = () => node.classList.toggle("is-portrait",
+      item.type === "video" ? node.videoHeight > node.videoWidth : node.naturalHeight > node.naturalWidth);
+    node.addEventListener(item.type === "video" ? "loadedmetadata" : "load", alignMedia);
     node.src = mediaURL(item.src);
     node.onerror = () => { if (revision !== mediaRevision) return; const p = document.createElement("p"); p.className = "media-error"; p.textContent = "This photo or video could not load. Try another thumbnail."; $("storyStage").replaceChildren(p); };
     $("storyStage").replaceChildren(node);
@@ -151,7 +154,6 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
         const b = document.createElement("button"); b.type = "button"; b.className = "story-thumbnail";
         b.setAttribute("aria-label", `${m.type === "video" ? "Video" : "Photo"} ${i + 1}`);
         const img = document.createElement("img"); img.src = mediaURL(m.thumb); img.alt = ""; img.loading = "lazy"; b.append(img);
-        if (m.type === "video") { const label = document.createElement("span"); label.className = "video-label"; label.textContent = "VIDEO"; b.append(label); }
         b.onclick = () => showMedia(i); $("storyThumbnails").append(b);
       });
       await showMedia(0);
