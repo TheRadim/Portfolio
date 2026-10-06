@@ -48,7 +48,7 @@ export function createLocalApp({ root, origin, hash, webRoot }) {
   if (webRoot) {
     for (const file of ['index.html','stories.html','add-content.html','delete-content.html','styles.css','script.js','favicon.ico']) app.get(file === 'index.html' ? ['/', '/index.html'] : `/${file}`, (_req,res) => res.sendFile(resolve(webRoot,file)));
     app.use('/assets',express.static(join(webRoot,'assets')));
-    for (const file of ['stories.css','stories.js','navigation.mjs','config.js','admin.css','admin.js']) app.get(`/stories/${file}`,(_req,res) => res.sendFile(resolve(webRoot,'stories',file)));
+    for (const file of ['stories.css','stories.js','analytics.js','navigation.mjs','config.js','admin.css','admin.js']) app.get(`/stories/${file}`,(_req,res) => res.sendFile(resolve(webRoot,'stories',file)));
   }
   return { app, ...services, idle: () => chain };
 }

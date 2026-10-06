@@ -77,3 +77,7 @@ Browser checks at 1515×850, 768×1024 and 390×844 confirmed matching stage/thu
 Story paragraphs use justified alignment with the final line left-aligned. Timeline marks reduce from 4px to 3px on desktop and 3px to 2px on smaller screens; row spacing reduces from 18px to 16px and 16px to 14px respectively, retaining continuous hit areas. Thumbnail video badges are removed while accessible video names remain. Portrait images and videos center based on their loaded dimensions; landscape media stays left-aligned.
 
 Browser checks at 1515×850, 768×1024 and 390×844 verified portrait centering, justified paragraphs, mark thickness/spacing, absent badges and stable thumbnail positioning after switching from portrait to landscape. JavaScript syntax and diff checks passed.
+
+## GoatCounter story views
+
+Added the existing GoatCounter account to the public diary with explicit page and named per-story views. Mocked integration checks verified queued delivery when the script loads late, correct stable paths and readable titles, cancellation during rapid navigation, per-load deduplication, and localhost exclusion. No test hits were sent to the production analytics account. Local preview allowlist includes the new module.

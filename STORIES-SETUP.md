@@ -62,3 +62,7 @@ Edits use an authenticated PATCH endpoint. The server validates retained media i
 ## Validation
 
 `npm test --prefix stories/backend` exercises validation, auth, failed-attempt lockout, origin rejection, real photo/video compression, no partial publication, persistent local data, logout, incomplete uploads, duplicate submission, and media deletion. Browser checks cover the responsive visitor layout, timeline, thumbnails, forms and navigation. Firebase-specific credentials, bucket CORS and event delivery require deployed verification.
+
+### Story analytics
+
+The public diary uses the existing radim-theiner.goatcounter.com account. `/stories.html` records entry to the diary; `/stories.html#<story-id>` records each viewed story with a readable `Stories — <title>` label. In GoatCounter's Pages list, filter for `/stories.html` and use titles to identify stories. Stable IDs keep counts together when a title is edited; the path links directly to that story. Each story counts once per page load after 700ms visible, skipping rapid navigation. GoatCounter's normal session deduplication remains enabled. Local previews and management pages do not load this tracker. Blocked analytics never prevents browsing. This measures views, not time spent.

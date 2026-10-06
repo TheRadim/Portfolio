@@ -1,3 +1,4 @@
+import { cancelStoryView, trackStoryView } from "./analytics.js";
 import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
 (() => {
   "use strict";
@@ -135,6 +136,7 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
     const version = ++transitionVersion;
     [...$("timeline").children].forEach((b, i) => b.setAttribute("aria-current", String(i === index)));
     {
+      cancelStoryView();
       const first = stories[index].media[0];
       const preload = new Image(); preload.src = mediaURL(first.type === "video" ? first.thumb : first.src);
       await Promise.race([preload.decode().catch(() => {}), delay(200)]);
@@ -169,6 +171,7 @@ import { WheelNavigator, nearestTimelineIndex } from "./navigation.mjs";
       $("storyMessage").hidden = true; $("storyLayout").hidden = false; $("storyPagination").hidden = false;
       if (innerWidth < 600) window.scrollTo({ top: 0, behavior: "instant" });
       scheduleHint();
+      trackStoryView(story);
       requestAnimationFrame(() => { if (version === transitionVersion) $("storyLayout").classList.remove("is-changing"); });
     }
   }
