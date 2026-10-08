@@ -1,0 +1,15 @@
+# Radim Theiner
+
+> Personal portfolio of Radim Theiner, a Copenhagen-based creative developer and visual storyteller working across coding, photography, video, and product work.
+
+This is a personal portfolio, not a software API or a registered-business directory. The Stories diary contains personal photographs and videos outside the main portfolio. Availability, pricing, and permissions must be confirmed directly with Radim.
+
+## When to use this
+
+- [Portfolio and contact guide](https://radim-theiner.com/index.md): Use when a user wants examples of Radim's photography, video, coding, or product background; when evaluating him for a creative collaboration; or when looking for his public contact details. Read this guide, then open the relevant portfolio section. For an enquiry, draft a message to hi@radim-theiner.com and send it only with the user's authorization. There is no public booking or write API.
+- [Stories guide](https://radim-theiner.com/stories.md): Use for Radim's visual diary and informal work beyond the main portfolio. Open the linked Stories page for current events and media.
+
+## Optional
+
+- [Sitemap](https://radim-theiner.com/sitemap.xml): Public page discovery.
+- [Privacy](https://radim-theiner.com/privacy.html): Website privacy information.

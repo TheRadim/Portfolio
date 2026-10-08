@@ -6,3 +6,7 @@ exclude:
   - storage.rules
   - design-qa.md
   - STORIES-SETUP.md
+  - agent-support
+# Keep machine-readable Markdown files raw; never render over index.html or 404.html.
+optional_front_matter:
+  enabled: false

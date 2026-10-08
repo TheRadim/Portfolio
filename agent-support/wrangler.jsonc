@@ -1,0 +1,10 @@
+{
+  "name": "radim-agent-content",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-09",
+  "workers_dev": false,
+  "routes": [
+    { "pattern": "radim-theiner.com/*", "zone_name": "radim-theiner.com" },
+    { "pattern": "www.radim-theiner.com/*", "zone_name": "radim-theiner.com" }
+  ]
+}
