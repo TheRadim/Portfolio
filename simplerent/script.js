@@ -80,3 +80,18 @@
     });
   });
 })();
+
+/* Phone: top bar menu */
+(function () {
+  var b = document.querySelector('.navtoggle'), n = document.getElementById('sitenav');
+  if (!b || !n) return;
+  var set = function (open) {
+    n.classList.toggle('open', open);
+    b.setAttribute('aria-expanded', String(open));
+    b.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  };
+  b.addEventListener('click', function () { set(!n.classList.contains('open')); });
+  n.addEventListener('click', function (e) { if (e.target.closest('a')) set(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && n.classList.contains('open')) { set(false); b.focus(); } });
+  window.addEventListener('resize', function () { if (window.innerWidth > 820) set(false); });
+})();
