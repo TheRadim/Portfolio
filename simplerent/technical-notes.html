@@ -1,0 +1,318 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex, nofollow"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Technical notes · SimpleRent</title><meta name="description" content="Legacy systems, dependencies and migration checks, for the development team."><link rel="preload" href="assets/fonts/inter-tight-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="styles.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="topbar"><div class="in"><a class="logo" href="index.html" aria-label="Recommendations for SimpleRent: home"><svg viewBox="0 0 94.01 52.265" role="img" aria-label="SimpleRent"><g><path d="M6.88,51.386a2.2,2.2,0,0,0-2.338-1.833A1.884,1.884,0,0,0,2.49,51.269a1.546,1.546,0,0,0,1.4,1.531l1.716.353c2.1.421,3.23,1.749,3.23,3.432,0,1.85-1.5,3.616-4.223,3.616C1.582,60.2.185,58.249,0,56.534L1.884,56a2.564,2.564,0,0,0,2.725,2.389c1.43,0,2.17-.723,2.17-1.648,0-.774-.571-1.4-1.6-1.615L3.5,54.767A3.386,3.386,0,0,1,.472,51.42a3.889,3.889,0,0,1,4.054-3.65c2.809,0,3.9,1.716,4.172,3.045Z" transform="translate(0 -10.879)"/><path d="M15.069,47.552a1.278,1.278,0,0,1,1.279,1.279,1.27,1.27,0,1,1-1.279-1.279m-.958,4.155h1.934V59.9H14.111Z" transform="translate(-3.145 -10.83)"/><path d="M20.3,61.055V52.863h1.867v1.043a2.8,2.8,0,0,1,2.422-1.279,2.568,2.568,0,0,1,2.456,1.447A2.875,2.875,0,0,1,29.7,52.627a2.813,2.813,0,0,1,2.893,3.112v5.315H30.709v-5a1.5,1.5,0,0,0-1.582-1.682,1.7,1.7,0,0,0-1.7,1.816v4.861H25.511v-5a1.493,1.493,0,0,0-1.581-1.682,1.675,1.675,0,0,0-1.7,1.816v4.861Z" transform="translate(-4.623 -11.986)"/><path d="M39.635,64.266V52.877h1.884v1.11a2.943,2.943,0,0,1,2.607-1.3c2.423,0,3.785,1.85,3.785,4.273,0,2.457-1.5,4.306-3.852,4.306a2.96,2.96,0,0,1-2.489-1.127v4.122Zm4.122-9.841a2.585,2.585,0,1,0,2.2,2.54,2.277,2.277,0,0,0-2.2-2.54" transform="translate(-9.027 -12)"/><rect width="1.951" height="12.178" transform="translate(41.018 36.89)"/><path d="M66.3,58.711A3.69,3.69,0,0,1,62.6,61.3a4.358,4.358,0,0,1-.2-8.7c2.524,0,4,1.666,4,4.256a2.883,2.883,0,0,1-.05.622H60.358A2.194,2.194,0,0,0,62.6,59.62a1.976,1.976,0,0,0,2.052-1.43Zm-1.867-2.657a1.835,1.835,0,0,0-2.019-1.817,1.967,1.967,0,0,0-2,1.817Z" transform="translate(-13.302 -11.981)"/><path d="M75.229,55.313h-1.48v4.71H71.713V48.1h4.576a3.521,3.521,0,0,1,3.735,3.616,3.363,3.363,0,0,1-2.692,3.4l2.692,4.912H77.735Zm.69-1.783a1.838,1.838,0,1,0,0-3.65h-2.17v3.65Z" transform="translate(-16.333 -10.954)"/><path d="M92.058,58.711a3.69,3.69,0,0,1-3.7,2.591,4.358,4.358,0,0,1-.2-8.7c2.524,0,4,1.666,4,4.256a2.884,2.884,0,0,1-.05.622H86.12a2.194,2.194,0,0,0,2.237,2.137,1.976,1.976,0,0,0,2.052-1.43Zm-1.867-2.657a1.835,1.835,0,0,0-2.019-1.817,1.967,1.967,0,0,0-2,1.817Z" transform="translate(-19.169 -11.981)"/><path d="M99.209,61.055H97.258V52.863h1.9v1.094a2.72,2.72,0,0,1,2.423-1.329c2,0,2.96,1.447,2.96,3.247v5.181H102.59V56.21c0-1.009-.454-1.817-1.682-1.817a1.72,1.72,0,0,0-1.7,1.934Z" transform="translate(-22.15 -11.986)"/><path d="M112.27,52.193h1.7v1.733h-1.7v3.8c0,.724.319,1.026,1.043,1.026a4.257,4.257,0,0,0,.673-.067V60.3a3.084,3.084,0,0,1-1.195.185,2.258,2.258,0,0,1-2.456-2.439V53.926h-1.514V52.193h.421a1.162,1.162,0,0,0,1.262-1.279V49.687h1.766Z" transform="translate(-24.784 -11.316)"/><path d="M119.547,60.12a1.385,1.385,0,0,1,1.379,1.379,1.371,1.371,0,0,1-1.379,1.362,1.357,1.357,0,0,1-1.362-1.362,1.371,1.371,0,0,1,1.362-1.379" transform="translate(-26.916 -13.692)"/><path d="M55.311,0A12.059,12.059,0,1,0,67.37,12.059,12.059,12.059,0,0,0,55.311,0m8.128,20.187H47.184V3.932H63.439Z" transform="translate(-9.851 0)"/></g></svg></a><nav aria-label="Sections"><a href="index.html">Overview</a><a href="recommendations.html">Recommendations</a><a href="supporting-materials.html" aria-current="page">Supporting materials</a><a href="components.html">Interface parts</a></nav></div></header><main id="main" class="doc"><div class="dochead"><a class="back" href="supporting-materials.html">← Supporting materials</a><h1>SimpleRent Technical Audit - Legacy Platform and Migration Reference</h1><p class="meta">Supporting technical reference · Updated 24 October 2026</p></div><div class="col"><nav class="pagetoc box" aria-label="On this page"><b>On this page</b><ol><li><a href="#1-executive-technical-summary">1. Executive technical summary</a></li><li><a href="#2-sources-and-limits">2. Sources and limits</a></li><li><a href="#october-update-catalogue-and-booking-requirements">October update: catalogue and booking requirements</a></li><li><a href="#3-responsibility-and-dependency-map">3. Responsibility and dependency map</a></li><li><a href="#4-wordpress-theme-and-custom-functionality">4. WordPress, theme and custom functionality</a></li><li><a href="#5-woocommerce-and-transaction-behavior">5. WooCommerce and transaction behavior</a></li><li><a href="#6-rentman-availability-and-planning-periods">6. Rentman, availability and planning periods</a></li><li><a href="#7-payments-invoicing-accounts-and-credits">7. Payments, invoicing, accounts and credits</a></li><li><a href="#8-catalogue-kits-spaces-and-content">8. Catalogue, kits, spaces and content</a></li><li><a href="#9-migration-risks-and-checks">9. Migration risks and checks</a></li><li><a href="#10-suggested-sequence-if-implementation-proceeds">10. Suggested sequence if implementation proceeds</a></li><li><a href="#11-outstanding-evidence-and-handover-status">11. Outstanding evidence and handover status</a></li><li><a href="#appendix-a-relevant-legacy-components">Appendix A. Relevant legacy components</a></li><li><a href="#appendix-b-historical-database-artifacts">Appendix B. Historical database artifacts</a></li><li><a href="#additional-design-review-implications">Additional design-review implications</a></li></ol></nav><p>This document is for the development team and anyone who needs the legacy-system detail. The client-facing recommendation is <a href="recommendations.html">A clearer website for SimpleRent</a>.</p>
+<h2 id="1-executive-technical-summary">1. Executive technical summary</h2>
+<p>The legacy platform combines WordPress content and a custom theme with WooCommerce transactions, Rentman integration, account permissions, credit, payments and invoicing. Replacing the public website therefore requires decisions about rental operations and data, as well as page rendering.</p>
+<p>The client has confirmed a move away from WordPress and WooCommerce. This audit documents the system being replaced; it does not recommend retaining those products as the future architecture. Rentman's future role and the replacement stack are unknown. Preserve business outcomes and customer obligations; evaluate each implementation separately.</p>
+<p>The highest migration risks are incorrect availability, changed rental/planning periods, payment/booking mismatches, lost credit balances, lost invoice eligibility, and unrecognized custom code. Public browsing confirms visible rental controls and customer-facing policies. It cannot confirm synchronization, financial processing or backend correctness.</p>
+<h2 id="2-sources-and-limits">2. Sources and limits</h2>
+<p>I use two historical references here: the technical audit dated 10 June 2026 and the modernization plan dated 10 August 2026. The June reference describes database, content, configuration and plugin exports. I have not independently re-examined those underlying exports, so their counts and settings remain historical rather than verified current configuration. The August plan repeats much of that information.</p>
+<p>The public-page review dates from 21 October, with design recommendations updated through 24 October. I did not test transactions or inspect private customer accounts. The page review used a logged-in browser, so anonymous behaviour still needs checking. The <a href="research-notes.html">research notes</a> distinguish page observations from historical information and later proposals.</p>
+<h3 id="historical-scale-reported-in-june-not-current-totals">Historical scale reported in June - not current totals</h3>
+</div><div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Item</th>
+<th style="text-align: right;">Reported June snapshot</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Published products / total products</td>
+<td style="text-align: right;">733 / 743</td>
+</tr>
+<tr>
+<td>Shop orders / completed orders in WXR</td>
+<td style="text-align: right;">1,037 / 746</td>
+</tr>
+<tr>
+<td>Published pages / posts</td>
+<td style="text-align: right;">35 / 8</td>
+</tr>
+<tr>
+<td>Menu items / media attachments</td>
+<td style="text-align: right;">59 / 1,918</td>
+</tr>
+<tr>
+<td>ACF field groups / fields</td>
+<td style="text-align: right;">15 / 169</td>
+</tr>
+<tr>
+<td>Published coupons / all coupons</td>
+<td style="text-align: right;">15 / 22</td>
+</tr>
+<tr>
+<td>FAQs / popups / TablePress tables</td>
+<td style="text-align: right;">6 / 4 / 1</td>
+</tr>
+</tbody>
+</table></div><div class="col">
+<p>The additional October sitemap review reports 765 products and 94 categories. This is a different source and snapshot from the historical totals below; neither has been reconciled into a current migration inventory.</p>
+<p>The June audit reports DKK/Denmark configuration, guest checkout disabled, registration enabled and theme <code>simplerent</code> by Third Dot v1.0.6. These are not current verified settings. Do not size migration solely from these counts; validate record scope, media volume and current data at extraction time.</p>
+<h2 id="october-update-catalogue-and-booking-requirements">October update: catalogue and booking requirements</h2>
+<p>The replacement platform must support the five proposed destinations: Rent gear <code>/rent/</code>, Production kits <code>/kits/</code>, Studios and spaces <code>/studios/</code>, Crew and production services <code>/services/</code>, Resources and support <code>/resources/</code>. <code>/gear/</code> remains an alternative to confirm for the mixed rental/purchase catalogue. These supersede the earlier six-section proposal.</p>
+<p>Rent gear has six groups: Cameras and optics; Lighting and grip; Audio and monitoring; Support, motion and power; Live and streaming; Media and consumables. Give each product one primary subcategory, with separate relationships for kits and compatible extras. Rental camera batteries belong under power; disposable batteries under consumables. Audio recorders and monitor-recorders remain distinct. Studios/services are separate offers, not gear categories.</p>
+<p>If catalogue migration work is agreed, the responsible team can build a mapping spreadsheet from the current export, using the reported 765 products as the reconciliation starting point. Include stable legacy ID, current URL/category, new group/subcategory, Rent/Buy options, new URL, redirect destination, brand, price basis, relevant specifications, aliases, kit relationships and completeness/verification notes. Add category, kit and content URL mappings separately: a product-only sheet cannot cover the whole migration. Review important landing pages and incoming links before retiring routes. Preserve one canonical kit destination while retaining necessary operational records.</p>
+<p>Normalize attribute names, values and units. Required filters include dates, Rent/Buy, price and brand, then mount, focal range, sensor coverage, lens type/T-stop, resolution/format; wattage, colour, battery and light mount; microphone type/channels, screen size/nits/connections; payload, battery mount, connector/length; live inputs/connections; card type/capacity. Show applicable fields only. Watts measure power rather than light output; use a separately defined measured-output attribute if reliable comparable data exists. T-stops and f-stops must not be silently treated as identical.</p>
+<p>Search needs aliases, exact-model relevance and product/group/kit suggestions. Filters require result counts, removable selections, URL-persisted filter/sort state, back-button restoration and a mobile bottom sheet. Sliders also need editable values and keyboard support. Define which filter combinations may be indexed to avoid an uncontrolled number of search pages.</p>
+<p>Sorting: Recommended by default, Most rented over 90 days, price both ways, Newest, Name. Define qualifying bookings, cancellation exclusions and kit-component counting with operations; do not invent popularity when history is unavailable. Rental daily rates and purchase totals need separate comparison modes. Rental availability must include occupied planning time, quantities and shared kit components, rather than just catalogue stock.</p>
+<p>My recommended booking approach: no dates required to browse; choose dates when adding rental items; prefill subsequent items; allow different periods per basket line. Keep optional availability filtering. Define precedence between filter dates and basket-line dates, and revalidate price, stock and collection/return windows after every edit. Mixed rental/purchase baskets need correct tax, payment, stock and fulfilment handling. A displayed stock count without dates is not a period-specific availability promise. Confirm whether the operational system supports per-line periods before implementation.</p>
+<p>Automated space booking is proposed, not verified: confirm calendars, room rules, access, turnaround and any shared resources. A floor plan needs measured, current information. Generators and crew roles remain unconfirmed. Resources combine help and complete guides; avoid public placeholders and retire stale course/podcast promotion after content review. Preserve black, white, purple and lime with tested contrast and restrained motion.</p>
+<p>The October sitemap counts also include 35 pages, 8 posts and 6 FAQ entries. These are review snapshot counts, not a verified migration export. The motion review marks the current treatment as requiring correction: menu 200ms ease-in, mobile left/right transitions, sticky header 0.5s, wishlist fade 1s and cart 0.35s symmetric. Use short, interruptible feedback, reduced-motion support and measured device testing. CSS alone does not establish runtime performance.</p>
+<h3 id="delivery-and-recommendation-behaviour">Delivery and recommendation behaviour</h3>
+<p>I recommend delivery as a basket fulfilment choice, not a production-service product. The future implementation needs confirmed address coverage, item eligibility, fees, timing and collection/return arrangements. Recalculate the delivery charge when the address, basket or relevant dates change, and show the total before confirmation. Explain unavailable delivery clearly; never present an unconfirmed fee as final. Product eligibility labels and supporting help copy must use the same rules.</p>
+<p>Compatible extras need maintained product relationships, not just similar names. Kit suggestions can use overlap between basket items and a curated kit manifest. Compare equivalent quantities and rental periods, check stock and compatibility, and present contents and price differences. Replacement requires an explicit customer action and must avoid duplicate items or double-counted stock. Do not claim a bundle discount unless supported by actual pricing.</p>
+<h3 id="scope-of-this-reference">Scope of this reference</h3>
+<p>I have included these technical considerations for the future implementation team. My involvement in migration or product mapping is not agreed. The immediate step is a discussion with Frederik. Visuals and selected UI mockups can follow if requested and scoped. Earlier WordPress quick-win estimates are historical and superseded as delivery commitments, while the underlying usability findings remain relevant.</p>
+<h2 id="3-responsibility-and-dependency-map">3. Responsibility and dependency map</h2>
+</div><div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Documented legacy implementation</th>
+<th>Public corroboration</th>
+<th>Business consequence / replacement obligation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content and navigation</td>
+<td>WordPress pages/posts/menus, custom theme, Max Mega Menu, ACF</td>
+<td>Public pages inspected</td>
+<td>Migrate useful content, editorial structure, links and ownership.</td>
+</tr>
+<tr>
+<td>Catalogue</td>
+<td>WooCommerce products/taxonomy plus Rentman import metadata</td>
+<td>Public pages inspected</td>
+<td>Stable IDs, rental vs sales distinction, relationships, imagery and pricing inputs.</td>
+</tr>
+<tr>
+<td>Availability and booking periods</td>
+<td>Rentman Advanced, WooCommerce product/cart integration</td>
+<td>Product date/stock controls and rental FAQ</td>
+<td>Avoid double booking; distinguish rental days, occupied planning time and pickup/return.</td>
+</tr>
+<tr>
+<td>Orders and staff projects</td>
+<td>WooCommerce orders and Rentman export</td>
+<td>Only historical evidence</td>
+<td>Define who owns booking state and how staff see confirmed work.</td>
+</tr>
+<tr>
+<td>Payments</td>
+<td>OnPay, WooCommerce and role-based methods</td>
+<td>Payment FAQ describes methods and timing</td>
+<td>Keep payment status consistent with booking status; support cancellation/refund failures.</td>
+</tr>
+<tr>
+<td>Customer identity and permissions</td>
+<td>WordPress/WooCommerce users and roles</td>
+<td>Public account links and invoice-application guidance</td>
+<td>Secure account transition and preservation of approved invoice permissions.</td>
+</tr>
+<tr>
+<td>Credit and discounts</td>
+<td>TeraWallet, Advanced Coupons, factor-rate logic</td>
+<td>Public pages inspected</td>
+<td>Preserve outstanding value and explain earning/redemption; reproduce agreed pricing.</td>
+</tr>
+<tr>
+<td>Invoices and VAT data</td>
+<td>PDF Invoices &amp; Packing Slips, VAT plugins, order data</td>
+<td>Public business-invoice guidance</td>
+<td>Reconcile invoice records and customer/business identifiers; assign accounting owner.</td>
+</tr>
+<tr>
+<td>Equipment lists</td>
+<td>TI Equipment list plus custom date integration</td>
+<td>Public equipment-list links; historical custom plugin description</td>
+<td>Establish list migration, date preservation, sharing and revalidation rules.</td>
+</tr>
+<tr>
+<td>Marketing/consent</td>
+<td>PixelYourSite, GTM snippets, Meta, Klaviyo, Clarity, Jetpack, consent plugin</td>
+<td>Cookie controls visible</td>
+<td>Decide required events and consent behavior; avoid blindly reproducing duplicate tags.</td>
+</tr>
+</tbody>
+</table></div><div class="col">
+<p>The dependency path is approximately catalogue → selected rental period → availability/price → cart/hold → customer eligibility/payment → order → operational rental project → invoice/credit. This is a working model from the June audit and public copy, not a traced execution sequence. Wallet earnings, invoice timing and export triggers require confirmation.</p>
+<h2 id="4-wordpress-theme-and-custom-functionality">4. WordPress, theme and custom functionality</h2>
+<p>The June audit identifies custom theme <code>simplerent</code> v1.0.6. Full PHP/theme and custom plugin source were absent from the archive reviewed by the original author. The provided stylesheet was reportedly RTF-wrapped, so it is not a reliable implementation source. WooCommerce template overrides are a <strong>potential dependency</strong>, not verified code in this audit.</p>
+<p>The June audit lists ACF groups: About Page Options; Blog options; Downloadable Content; FAQ Page options; Help Page option; Homepage options; Kit listing options; Kit Page Option; Kits category; Post - Archives; Post - Single; Product subtitle; Stories Page option; Theme Options; User Fields. Referenced templates include home, about, help, kit-listing, courses, kit, stories, blog and faq. A field's existence does not prove it currently renders or contains useful data.</p>
+<p>The <code>Simplerent Customisations</code> plugin is described as adding Rentman dates to wishlist plugins. This suggests a coupling between equipment lists and booking periods; exact hooks and lifecycle are unknown. Extract its behavior before deciding whether/how to migrate saved lists.</p>
+<p>The June audit reports three active Code Snippets: <code>Rentman - Change planning period</code>, <code>GTM head</code>, and <code>Google ads snippet</code>. The first reportedly changes exported planning periods to 14:00 the preceding day through 11:00 the following day, labeled <code>Pickup from/ Return before</code>. Public FAQ copy still describes collection the preceding day from 14:00-16:30 and return before 11:00. This corroborates the policy, not the code path. Confirm time zone, weekends, holidays, long rentals, daylight-saving changes and space bookings separately.</p>
+<h2 id="5-woocommerce-and-transaction-behavior">5. WooCommerce and transaction behavior</h2>
+<p>The historical evidence assigns products, categories, cart, orders, accounts, coupons, role-based payment, VAT and invoice data to WooCommerce. The current site exposes rental products, account/checkout links and a catalogue search. WooCommerce is an operational dependency of the legacy system, but the client intends to replace it.</p>
+<p>The future platform needs an explicit state model. At minimum, distinguish a nonbinding equipment list, any temporary inventory hold, submitted booking, payment authorization, confirmed rental, cancellation, return and completion. Names and transitions must be agreed with operations. Define which transitions generate invoices or credit and which synchronize to the operational system.</p>
+<p>Do not assume a successful payment guarantees a successful Rentman project, or that an order record always implies paid/confirmed inventory. Validate reconciliation and recovery for each partial failure. This is a proposed implementation acceptance requirement, not a discovered defect.</p>
+<h2 id="6-rentman-availability-and-planning-periods">6. Rentman, availability and planning periods</h2>
+<p>The June audit reports the following settings: <code>rentman_availability_block_checkout = 1</code>, <code>rentman_show_availability = 1</code>, <code>rentman_show_rental_period_on_product_page = 1</code>, <code>rentman_allow_overrenting = 0</code>. It also reports imports of images, files, categories, accessories and alternatives. Current configuration is unverified.</p>
+<p>Reported metadata includes <code>_rentman_id</code>, <code>_rentman_factor</code>, <code>_rentman_stock</code>, <code>_rentman_rental_period_start</code>, <code>_rentman_rental_period_end</code>, <code>_rentman_client_id</code>. Preserve a mapping of legacy IDs to replacement records; do not treat WordPress IDs as interchangeable with Rentman IDs. Exact field definitions and relationships must be checked on an authorized source copy.</p>
+<p>Public product pages display default rental dates and quantities available. The FAQ claims real-time availability and five-minute cart holds. No attempt was made to validate stock, concurrent bookings, hold expiry or synchronization. The two-day pickup notice and one-day booking FAQ require an operational decision about lead-time semantics.</p>
+<p>Whether Rentman remains is a client decision. If retained, the integration must replace the plugin's required import, availability, pricing and booking responsibilities. If replaced, the scope also includes inventory and staff workflows. Neither option is specified sufficiently for an implementation estimate.</p>
+<h3 id="questions-for-the-future-team">Questions for the future team</h3>
+<p>Who owns equipment quantities, maintenance blocks and substitutions? Which system is authoritative for availability, prices, customer identity and booking state? When do holds start and expire? Are shared kit components reserved individually? What happens during outages or duplicate/retried requests? Which syncs are scheduled, event-driven or manual? Which planning periods apply to rooms rather than equipment? Who reconciles discrepancies?</p>
+<h2 id="7-payments-invoicing-accounts-and-credits">7. Payments, invoicing, accounts and credits</h2>
+<h3 id="payments-and-invoicing">Payments and invoicing</h3>
+<p>The payment FAQ describes: card/MobilePay, bank transfer and credit-account/invoice; card amount reserved at checkout and charged two days before rental; bank funds must clear before pickup; approved returning Danish businesses can apply for invoice terms; EAN customers are directed to contact staff. These statements require reconciliation with actual gateway limits, authorization expiry and operational procedures. This audit provides no legal, tax or payment-provider compliance opinion.</p>
+<p>The June audit reports OnPay card/MobilePay configuration, PDF invoice plugin, role-based methods, VAT number plugin and historical Stripe payment-token data. Active plugins and historical tables do not establish which workflow is currently in use. Stored payment references cannot be presumed portable between providers. Have the payment/accounting owners define supported methods, invoice access, numbering/record preservation, taxes, capture, cancellations, refunds and failed-payment handling.</p>
+<h3 id="accounts-and-business-permissions">Accounts and business permissions</h3>
+<p>The June audit reports mandatory accounts for checkout, registration and login prompts, customer roles and order history. Public account pages were not opened because the browser was already authenticated. Migration must decide account activation/recovery, retained history, business-account approvals and access to historical invoices. Do not carry over administrative roles or payment eligibility by loosely matching names or emails. Use validated ID mappings and a documented permission migration.</p>
+<h3 id="credit-loyalty-and-discounts">Credit, loyalty and discounts</h3>
+<p>The credit FAQ promises 10% future credit for bookings <strong>over</strong> 800 DKK ex VAT; it says credit cannot be exchanged for cash or transferred. Exact eligible base, threshold boundary, earning date, expiry, refund reversal, partial redemption, use alongside coupons and behavior when paying with credit remain unknown. The June audit reports TeraWallet tables and coupon line items; they were not re-examined here.</p>
+<p>Outstanding customer credit is a migration obligation regardless of whether the future earning programme changes. Reconcile opening balances and history to the approved source, handle transactions during switchover, and obtain owner approval. Do not reset balances or assume a displayed wallet total is the complete ledger. Future loyalty tiers or gamification are optional ideas, not launch dependencies.</p>
+<h2 id="8-catalogue-kits-spaces-and-content">8. Catalogue, kits, spaces and content</h2>
+<p>Observed catalogue covers cameras/lenses, audio, lighting/SFX/stands, live/streaming, monitors/recorders, grip, cables/adapters, production/consumables and facilities. Sales items are a separate gateway. The new model must distinguish purchasable consumables from rental items and spaces.</p>
+<p>Editorial kits coexist with bookable product kits. Define a canonical kit identity, authoritative contents, quantities, included/excluded items, substitutions, price rules and shared inventory. The Interview Kit copy mentions lighting while the visible component list contains four camera/audio/lens entries; this is a contents-verification issue, not evidence of missing delivered equipment.</p>
+<p>Facilities currently advertise editing suite, office, studio and flex desk. The studio advertises 30m² without sound isolation and weekday access, with extra charges outside hours. Room capacity, access, booking units and turnaround need separate modeling; do not inherit equipment pickup rules automatically.</p>
+<p>Content migration should classify evergreen learning, company/news, service descriptions, policy pages and product enrichment. Preserve valid image/file associations, alt text, manuals and setup guides. Audit published URLs, redirects and historical SEO metadata; the visible deep product paths make URL mapping particularly important.</p>
+<h2 id="9-migration-risks-and-checks">9. Migration risks and checks</h2>
+</div><div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Consequence</th>
+<th>Required mitigation / evidence before launch</th>
+<th>Owner to appoint</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Availability or component mapping wrong</td>
+<td>Conflicting bookings or unusable kits</td>
+<td>Staging concurrency, shared-component and outage scenarios; inventory reconciliation</td>
+<td>Operations + integration lead</td>
+</tr>
+<tr>
+<td>Planning dates or lead time wrong</td>
+<td>Pickup/return conflicts</td>
+<td>Approved examples across weekends/holidays/time changes and room rules</td>
+<td>Operations</td>
+</tr>
+<tr>
+<td>Payment and booking diverge</td>
+<td>Paid but unconfirmed orders or unpaid releases</td>
+<td>Sandbox authorization/capture/cancel/refund and retry recovery matrix</td>
+<td>Payment lead + operations</td>
+</tr>
+<tr>
+<td>Credit lost or duplicated</td>
+<td>Customer value and support disputes</td>
+<td>Ledger reconciliation including switchover activity and reversal cases</td>
+<td>Finance + migration lead</td>
+</tr>
+<tr>
+<td>Permissions/history migrate incorrectly</td>
+<td>Wrong invoice access or business eligibility</td>
+<td>Role mapping, test identities and access checks in staging</td>
+<td>Account owner</td>
+</tr>
+<tr>
+<td>Source logic overlooked</td>
+<td>Missing dates, fees or integration behavior</td>
+<td>Theme/custom plugin/snippet/configuration inventory reviewed on a copy</td>
+<td>Technical lead</td>
+</tr>
+<tr>
+<td>Catalogue/content/URLs lost</td>
+<td>Discovery and support disruption</td>
+<td>Counts, sampled field/media checks, redirect map and link review</td>
+<td>Content + migration lead</td>
+</tr>
+<tr>
+<td>Integration events duplicated/missing</td>
+<td>Staff and marketing workflows drift</td>
+<td>Event ownership, retry handling, duplicate prevention and reconciliation checks</td>
+<td>Integration lead</td>
+</tr>
+<tr>
+<td>Launch activity splits between systems</td>
+<td>Lost/duplicate bookings and credits</td>
+<td>Cutover ownership, change freeze or delta import, rollback reconciliation</td>
+<td>Launch owner</td>
+</tr>
+</tbody>
+</table></div><div class="col">
+<p>Relative risk is High for rental, money, identity and operational integration; Medium for content/navigation/search/tracking. These are uncertainty-based assessments, not estimates of duration, cost or defect probability.</p>
+<h2 id="10-suggested-sequence-if-implementation-proceeds">10. Suggested sequence if implementation proceeds</h2>
+<ol>
+<li>Confirm the new platform boundary and owners, including Rentman and payment provider decisions.</li>
+<li>Inspect authorized code/configuration exports and interview operations; produce examples of business rules and a field reference.</li>
+<li>List the existing capabilities and agree which to retain, change or retire. Validate customer-facing journeys against it.</li>
+<li>Create migration mappings and rehearse on a safe copy. Reconcile counts, relationships, balances and history.</li>
+<li>Validate complete rental/payment/account/invoice/credit flows in staging, including failure and recovery cases.</li>
+<li>Approve switchover, fallback, customer communication, support ownership and post-launch reconciliation.</li>
+</ol>
+<p>No production cleanup, installation, export of customer data or migration was performed. The previous default theme-refactor/hybrid architecture recommendations are superseded. The legacy platform should remain operational until the replacement is accepted; this is continuity planning, not a recommendation to use WordPress in the new system.</p>
+<h2 id="11-outstanding-evidence-and-handover-status">11. Outstanding evidence and handover status</h2>
+<p>Current active plugin versions; full theme/custom plugin source; exact hooks/template overrides; Rentman API consumers/webhooks/jobs; legacy REST consumers; pricing/factor rules; complete kit manifests; wallet ledger rules; invoice/payment transitions; tax settings; account roles; marketing flows; current content/data totals; safe staging access; and client-approved migration scope remain outstanding.</p>
+<p>This document is ready as a <strong>technical reference with outstanding verification</strong>, not a completed implementation audit or migration estimate. I recommend agreeing which questions need resolving before design work and which belong to implementation planning.</p>
+<h2 id="appendix-a-relevant-legacy-components">Appendix A. Relevant legacy components</h2>
+<p>This is a selected inventory from the June 2026 reference, not a current plugin scan. I have retained the components most likely to affect the replacement. Hosting and routine administration utilities are omitted.</p>
+</div><div class="tablewrap"><table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Responsibility to check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WooCommerce and custom theme</td>
+<td>Products, basket, orders, customer accounts and page templates</td>
+</tr>
+<tr>
+<td>Rentman Advanced</td>
+<td>Imports, availability, rental rates, planning periods and booking export</td>
+</tr>
+<tr>
+<td>Simplerent Customisations and Code Snippets</td>
+<td>Saved-list dates, planning-period changes and other custom logic</td>
+</tr>
+<tr>
+<td>Advanced Custom Fields PRO</td>
+<td>Structured page, product and kit content</td>
+</tr>
+<tr>
+<td>OnPay</td>
+<td>Card and MobilePay authorization, capture and refunds</td>
+</tr>
+<tr>
+<td>TeraWallet and Advanced Coupons</td>
+<td>Customer credit, redemption and discount rules</td>
+</tr>
+<tr>
+<td>Role-based payment/shipping methods</td>
+<td>Approved invoice customers and other account permissions</td>
+</tr>
+<tr>
+<td>Invoice and VAT plugins</td>
+<td>Invoice records, business identifiers and tax handling</td>
+</tr>
+<tr>
+<td>TI Equipment list</td>
+<td>Saved equipment lists and date relationships</td>
+</tr>
+<tr>
+<td>WooCommerce Product Search</td>
+<td>Existing product search and indexing</td>
+</tr>
+<tr>
+<td>Legacy REST API</td>
+<td>Possible consumers that need replacing or retiring</td>
+</tr>
+<tr>
+<td>Klaviyo, Meta, tracking and consent components</td>
+<td>Marketing connections, events and consent choices</td>
+</tr>
+<tr>
+<td>FAQ, forms and content plugins</td>
+<td>Useful content, enquiry delivery and editorial responsibilities</td>
+</tr>
+</tbody>
+</table></div><div class="col">
+<p>I recommend confirming live use before deciding which capabilities to retain, change or retire. A plugin being present does not prove its features are active.</p>
+<h2 id="appendix-b-historical-database-artifacts">Appendix B. Historical database artifacts</h2>
+<p>Reported in the June audit, not proof of current active integrations: <code>jod_aioseo_*</code>, <code>jod_yoast_*</code> (SEO); <code>jod_mailchimp_*</code>, <code>jod_ce4wp_*</code>, <code>jod_automatewoo_*</code> (email/automation); <code>jod_afwc_*</code> (affiliates); <code>jod_rafflepress_*</code> (campaigns); <code>jod_wpbot_*</code>, <code>jod_qcld_conversion_tracker</code> (chat/conversion); and historical Stripe references in <code>jod_woocommerce_payment_tokens</code>. Establish canonical data, retention and live consumers before deciding what to migrate or retire. Presence does not prove active use; inactivity does not prove safe deletion.</p>
+<h2 id="additional-design-review-implications">Additional design-review implications</h2>
+<p>The October design reviews reinforce the need to map categories, kit identities, URL redirects and content ownership before migration. Potential test/duplicate URLs need individual assessment; sitemap inclusion does not prove search indexing or authorize deletion. Reserve links reported as add-to-cart URLs require safe date/hold verification, not an assumption that bookings lack dates. The recorded motion/contrast/mobile measurements belong to interface design and do not verify backend behavior. Their implementation-time estimates are not adopted here. See the updated research notes for source distinctions.</p></div><nav class="pager" aria-label="More documents"><a class="prev" href="research-notes.html"><small>Previous</small><b>Research notes</b></a><a class="next" href="supporting-materials.html"><small>Back to</small><b>Supporting materials</b></a></nav><footer class="foot">Prepared by Radim Theiner for SimpleRent · 24 October 2026. Interface examples are low-fidelity and use sample models and prices. Photographs: SimpleRent.</footer></main><script src="script.js"></script></body></html>
