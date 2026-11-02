@@ -1,0 +1,875 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NAKED application from Simona Cerna</title>
+<meta name="description" content="Application materials from Simona Cerna for NAKED Copenhagen: video work, event photography, CV and motivational letter.">
+<meta name="robots" content="noindex, nofollow">
+<!-- link preview (WhatsApp, iMessage, LinkedIn, Slack, email…) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Simona Cerna">
+<meta property="og:title" content="NAKED application from Simona Cerna">
+<meta property="og:description" content="A little gift for the NAKED Copenhagen team: my videos, event photography, motivational letter and CV.">
+<meta property="og:url" content="https://www.simona-cerna.com/naked/application.html">
+<meta property="og:image" content="https://www.simona-cerna.com/naked/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="NAKED application: a pink gift box from Simona Cerna">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="NAKED application from Simona Cerna">
+<meta name="twitter:description" content="A little gift for the NAKED Copenhagen team.">
+<meta name="twitter:image" content="https://www.simona-cerna.com/naked/og-image.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='10' y='26' width='44' height='34' fill='%23f7bfd0'/%3E%3Crect x='6' y='18' width='52' height='12' fill='%23ef9db6'/%3E%3Crect x='28' y='18' width='8' height='42' fill='%230d0d0d'/%3E%3Cpath d='M32 18c-4-10-16-12-16-5s10 6 16 5zm0 0c4-10 16-12 16-5s-10 6-16 5z' fill='none' stroke='%230d0d0d' stroke-width='4'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+
+<!-- GoatCounter: visits + clicks (gift opened, videos, folders, documents) at https://simona-cerna.goatcounter.com -->
+<script data-goatcounter="https://simona-cerna.goatcounter.com/count" data-goatcounter-settings='{"no_onload": true}' async src="//gc.zgo.at/count.js"></script>
+<noscript><img src="https://simona-cerna.goatcounter.com/count?p=/naked/application.html-noscript" alt="" width="1" height="1" style="position:absolute"></noscript>
+
+<style>
+:root{
+  --ground:#ffffff;
+  --ink:#0d0d0d;
+  --muted:#5c5c5c;
+  --surface:#f1f0ee;
+  --surface-2:#e6e4e1;
+  --pink:#f7bfd0;
+  --pink-deep:#ef9db6;
+  --ease-out:cubic-bezier(0.23,1,0.32,1);
+  --ease-in-out:cubic-bezier(0.77,0,0.175,1);
+  --margin:clamp(16px,3vw,40px);
+  --maxw:1240px;
+  --gutter:max(var(--margin), calc((100vw - var(--maxw)) / 2));
+  --font:"Archivo",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:clip}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font);font-size:18px;line-height:1.5;font-variation-settings:"wdth" 100;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,video{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+::selection{background:var(--pink)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- display type ---------- */
+.display{font-variation-settings:"wdth" 118;font-weight:850;text-transform:uppercase;letter-spacing:-0.025em;line-height:.92;margin:0}
+
+/* ---------- top bar ---------- */
+.bar{position:fixed;inset:0 0 auto 0;z-index:40;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px var(--gutter);background:var(--ground)}
+.wordmark{white-space:nowrap;font-variation-settings:"wdth" 118;font-weight:850;text-transform:uppercase;letter-spacing:-0.01em;font-size:20px;text-decoration:none}
+.bar nav{display:flex;gap:22px;font-size:16px;font-weight:550}
+.bar nav a{text-decoration:none;opacity:.7;transition:opacity .2s ease}
+.bar nav a:hover{opacity:1}
+.bar .for{font-size:16px;font-weight:550}
+.bar nav{display:none}
+.opened .bar nav{display:flex}
+.opened .bar .for{display:none}
+
+/* ---------- stage (first screen) ---------- */
+.stage{height:100svh;min-height:640px;display:grid;grid-template-rows:auto 1fr auto auto;padding:84px var(--gutter) 28px;position:relative}
+.heads{display:grid}
+.heads > div{grid-area:1/1;transition:opacity .45s var(--ease-out),transform .6s var(--ease-out)}
+.heads h1{font-size:clamp(38px,6.6vw,108px)}
+.heads p{font-size:clamp(18px,1.6vw,22px);max-width:52ch;margin:28px 0 0;font-weight:450}
+.post{opacity:0;transform:translateY(24px);pointer-events:none}
+.opened .pre{opacity:0;transform:translateY(-16px);pointer-events:none}
+.opened .post{opacity:1;transform:none;pointer-events:auto;transition-delay:.55s}
+.post h2{font-size:clamp(30px,4.3vw,70px)}
+
+.arena{position:relative;display:grid;place-items:center;min-height:380px;touch-action:pan-y}
+
+/* ---------- the gift ---------- */
+.gift-wrap{position:absolute;inset:0;display:grid;place-items:center;z-index:20}
+.gift-wrap .gift{scale:1.45}
+.gift{position:relative;width:220px;height:210px;transform-origin:50% 100%;animation:shake 2.6s var(--ease-in-out) 1s infinite}
+.gift:hover{animation-play-state:paused}
+@keyframes shake{
+  0%,62%,100%{transform:rotate(0)}
+  66%{transform:rotate(-6deg)}
+  71%{transform:rotate(5deg)}
+  76%{transform:rotate(-4deg)}
+  81%{transform:rotate(3deg)}
+  86%{transform:rotate(-1.5deg)}
+  90%{transform:rotate(0)}
+}
+.g-body{position:absolute;left:12px;right:12px;bottom:0;height:150px;background:var(--pink)}
+.g-body::before{content:"";position:absolute;inset:0 auto 0 50%;width:30px;margin-left:-15px;background:var(--ink)}
+.g-body::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.06);clip-path:polygon(0 0,100% 0,100% 14px,0 14px)}
+.g-lid{position:absolute;left:0;right:0;top:20px;height:46px;background:var(--pink-deep);z-index:2}
+.g-lid::before{content:"";position:absolute;inset:0 auto 0 50%;width:30px;margin-left:-15px;background:var(--ink)}
+.bow{position:absolute;left:50%;top:-30px;width:0;height:0;z-index:3}
+.bow i{position:absolute;width:56px;height:38px;border:12px solid var(--ink);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;top:0}
+.bow i:first-child{right:-2px;transform:rotate(-22deg);transform-origin:100% 100%}
+.bow i:last-child{left:-2px;transform:rotate(22deg);transform-origin:0 100%}
+.bow b{position:absolute;left:-13px;top:20px;width:26px;height:22px;background:var(--ink);border-radius:5px}
+
+.hint{position:absolute;z-index:21;display:flex;align-items:flex-end;gap:6px;pointer-events:none;
+  left:calc(50% - 360px);top:calc(50% - 170px)}
+.hint span{font-weight:700;font-size:22px;font-variation-settings:"wdth" 112;transform:rotate(-6deg);display:block;margin-bottom:58px;white-space:nowrap}
+.hint svg{width:130px;height:110px;overflow:visible}
+.hint path{fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.hint .head{animation:nudge 1.3s var(--ease-in-out) infinite alternate}
+@keyframes nudge{to{transform:translate(6px,5px)}}
+.hint svg{animation:nudge 1.3s var(--ease-in-out) infinite alternate}
+
+.opened .hint{opacity:0;transition:opacity .2s ease}
+.opened .gift-wrap{pointer-events:none}
+
+/* ---------- coverflow ---------- */
+.flow{position:absolute;inset:0;perspective:1400px;-webkit-perspective:1400px;perspective-origin:50% 50%}
+.card{position:absolute;left:50%;top:50%;width:var(--cw,300px);aspect-ratio:9/16;margin-left:calc(var(--cw,300px)/-2);margin-top:calc(var(--cw,300px)*-0.889);
+  background:var(--surface-2);overflow:hidden;
+  transition:transform .65s var(--ease-in-out),opacity .45s ease,filter .45s ease;will-change:transform}
+.card img,.card video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card video{opacity:0;transition:opacity .4s ease}
+.card.playing video{opacity:1}
+.card::before{content:"";position:absolute;inset:0;z-index:2;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);pointer-events:none}
+.card::after{content:"";position:absolute;inset:0;background:#000;opacity:var(--veil,0);transition:opacity .45s ease;pointer-events:none}
+.card .play{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;background:rgba(13,13,13,.82);color:#fff;display:grid;place-items:center;opacity:0;transform:scale(.9);transition:opacity .25s ease,transform .25s var(--ease-out)}
+.card .play svg{width:22px;height:22px;margin-left:4px}
+.card.active .play{opacity:1;transform:scale(1)}
+@media (hover:hover) and (pointer:fine){
+  .card.active:hover .play{transform:scale(1.08)}
+}
+.card:active .play{transform:scale(.94)}
+.packed .card{opacity:0!important}
+
+.flow-foot{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:20px;max-width:760px;width:100%;margin:22px auto 0;opacity:0;transform:translateY(16px);transition:opacity .5s var(--ease-out) .9s,transform .6s var(--ease-out) .9s}
+.opened .flow-foot{opacity:1;transform:none}
+.caption{text-align:center;min-height:3.2em}
+.caption strong{display:block;font-size:clamp(20px,2vw,26px);font-weight:750;line-height:1.15;letter-spacing:-0.01em}
+.caption span{font-size:16px;color:var(--muted)}
+.arrow-btn{width:52px;height:52px;border-radius:50%;background:var(--surface);display:grid;place-items:center;transition:background-color .2s ease,transform .16s var(--ease-out)}
+.arrow-btn svg{width:20px;height:20px}
+@media (hover:hover) and (pointer:fine){.arrow-btn:hover{background:var(--pink)}}
+.arrow-btn:active{transform:scale(.94)}
+
+/* ---------- sections after the gift ---------- */
+.js .after{display:none}
+.js.opened .after{display:block}
+section.block{scroll-margin-top:40px;padding:clamp(88px,11vw,160px) var(--gutter) 0}
+.block-head{display:grid;grid-template-columns:1fr minmax(0,400px);gap:20px 48px;align-items:end;margin-bottom:40px}
+.block-head h2{font-size:clamp(36px,5vw,72px)}
+.block-head p{margin:0;font-size:18px}
+
+/* folders */
+.folders{display:grid;grid-template-columns:repeat(3,minmax(0,210px));gap:clamp(14px,2.4vw,32px)}
+.folder{text-align:left;display:block;width:100%}
+.f-art{position:relative;aspect-ratio:5/4;margin-bottom:10px}
+.f-back{position:absolute;inset:8% 0 0 0;background:var(--ink)}
+.f-back::before{content:"";position:absolute;left:0;top:-8%;width:38%;height:9%;background:var(--ink);clip-path:polygon(0 0,82% 0,100% 100%,0 100%)}
+.f-photo{position:absolute;left:10%;right:10%;top:13%;height:62%;object-fit:cover;width:80%;transition:transform .45s var(--ease-out)}
+.f-photo:nth-child(2){transform:rotate(-5deg) translate(-4%,2%)}
+.f-photo:nth-child(3){transform:rotate(4deg) translate(5%,0)}
+.f-photo:nth-child(4){transform:translateY(-3%)}
+.f-front{position:absolute;left:0;right:0;bottom:0;height:52%;background:var(--pink);transform-origin:50% 100%;transition:transform .45s var(--ease-out);display:flex;align-items:flex-end;padding:10px 12px}
+.f-front b{font-variation-settings:"wdth" 118;font-weight:850;text-transform:uppercase;font-size:clamp(13px,1.4vw,18px);letter-spacing:-0.01em;line-height:1}
+@media (hover:hover) and (pointer:fine){
+  .folder:hover .f-photo:nth-child(2){transform:rotate(-9deg) translate(-12%,-16%)}
+  .folder:hover .f-photo:nth-child(3){transform:rotate(8deg) translate(12%,-14%)}
+  .folder:hover .f-photo:nth-child(4){transform:translateY(-22%)}
+  .folder:hover .f-front{transform:perspective(800px) rotateX(-14deg)}
+}
+.folder:active .f-front{transform:perspective(800px) rotateX(-6deg) scale(.99)}
+.folder .meta{display:flex;flex-direction:column;gap:0;font-size:15px;line-height:1.35}
+.folder .meta strong{font-weight:700}
+.folder .meta span{color:var(--muted)}
+
+/* documents */
+.docs{display:grid;gap:8px}
+.doc{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:18px;padding:16px 20px;background:var(--surface);text-decoration:none;transition:background-color .25s ease}
+.doc b{font-variation-settings:"wdth" 118;font-weight:850;text-transform:uppercase;font-size:clamp(18px,1.8vw,24px);letter-spacing:-0.015em;line-height:1}
+.doc span{font-size:15px;color:var(--muted)}
+.doc svg{width:22px;height:22px;transition:transform .3s var(--ease-out)}
+@media (hover:hover) and (pointer:fine){
+  .doc:hover{background:var(--pink)}
+  .doc:hover span{color:var(--ink)}
+  .doc:hover svg{transform:translate(4px,-4px)}
+}
+.doc:active{background:var(--pink-deep)}
+
+/* footer */
+footer{padding:clamp(110px,13vw,180px) var(--gutter) 24px}
+footer .thanks{font-size:clamp(20px,2vw,26px);max-width:34ch;margin:0 0 40px;font-weight:500}
+footer .big{font-variation-settings:"wdth" 125;font-weight:900;text-transform:uppercase;letter-spacing:-0.04em;line-height:.8;font-size:8.6vw;margin:0;white-space:nowrap;display:inline-block;color:inherit;text-decoration:none;cursor:pointer}
+footer .small{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:28px;font-size:16px;color:var(--muted)}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .6s var(--ease-out),transform .8s var(--ease-out)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- dialogs ---------- */
+dialog{border:0;padding:0;margin:0;width:100vw;height:100svh;max-width:none;max-height:none;background:transparent;color:#fff}
+dialog::backdrop{background:rgba(10,10,10,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+dialog[open]{animation:dlg .3s var(--ease-out)}
+@keyframes dlg{from{opacity:0}}
+dialog[open]::backdrop{animation:dlg .3s var(--ease-out)}
+.dlg-cap{text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.dlg-inner{position:relative;width:100%;height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto;align-items:center;justify-items:center}
+.dlg-media{width:100%;height:100%;min-height:0;display:grid;place-items:center;padding:56px 72px 0}
+.dlg-media video,.dlg-media img{max-width:100%;max-height:calc(100svh - 150px);width:auto;height:auto;object-fit:contain;background:transparent}
+.dlg-media video{height:calc(100svh - 150px)}
+.dlg-cap{padding:16px 24px 22px;text-align:center}
+.dlg-cap strong{display:block;font-size:20px;font-weight:700}
+.dlg-cap span{font-size:15px;color:#b9b9b9}
+.dlg-close,.dlg-prev,.dlg-next{position:absolute;width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.12);display:grid;place-items:center;color:#fff;transition:background-color .2s ease,transform .16s var(--ease-out);z-index:2}
+.dlg-close{top:14px;right:14px}
+.dlg-prev{left:14px;top:50%;margin-top:-26px}
+.dlg-next{right:14px;top:50%;margin-top:-26px}
+.dlg-close svg,.dlg-prev svg,.dlg-next svg{width:20px;height:20px}
+@media (hover:hover) and (pointer:fine){.dlg-close:hover,.dlg-prev:hover,.dlg-next:hover{background:var(--pink);color:var(--ink)}}
+.dlg-close:active,.dlg-prev:active,.dlg-next:active{transform:scale(.94)}
+.photo-swap{animation:swap .35s var(--ease-out)}
+@keyframes swap{from{opacity:0;transform:scale(.98)}}
+
+/* confetti */
+.bit{position:absolute;left:50%;top:50%;width:10px;height:14px;pointer-events:none;z-index:30}
+
+
+/* wing clicks + scroll cue */
+.arena{user-select:none;-webkit-user-select:none}
+.opened .arena[data-side="left"],.opened .arena[data-side="right"]{cursor:pointer}
+.arrow-btn.lit{background:var(--pink)}
+.more{justify-self:center;display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-size:15px;font-weight:550;color:var(--muted);text-decoration:none;opacity:0;transition:opacity .5s ease 1.4s,color .2s ease}
+.opened .more{opacity:1}
+.scrolled .more{opacity:0;transition:opacity .3s ease;pointer-events:none}
+.more svg{width:16px;height:16px;animation:bob 1.6s var(--ease-in-out) infinite alternate}
+@keyframes bob{to{transform:translateY(4px)}}
+@media (hover:hover) and (pointer:fine){.more:hover{color:var(--ink)}}
+@media (prefers-reduced-motion:reduce){.more svg{animation:none}}
+
+
+/* motivational letter (expandable) */
+.letter .letter-head{width:100%;text-align:left;cursor:pointer}
+.plus{position:relative;width:18px;height:18px;display:block}
+.plus::before,.plus::after{content:"";position:absolute;left:0;top:8px;width:18px;height:2px;background:currentColor;transition:transform .3s var(--ease-out)}
+.plus::after{transform:rotate(90deg)}
+.letter.open .plus::after{transform:rotate(0)}
+.letter.open .letter-head{background:var(--pink)}
+.letter.open .letter-head span{color:var(--ink)}
+.letter-wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease-out)}
+.letter.open .letter-wrap{grid-template-rows:1fr}
+.letter-in{overflow:hidden;min-height:0}
+.letter-card{background:var(--surface);padding:24px clamp(20px,3vw,40px) 34px;font-size:17px;line-height:1.6;opacity:0;transform:translateY(-8px);transition:opacity .3s ease,transform .45s var(--ease-out)}
+.letter.open .letter-card{opacity:1;transform:none;transition-delay:.08s}
+.letter-text{column-width:420px;column-gap:clamp(32px,5vw,72px)}
+.letter-card p{margin:0 0 1em;max-width:62ch;break-inside:avoid}
+.letter-card .sign{margin-top:1.4em}
+.letter-tools{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px;font-size:14px;color:var(--muted)}
+.save{flex:none;width:44px;height:44px;border-radius:50%;background:var(--ground);display:grid;place-items:center;transition:background-color .2s ease,transform .16s var(--ease-out)}
+.save svg{width:20px;height:20px}
+.dl-btn{display:inline-flex;align-items:center;gap:10px;margin-top:8px;padding:14px 22px;border-radius:999px;background:var(--ink);color:#fff;text-decoration:none;font-weight:650;font-size:16px;transition:background-color .2s ease,color .2s ease,transform .16s var(--ease-out)}
+.dl-btn svg{width:18px;height:18px}
+@media (hover:hover) and (pointer:fine){.save:hover{background:var(--pink)}.dl-btn:hover{background:var(--pink);color:var(--ink)}}
+.save:active,.dl-btn:active{transform:scale(.96)}
+@media (prefers-reduced-motion:reduce){.letter-wrap,.letter-card,.plus::after{transition:none}}
+
+
+/* floating "more below" arrow */
+.side-next{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:45;display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(12px);pointer-events:none;transition:opacity .3s ease,transform .4s var(--ease-out)}
+.side-next.show{opacity:1;transform:none;pointer-events:auto}
+.side-next span{font-size:14px;font-weight:600;background:var(--ground);padding:6px 10px;border-radius:999px}
+.side-next b{width:52px;height:52px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;transition:background-color .2s ease,color .2s ease,transform .16s var(--ease-out)}
+.side-next svg{width:20px;height:20px;animation:bob 1.6s var(--ease-in-out) infinite alternate}
+@media (hover:hover) and (pointer:fine){.side-next:hover b{background:var(--pink);color:var(--ink)}}
+.side-next:active b{transform:scale(.94)}
+@media (max-width:520px){.side-next span{display:none}.side-next b{width:46px;height:46px}}
+@media (prefers-reduced-motion:reduce){.side-next svg{animation:none}}
+
+/* ---------- phone ---------- */
+@media (max-width:820px){
+  .block-head{grid-template-columns:1fr;margin-bottom:36px}
+  .folders{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .folder .meta{font-size:13px}
+  .f-front{padding:8px;height:58%}
+  .f-front b{font-size:11.5px;line-height:1.05;font-variation-settings:"wdth" 100;letter-spacing:0}
+  .gift-wrap .gift{scale:1}
+  .gift-wrap{padding-top:64px}
+  .hint{left:calc(50% - 175px);top:calc(50% - 160px)}
+  .hint span{margin-bottom:46px;font-size:19px}
+  .hint svg{width:70px;height:70px}
+  .heads p{margin-top:20px}
+  .bar nav{gap:14px;font-size:15px}
+  .bar .for{font-size:14px;text-align:right}
+  .dlg-media{padding:60px 0 0}
+  .dlg-media video,.dlg-media img{max-height:calc(100svh - 170px)}
+  .dlg-media video{height:calc(100svh - 170px)}
+  .dlg-prev,.dlg-next{top:auto;bottom:14px;margin-top:0}
+  .dlg-cap{padding:14px 76px 22px}
+  .doc{gap:12px;padding:14px 16px}
+  .doc b{font-size:16px}
+}
+@media (max-width:520px){
+  .opened .bar nav{display:none}
+  .bar .for{display:none}
+  .wordmark{font-size:17px}
+}
+
+/* ---------- no JS: just show everything ---------- */
+html:not(.js) .gift-wrap,html:not(.js) .hint,html:not(.js) .pre{display:none}
+html:not(.js) .post{opacity:1;transform:none}
+html:not(.js) .rv{opacity:1;transform:none}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .gift,.hint svg{animation:none}
+  .card{transition:opacity .3s ease}
+  .rv{transform:none;transition:opacity .4s ease}
+  .heads > div,.flow-foot{transform:none!important}
+  .f-photo,.f-front,.doc svg{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="wordmark" href="#top">Simona Cerna x NAKED</a>
+  <span class="for">Application for NAKED Copenhagen</span>
+  <nav aria-label="Sections">
+    <a href="#videos">Videos</a>
+    <a href="#events">Events</a>
+    <a href="#documents">Documents</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="stage" id="videos" aria-label="Application">
+    <div class="heads">
+      <div class="pre">
+        <h1 class="display">A gift for NAKED</h1>
+        <p>Application materials from Simona Cerna: videos, event photography, my CV and a letter. Open the box.</p>
+      </div>
+      <div class="post" aria-live="polite">
+        <h2 class="display">Yay, thanks for checking out my application</h2>
+      </div>
+    </div>
+
+    <div class="arena" id="arena">
+      <div class="flow packed" id="flow" aria-roledescription="carousel" aria-label="Video work"></div>
+
+      <div class="gift-wrap" id="giftWrap">
+        <button class="gift" id="gift" aria-label="Open the gift and see my application">
+          <span class="g-lid" id="lid"><span class="bow"><i></i><b></b><i></i></span></span>
+          <span class="g-body" id="gbody"></span>
+        </button>
+      </div>
+      <div class="hint" aria-hidden="true">
+        <span>Click on me</span>
+        <svg viewBox="0 0 130 110"><path d="M6 14 C 52 4, 98 26, 112 84"/><path class="head" d="M98 74 L 112 88 L 122 70"/></svg>
+      </div>
+    </div>
+
+    <div class="flow-foot">
+      <button class="arrow-btn" id="prev" aria-label="Previous video"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
+      <div class="caption" id="caption" aria-live="polite"><strong></strong><span></span></div>
+      <button class="arrow-btn" id="next" aria-label="Next video"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m7.5 4 6 6-6 6"/></svg></button>
+    </div>
+      <a class="more" href="#events" id="more">Scroll for events &amp; documents<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 3v13M4.5 10.5 10 16l5.5-5.5"/></svg></a>
+  </section>
+
+  <div class="after">
+    <section class="block" id="events" data-seen="events">
+      <div class="block-head">
+        <h2 class="display rv">Events</h2>
+        <p class="rv">Photography from three events I worked on. Open a folder to browse the photos.</p>
+      </div>
+      <div class="folders" id="folders"></div>
+    </section>
+
+    <section class="block" id="documents" data-seen="documents">
+      <div class="block-head">
+        <h2 class="display rv">Documents</h2>
+        <p class="rv">Read my motivational letter here or save it as a PDF, download my CV, or see more of my work on my website.</p>
+      </div>
+      <div class="docs" id="docs"></div>
+      <template id="letterTpl">
+        <div class="letter rv">
+          <button class="doc letter-head" aria-expanded="false" aria-controls="letterBody"><b>Motivational letter</b><span class="letter-state">Read</span><i class="plus" aria-hidden="true"></i></button>
+          <div class="letter-wrap" id="letterBody"><div class="letter-in"><div class="letter-card">
+            <div class="letter-tools"><span>Simona Cerna · Application for NAKED Copenhagen</span><a class="save" href="files/Simona-Cerna-Motivational-Letter.pdf" download="Simona-Cerna-Motivational-Letter.pdf" aria-label="Save the letter as PDF" title="Save as PDF" data-dl="letter-save-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg></a></div>
+            <div class="letter-text">
+            <p>Hi, NAKED team,</p>
+            <p>I’ve been running with your community for the past year and have genuinely grown to love the brand. What makes NAKED special to me is that it’s so much more than sneakers — it’s the culture, the community and the way you bring people together. I’ve been hoping an opportunity like this would come along, so I was genuinely excited to see the position.</p>
+            <p>In my current role, I lead content and social media communication for shows like Love Island and The Bachelorette, where my focus is turning viewers into an active community that talks, shares and engages. During the latest Love Island season, our Instagram grew by 100,000 followers in just two months, while our TikTok ranked among the world’s top five Love Island accounts, all through organic content. I’d love to bring that same understanding of social media and community-building to NAKED and also Active Club.</p>
+            <p>I’m also very hands-on. I create and edit short-form videos, develop concepts and briefs, manage creator and influencer collaborations, and coordinate the events behind the content. From influencer activations to live events with more than 5,000 attendees, I’m used to taking ideas from concept to execution and making sure the content lives beyond the event itself. I enjoy being on the ground, capturing the moments that make people feel part of something, while keeping an eye on trends and performance to understand what resonates.</p>
+            <p>With a Master’s degree in Product Design and experience in graphic design, photography and video editing, I bring both a creative eye and a strategic marketing mindset. I also love how NAKED puts women at the centre of sneaker culture while creating a space where everyone feels welcome. It’s a brand and community I’d be genuinely proud to contribute to.</p>
+            <p>I’ve attached my CV, a selection of my work and two short videos I’ve created especially for NAKED. I’d love the opportunity to meet and tell you more.</p>
+            <p class="sign">All the best,<br><strong>Simona</strong></p>
+            </div>
+            <a class="dl-btn" href="files/Simona-Cerna-Motivational-Letter.pdf" download="Simona-Cerna-Motivational-Letter.pdf" data-dl="letter-download-button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>Download PDF</a>
+          </div></div></div>
+        </div>
+      </template>
+    </section>
+  </div>
+</main>
+
+<footer class="after" data-seen="end">
+  <p class="thanks rv">Thank you for your time. I would love to bring this energy to NAKED.</p>
+  <a class="big rv" id="footName" href="https://www.simona-cerna.com/portfolio.html" target="_blank" rel="noopener" aria-label="Simona Cerna: see my portfolio">Simona Cerna</a>
+  <div class="small"><span>Application for NAKED Copenhagen, 2026</span><a href="https://simona-cerna.com" id="footSite">simona-cerna.com</a></div>
+</footer>
+
+<button class="side-next" id="sideNext" aria-label="Scroll to the next section"><span id="sideNextLabel">Events below</span><b><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M10 3v13M4.5 10.5 10 16l5.5-5.5"/></svg></b></button>
+
+<!-- video player -->
+<dialog id="vdlg" aria-label="Video player">
+  <div class="dlg-inner">
+    <div class="dlg-media"><video id="vplayer" controls playsinline preload="auto"></video></div>
+    <div class="dlg-cap"><strong id="vtitle"></strong><span id="vsub"></span></div>
+    <button class="dlg-close" data-close aria-label="Close"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 4l12 12M16 4 4 16"/></svg></button>
+    <button class="dlg-prev" id="vprev" aria-label="Previous video"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
+    <button class="dlg-next" id="vnext" aria-label="Next video"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m7.5 4 6 6-6 6"/></svg></button>
+  </div>
+</dialog>
+
+<!-- photo gallery -->
+<dialog id="pdlg" aria-label="Photo gallery">
+  <div class="dlg-inner">
+    <div class="dlg-media"><img id="pimg" alt=""></div>
+    <div class="dlg-cap"><strong id="ptitle"></strong><span id="psub"></span></div>
+    <button class="dlg-close" data-close aria-label="Close"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 4l12 12M16 4 4 16"/></svg></button>
+    <button class="dlg-prev" id="pprev" aria-label="Previous photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
+    <button class="dlg-next" id="pnext" aria-label="Next photo"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m7.5 4 6 6-6 6"/></svg></button>
+  </div>
+</dialog>
+
+<script>
+/* =====================================================================
+   CONTENT: edit titles, captions and links here
+   ===================================================================== */
+const VIDEOS = [
+  { src:'media/video/v6.mp4', poster:'media/video/v6.jpg', title:'Love Island premiere dinner', sub:'With influencers' },
+  { src:'media/video/v4.mp4', poster:'media/video/v4.jpg', title:'Czech Music Awards', sub:'Famous faces' },
+  { src:'media/video/v3.mp4', poster:'media/video/v3.jpg', title:'Pyntet Atelier: Forever', sub:'Promo video' },
+  { src:'media/video/v2.mp4', poster:'media/video/v2.jpg', title:'NAKED CPH: Releasing soon', sub:'Case video' },
+  { src:'media/video/v1.mp4', poster:'media/video/v1.jpg', title:'NAKED CPH x Paraboots', sub:'Case video' },
+  { src:'media/video/v5.mp4', poster:'media/video/v5.jpg', title:'Red carpet with Ben Cristovao', sub:'Czech Music Awards' },
+  { src:'media/video/v7.mp4', poster:'media/video/v7.jpg', title:'Viki', sub:'Cast release' },
+];
+
+const EVENTS = [
+  // name = folder label, note = small line under the folder (optional),
+  // cover = which 3 photos peek out of the folder, title = caption in the gallery
+  { name:'Love Island watch party', note:'', cover:[1, 3, 7], photos:[
+    { src:'media/photos/e1-1.jpg', thumb:'media/photos/e1-1-t.jpg', title:'Love Island watch party' },
+    { src:'media/photos/e1-2.jpg', thumb:'media/photos/e1-2-t.jpg', title:'Love Island watch party' },
+    { src:'media/photos/e1-3.jpg', thumb:'media/photos/e1-3-t.jpg', title:'Love Island watch party' },
+    { src:'media/photos/e1-4.jpg', thumb:'media/photos/e1-4-t.jpg', title:'Love Island watch party' },
+    { src:'media/photos/e1-5.jpg', thumb:'media/photos/e1-5-t.jpg', title:'Love Island watch party' },
+    { src:'media/photos/e1-6.jpg', thumb:'media/photos/e1-6-t.jpg', title:'Love Island watch party' },
+    { src:'media/photos/e1-7.jpg', thumb:'media/photos/e1-7-t.jpg', title:'Love Island watch party' },
+    { src:'media/photos/e1-8.jpg', thumb:'media/photos/e1-8-t.jpg', title:'Love Island watch party' },
+    { src:'media/photos/e1-9.jpg', thumb:'media/photos/e1-9-t.jpg', title:'Love Island watch party' },
+    { src:'media/photos/e1-10.jpg', thumb:'media/photos/e1-10-t.jpg', title:'Love Island watch party' },
+    { src:'media/photos/e1-11.jpg', thumb:'media/photos/e1-11-t.jpg', title:'Love Island watch party' },
+    { src:'media/photos/e1-12.jpg', thumb:'media/photos/e1-12-t.jpg', title:'Love Island watch party' },
+    { src:'media/photos/e1-13.jpg', thumb:'media/photos/e1-13-t.jpg', title:'Love Island watch party' },
+  ]},
+  { name:'Český slavík', note:'', cover:[1, 3, 2], photos:[
+    { src:'media/photos/e2-3.jpg', thumb:'media/photos/e2-3-t.jpg', title:'Český slavík' },
+    { src:'media/photos/e2-2.jpg', thumb:'media/photos/e2-2-t.jpg', title:'Český slavík' },
+    { src:'media/photos/e2-4.jpg', thumb:'media/photos/e2-4-t.jpg', title:'Český slavík' },
+    { src:'media/photos/e2-5.jpg', thumb:'media/photos/e2-5-t.jpg', title:'Český slavík' },
+    { src:'media/photos/e2-6.jpg', thumb:'media/photos/e2-6-t.jpg', title:'Český slavík' },
+    { src:'media/photos/e2-7.jpg', thumb:'media/photos/e2-7-t.jpg', title:'Český slavík' },
+    { src:'media/photos/e2-8.jpg', thumb:'media/photos/e2-8-t.jpg', title:'Český slavík' },
+    { src:'media/photos/e2-9.jpg', thumb:'media/photos/e2-9-t.jpg', title:'Český slavík' },
+    { src:'media/photos/e2-10.jpg', thumb:'media/photos/e2-10-t.jpg', title:'Český slavík' },
+    { src:'media/photos/e2-1.jpg', thumb:'media/photos/e2-1-t.jpg', title:'Český slavík' },
+  ]},
+  { name:'Survivor', note:'', cover:[1, 2, 3], photos:[
+    { src:'media/photos/e3-1.jpg', thumb:'media/photos/e3-1-t.jpg', title:'Survivor' },
+    { src:'media/photos/e3-2.jpg', thumb:'media/photos/e3-2-t.jpg', title:'Survivor' },
+    { src:'media/photos/e3-3.jpg', thumb:'media/photos/e3-3-t.jpg', title:'Survivor' },
+    { src:'media/photos/e3-4.jpg', thumb:'media/photos/e3-4-t.jpg', title:'Survivor' },
+    { src:'media/photos/e3-5.jpg', thumb:'media/photos/e3-5-t.jpg', title:'Survivor' },
+    { src:'media/photos/e3-6.jpg', thumb:'media/photos/e3-6-t.jpg', title:'Survivor' },
+  ]},
+];
+
+const DOCS = [
+  { label:'Motivational letter', href:'files/Simona-Cerna-Motivational-Letter.pdf', letter:true },
+  { label:'CV', kind:'Download PDF', href:'files/Simona-Cerna-CV.pdf', track:'cv-download', download:true },
+  { label:'simona-cerna.com', kind:'Website', href:'https://www.simona-cerna.com/pyntet.html', track:'website' },
+];
+
+/* ===================================================================== */
+const $ = s => document.querySelector(s);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const root = document.documentElement;
+
+/* ---------- tracking (GoatCounter events) ----------
+   Every interaction is sent once per visit as an "event" path, e.g.
+   time/1m, seen/documents, video/pyntet-atelier-forever/75pct, doc/cv-download */
+const gcQueue = [], sent = new Set();
+const slug = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+function flushGC(){
+  if (!(window.goatcounter && window.goatcounter.count)) return false;
+  while (gcQueue.length) { const hit = gcQueue.shift(); try { window.goatcounter.count(hit); } catch (e) {} }
+  return true;
+}
+(function waitGC(n){ if (!flushGC() && n < 60) setTimeout(() => waitGC(n + 1), 500); })(0);
+function track(path, title){ gcQueue.push({ path, title: title || path, event: true }); flushGC(); }
+function once(path, title){ if (sent.has(path)) return; sent.add(path); track(path, title); }
+
+// which link was used (?ref=naked-hr) – shown as its own row, e.g. "ref/naked-hr"
+// Works with ?ref=naked-hr and also #ref=naked-hr (the # version survives server redirects)
+const q = new URLSearchParams(location.search), hq = new URLSearchParams(location.hash.slice(1));
+let REF = q.get('ref') || q.get('utm_source') || hq.get('ref');
+try { if (REF) sessionStorage.setItem('gc-ref', REF); else REF = sessionStorage.getItem('gc-ref'); } catch (e) {}
+// the page view itself, with the link tag as its referrer (shows under "Top referrers")
+gcQueue.unshift({ path: '/naked/application.html', title: 'NAKED application', referrer: REF || document.referrer || '' });
+flushGC();
+once(REF ? 'ref/' + slug(REF) : 'ref/direct', REF ? 'Opened via link: ' + REF : 'Opened without a ref tag');
+
+// time actually spent on the page (only counts while the tab is visible)
+let activeSec = 0;
+const TIME_MARKS = [[10,'10s'],[30,'30s'],[60,'1m'],[120,'2m'],[180,'3m'],[300,'5m'],[600,'10m'],[1200,'20m']];
+setInterval(() => {
+  if (document.visibilityState !== 'visible') return;
+  activeSec++;
+  TIME_MARKS.forEach(([sec, label]) => { if (activeSec >= sec) once('time/' + label, 'Time on page: ' + label + '+'); });
+}, 1000);
+
+/* ---------- build coverflow ---------- */
+const flow = $('#flow'), arena = $('#arena');
+let active = 3;
+const cards = VIDEOS.map((v, i) => {
+  const b = document.createElement('button');
+  b.className = 'card';
+  b.setAttribute('aria-label', `${v.title}, ${v.sub}`);
+  b.innerHTML = `<img src="${v.poster}" alt="" draggable="false" loading="${i===active?'eager':'lazy'}"><video muted loop playsinline preload="none"></video>
+    <span class="play" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M5 3.2v13.6c0 .6.7 1 1.2.6l10.4-6.8c.5-.3.5-1 0-1.3L6.2 2.6c-.5-.3-1.2 0-1.2.6z"/></svg></span>`;
+  flow.appendChild(b);
+  return b;
+});
+
+function cardWidth(){
+  const w = innerWidth, ah = arena.clientHeight || innerHeight * .55;
+  return Math.round(Math.max(150, Math.min(w < 700 ? w * 0.44 : 320, ah * 0.94 * 9 / 16)));
+}
+function layout(){
+  const cw = cardWidth();
+  flow.style.setProperty('--cw', cw + 'px');
+  flow.style.perspective = Math.round(cw * 4.4) + 'px';
+  cards.forEach((c, i) => {
+    const d = i - active, a = Math.abs(d), s = Math.sign(d);
+    let t;
+    if (d === 0) t = 'translate3d(0,0,60px)';
+    else {
+      const narrow = innerWidth < 700;
+      const x = s * (cw * (narrow ? .6 : .62) + (a - 1) * cw * (narrow ? .2 : .24));
+      t = reduce ? `translate3d(${x}px,0,-120px) scale(.86)`
+                 : `translate3d(${x}px,0,-160px) rotateY(${-s * (narrow ? 55 : 52)}deg)`;
+    }
+    c.style.transform = t;
+    c.style.zIndex = 100 - a;
+    c.style.setProperty('--veil', d === 0 ? 0 : Math.min(.04 + a * .05, .26));
+    c.style.opacity = a > 4 ? 0 : 1;
+    c.classList.toggle('active', d === 0);
+    c.tabIndex = d === 0 ? 0 : -1;
+    c.setAttribute('aria-hidden', a > 4 ? 'true' : 'false');
+  });
+  const v = VIDEOS[active];
+  $('#caption strong').textContent = v.title;
+  $('#caption span').textContent = v.sub;
+}
+function preview(){
+  cards.forEach((c, i) => {
+    const vid = c.querySelector('video');
+    if (i === active && !reduce && root.classList.contains('opened')) {
+      if (!vid.src) vid.src = VIDEOS[i].src;
+      vid.play().then(() => c.classList.add('playing')).catch(() => {});
+    } else { vid.pause(); c.classList.remove('playing'); }
+  });
+}
+function setActive(i, how){
+  active = (i + VIDEOS.length) % VIDEOS.length;
+  layout(); preview();
+  if (how) once('carousel/' + slug(VIDEOS[active].title), 'Browsed to: ' + VIDEOS[active].title);
+}
+$('#prev').addEventListener('click', () => setActive(active - 1, 'arrow'));
+$('#next').addEventListener('click', () => setActive(active + 1, 'arrow'));
+function fitName(){ const el = $('footer .big'); el.style.fontSize = '100px'; const cs = getComputedStyle($('footer')); const avail = $('footer').clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight); if (!el.scrollWidth) return; el.style.fontSize = Math.floor(100 * avail / el.scrollWidth) + 'px'; }
+addEventListener('resize', () => { layout(); fitName(); });
+
+// swipe / drag on the arena, and click the left or right "wing" to move one step
+let sx = null, moved = false;
+arena.addEventListener('pointerdown', e => { sx = e.clientX; moved = false; });
+arena.addEventListener('pointerup', e => {
+  if (sx === null) return;
+  const dx = e.clientX - sx; sx = null;
+  if (Math.abs(dx) > 40 && root.classList.contains('opened')) { moved = true; setActive(active + (dx < 0 ? 1 : -1), 'swipe'); }
+});
+arena.addEventListener('pointercancel', () => { sx = null; });
+arena.addEventListener('click', e => {
+  if (!root.classList.contains('opened')) return;
+  if (moved) { moved = false; return; }
+  if (e.target.closest('.card.active')) { openVideo(active); return; }
+  const r = cards[active].getBoundingClientRect();
+  if (e.clientX < r.left) setActive(active - 1, 'wing');
+  else if (e.clientX > r.right) setActive(active + 1, 'wing');
+});
+arena.addEventListener('pointermove', e => {
+  if (!root.classList.contains('opened') || e.pointerType !== 'mouse') return;
+  const r = cards[active].getBoundingClientRect();
+  arena.dataset.side = e.clientX < r.left ? 'left' : e.clientX > r.right ? 'right' : '';
+  $('#prev').classList.toggle('lit', arena.dataset.side === 'left');
+  $('#next').classList.toggle('lit', arena.dataset.side === 'right');
+});
+arena.addEventListener('pointerleave', () => { arena.dataset.side = ''; $('#prev').classList.remove('lit'); $('#next').classList.remove('lit'); });
+document.addEventListener('keydown', e => {
+  if (!root.classList.contains('opened') || document.querySelector('dialog[open]')) return;
+  const r = arena.getBoundingClientRect();
+  if (r.bottom < 0 || r.top > innerHeight) return;
+  if (e.key === 'ArrowLeft') setActive(active - 1, 'key');
+  if (e.key === 'ArrowRight') setActive(active + 1, 'key');
+});
+
+/* ---------- open the gift ---------- */
+let opened = false;
+$('#gift').addEventListener('click', e => { e.stopPropagation(); openGift(); });
+
+function openGift(){
+  if (opened) return; opened = true;
+  once('gift-opened', 'Gift opened');
+  once('gift-opened-after/' + (activeSec < 10 ? 'under-10s' : activeSec < 30 ? '10-30s' : 'over-30s'), 'Gift opened after ' + activeSec + 's');
+  const gift = $('#gift');
+  gift.style.animation = 'none';
+  root.classList.add('opened');
+
+  if (reduce) {
+    $('#giftWrap').style.transition = 'opacity .3s ease';
+    $('#giftWrap').style.opacity = 0;
+    flow.classList.remove('packed');
+    layout(); preview(); afterOpen(); return;
+  }
+
+  // 1. squash, then lid flies off
+  gift.animate([{transform:'scale(1)'},{transform:'scale(1.04,.93)'},{transform:'scale(1)'}],{duration:260,easing:'cubic-bezier(0.23,1,0.32,1)'});
+  $('#lid').animate([
+    {transform:'translate(0,0) rotate(0)', opacity:1},
+    {transform:'translate(-60px,-260px) rotate(-38deg)', opacity:1, offset:.7},
+    {transform:'translate(-110px,-360px) rotate(-60deg)', opacity:0}
+  ],{duration:900, delay:140, easing:'cubic-bezier(0.23,1,0.32,1)', fill:'forwards'});
+
+  // 2. confetti
+  setTimeout(confetti, 220);
+
+  // 3. videos fly out of the box into the coverflow
+  const cw = cardWidth();
+  flow.style.setProperty('--cw', cw + 'px');
+  flow.style.perspective = Math.round(cw * 4.4) + 'px';
+  cards.forEach((c, i) => {
+    c.style.transition = 'none';
+    c.style.transform = `translate3d(0,40px,0) scale(.22) rotate(${(i-3)*9}deg)`;
+    c.style.opacity = 0;
+  });
+  flow.classList.remove('packed');
+  flow.offsetWidth; // commit start state
+  setTimeout(() => {
+    cards.forEach((c, i) => {
+      const order = Math.abs(i - active);
+      c.style.transition = `transform 1s cubic-bezier(0.23,1,0.32,1) ${order*70}ms, opacity .35s ease ${order*70}ms`;
+    });
+    $('#giftWrap').style.zIndex = 0;
+    layout();
+    setTimeout(() => { cards.forEach(c => c.style.transition = ''); preview(); }, 1300);
+  }, 330);
+
+  // 4. the empty box flies away
+  $('#gbody').animate([
+    {transform:'translate(0,0) rotate(0)', opacity:1},
+    {transform:'translate(0,-14px) rotate(-2deg)', opacity:1, offset:.25},
+    {transform:'translate(40px,70vh) rotate(18deg)', opacity:0}
+  ],{duration:800, delay:300, easing:'cubic-bezier(0.77,0,0.175,1)', fill:'forwards'});
+
+  setTimeout(afterOpen, 900);
+}
+
+function confetti(){
+  const colors = ['#f7bfd0','#ef9db6','#0d0d0d','#f7bfd0','#e6e4e1'];
+  for (let k = 0; k < 26; k++) {
+    const el = document.createElement('span');
+    el.className = 'bit';
+    el.style.background = colors[k % colors.length];
+    if (k % 3 === 0) el.style.borderRadius = '50%', el.style.width = el.style.height = '9px';
+    arena.appendChild(el);
+    const ang = (-90 + (Math.random() - .5) * 150) * Math.PI / 180;
+    const dist = 160 + Math.random() * 260;
+    const x = Math.cos(ang) * dist, y = Math.sin(ang) * dist;
+    const r = (Math.random() - .5) * 720;
+    el.animate([
+      {transform:'translate(-50%,-50%) translate(0,0) rotate(0)', opacity:1},
+      {transform:`translate(-50%,-50%) translate(${x}px,${y}px) rotate(${r/2}deg)`, opacity:1, offset:.55},
+      {transform:`translate(-50%,-50%) translate(${x*1.2}px,${y + 260}px) rotate(${r}deg)`, opacity:0}
+    ],{duration:1500 + Math.random()*500, easing:'cubic-bezier(0.23,1,0.32,1)', fill:'forwards'}).onfinish = () => el.remove();
+  }
+}
+
+function afterOpen(){
+  $('#giftWrap').style.display = 'none';
+  fitName();
+  // reveal on scroll
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }), { threshold: .15 });
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+}
+
+/* ---------- video dialog ---------- */
+const vdlg = $('#vdlg'), vplayer = $('#vplayer');
+let vIndex = 0;
+function loadVideo(i){
+  vIndex = (i + VIDEOS.length) % VIDEOS.length;
+  const v = VIDEOS[vIndex];
+  vplayer.poster = v.poster; vplayer.src = v.src;
+  $('#vtitle').textContent = v.title; $('#vsub').textContent = v.sub;
+  vplayer.play().catch(() => {});
+  vMarks = new Set();
+  once('video/' + slug(v.title) + '/play', 'Video played: ' + v.title);
+}
+function openVideo(i){
+  cards.forEach(c => c.querySelector('video').pause());
+  vdlg.showModal(); loadVideo(i);
+}
+$('#vprev').addEventListener('click', () => loadVideo(vIndex - 1));
+$('#vnext').addEventListener('click', () => loadVideo(vIndex + 1));
+vdlg.addEventListener('close', () => { vplayer.pause(); vplayer.removeAttribute('src'); vplayer.load(); setActive(vIndex); });
+
+/* ---------- folders + photo dialog ---------- */
+const pdlg = $('#pdlg'), pimg = $('#pimg');
+let pEvent = 0, pIndex = 0;
+EVENTS.forEach((ev, e) => {
+  const b = document.createElement('button');
+  b.className = 'folder rv';
+  b.style.transitionDelay = (e * 80) + 'ms';
+  const thumbs = (ev.cover ? ev.cover.map(n => ev.photos[n - 1]) : ev.photos.slice(0, 3)).map(p => `<img class="f-photo" src="${p.thumb}" alt="" loading="lazy">`).join('');
+  b.innerHTML = `<div class="f-art"><div class="f-back"></div>${thumbs}<div class="f-front"><b>${ev.name}</b></div></div>
+    <div class="meta">${ev.note ? `<strong>${ev.note}</strong>` : ''}<span>${ev.photos.length} photos</span></div>`;
+  b.setAttribute('aria-label', `Open ${ev.name}, ${ev.photos.length} photos`);
+  b.addEventListener('click', () => openPhotos(e));
+  $('#folders').appendChild(b);
+});
+function showPhoto(i){
+  const ph = EVENTS[pEvent].photos;
+  pIndex = (i + ph.length) % ph.length;
+  const p = ph[pIndex];
+  pimg.classList.remove('photo-swap'); pimg.offsetWidth; pimg.classList.add('photo-swap');
+  pimg.src = p.src; pimg.alt = p.title;
+  $('#ptitle').textContent = p.title;
+  $('#psub').textContent = `${EVENTS[pEvent].name} · ${pIndex + 1} of ${ph.length}`;
+}
+function openPhotos(e){
+  pEvent = e; pdlg.showModal(); showPhoto(0);
+  once('photos/' + slug(EVENTS[e].name) + '/opened', 'Folder opened: ' + EVENTS[e].name);
+}
+$('#pprev').addEventListener('click', () => showPhoto(pIndex - 1));
+$('#pnext').addEventListener('click', () => showPhoto(pIndex + 1));
+
+/* shared dialog behaviour */
+document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+[vdlg, pdlg].forEach(d => {
+  d.addEventListener('keydown', e => {
+    const prev = d === vdlg ? () => loadVideo(vIndex - 1) : () => showPhoto(pIndex - 1);
+    const next = d === vdlg ? () => loadVideo(vIndex + 1) : () => showPhoto(pIndex + 1);
+    if (e.key === 'ArrowLeft' && e.target.tagName !== 'VIDEO') prev();
+    if (e.key === 'ArrowRight' && e.target.tagName !== 'VIDEO') next();
+  });
+  let tx = null;
+  d.addEventListener('touchstart', e => tx = e.touches[0].clientX, {passive:true});
+  d.addEventListener('touchend', e => {
+    if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; tx = null;
+    if (Math.abs(dx) < 50) return;
+    if (d === pdlg) showPhoto(pIndex + (dx < 0 ? 1 : -1));
+  });
+});
+
+/* ---------- documents ---------- */
+const DL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></svg>';
+const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M8 7h9v9"/></svg>';
+DOCS.forEach((d, i) => {
+  if (d.letter) {
+    const el = $('#letterTpl').content.firstElementChild.cloneNode(true);
+    el.style.transitionDelay = (i * 70) + 'ms';
+    el.querySelectorAll('a[download]').forEach(a => { a.href = d.href; a.addEventListener('click', () => once('doc/' + a.dataset.dl, 'Downloaded letter (' + a.dataset.dl + ')')); });
+    const head = el.querySelector('.letter-head');
+    head.addEventListener('click', () => {
+      const open = el.classList.toggle('open');
+      head.setAttribute('aria-expanded', open);
+      el.querySelector('.letter-state').textContent = open ? 'Close' : 'Read';
+      if (open) { once('doc/letter-read', 'Opened the letter'); letterOpenedAt = activeSec; }
+    });
+    $('#docs').appendChild(el);
+    return;
+  }
+  const a = document.createElement('a');
+  a.className = 'doc rv'; a.href = d.href;
+  if (d.download) a.setAttribute('download', d.href.split('/').pop()); else { a.target = '_blank'; a.rel = 'noopener'; }
+  a.style.transitionDelay = (i * 70) + 'ms';
+  a.innerHTML = `<b>${d.label}</b><span>${d.kind}</span>${d.download ? DL_ICON : arrow}`;
+  a.addEventListener('click', () => once('doc/' + d.track, 'Opened: ' + d.label));
+  $('#docs').appendChild(a);
+});
+// how long the letter stayed open (sent once it has been open 30s / 1m)
+let letterOpenedAt = null;
+setInterval(() => {
+  if (letterOpenedAt === null || !document.querySelector('.letter.open')) return;
+  const t = activeSec - letterOpenedAt;
+  if (t >= 30) once('doc/letter-read-30s', 'Letter open 30s+');
+  if (t >= 60) once('doc/letter-read-1m', 'Letter open 1m+');
+}, 2000);
+$('#footName').addEventListener('click', () => once('doc/portfolio-footer-name', 'Opened: portfolio page (footer name)'));
+$('#footSite').addEventListener('click', () => once('doc/website-footer', 'Opened: website (footer)'));
+
+/* ---------- more tracking: video progress, photos seen, how far they scrolled ---------- */
+let vMarks = new Set();
+vplayer.addEventListener('timeupdate', () => {
+  if (!vplayer.duration) return;
+  const pct = vplayer.currentTime / vplayer.duration, name = slug(VIDEOS[vIndex].title);
+  [[.25,'25pct'],[.5,'50pct'],[.75,'75pct']].forEach(([p, l]) => { if (pct >= p) once(`video/${name}/${l}`, `Watched ${l.replace('pct','%')}: ${VIDEOS[vIndex].title}`); });
+});
+vplayer.addEventListener('ended', () => once(`video/${slug(VIDEOS[vIndex].title)}/finished`, 'Watched to the end: ' + VIDEOS[vIndex].title));
+const seenPhotos = EVENTS.map(() => new Set());
+pimg.addEventListener('load', () => {
+  const set = seenPhotos[pEvent]; set.add(pIndex);
+  const name = slug(EVENTS[pEvent].name), n = EVENTS[pEvent].photos.length;
+  if (set.size >= Math.min(5, n)) once(`photos/${name}/5-plus-viewed`, `Viewed 5+ photos: ${EVENTS[pEvent].name}`);
+  if (set.size === n) once(`photos/${name}/all-viewed`, `Viewed all photos: ${EVENTS[pEvent].name}`);
+});
+const seenIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { once('seen/' + e.target.dataset.seen, 'Scrolled to: ' + e.target.dataset.seen); seenIO.unobserve(e.target); }
+}), { threshold: .35 });
+document.querySelectorAll('[data-seen]').forEach(el => seenIO.observe(el));
+
+addEventListener('scroll', () => root.classList.toggle('scrolled', scrollY > 80), { passive: true });
+/* floating arrow: always points to the next section until the end of the page */
+const SECTIONS = [['#events','Events below'],['#documents','Documents below'],['footer','More below']];
+function nextSection(){
+  for (const [sel, label] of SECTIONS) { const el = $(sel); if (el && el.getBoundingClientRect().top > innerHeight * 0.4) return [el, label]; }
+  return null;
+}
+function updateSideNext(){
+  const n = root.classList.contains('opened') && !document.querySelector('dialog[open]') ? nextSection() : null;
+  const atEnd = innerHeight + scrollY >= document.documentElement.scrollHeight - 40;
+  $('#sideNext').classList.toggle('show', !!n && !atEnd);
+  if (n) $('#sideNextLabel').textContent = n[1];
+}
+$('#sideNext').addEventListener('click', () => { const n = nextSection(); if (n) { n[0].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); once('nav/side-arrow', 'Used side scroll arrow'); } });
+addEventListener('scroll', updateSideNext, { passive: true });
+addEventListener('resize', updateSideNext);
+setInterval(updateSideNext, 800);
+
+layout();
+if (document.fonts) document.fonts.ready.then(() => { layout(); fitName(); });
+</script>
+</body>
+</html>
