@@ -723,7 +723,8 @@
           title: "SPORTS",
           description:
             "I love all kinds of sports—the motion, the energy, and the moments in between.\n\nRace days, team efforts, and adventures on the trails. Here you’ll find more snaps from different sports, from PLH Cup and Sunshine Crit Running Relay to Trail Fox Series and running in the Swiss Alps.\n\nAs long as there’s motion, I’m enjoying it—with or without a camera in hand.",
-          count: 12,
+          count: 15,
+          order: [1, 2, 13, 3, 14, 4, 5, 6, 7, 15, 8, 9, 10, 11, 12],
           ext: "webp",
           thumbExt: "webp",
           captions: [
@@ -738,7 +739,10 @@
             "Sunshine Crit Running Relay",
             "PLH Cup 2026",
             "Running in Swiss Alps",
-            "Sunshine Crit Running Relay"
+            "Sunshine Crit Running Relay",
+            "Climbing",
+            "Climbing",
+            "Climbing"
           ]
         },
         {
@@ -749,7 +753,7 @@
             "People first.\n\nPortraits, moments and snaps.\n\nSometimes on film, sometimes digital. Always about the person in front of the lens.\n\nSmall gestures say the most.",
           count: 24,
           // Preserve the 14 displayed originals; files 15–16 were already unused.
-          order: [1, 17, 2, 3, 18, 19, 21, 4, 22, 5, 20, 23, 6, 7, 8, 9, 10, 11, 12, 13, 14, 24],
+          order: [1, 17, 2, 3, 18, 19, 21, 4, 10, 5, 20, 23, 6, 7, 8, 9, 22, 11, 12, 13, 14, 24],
           ext: "webp",
           thumbExt: "webp",
           captions: []
