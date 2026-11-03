@@ -749,7 +749,7 @@
             "People first.\n\nPortraits, moments and snaps.\n\nSometimes on film, sometimes digital. Always about the person in front of the lens.\n\nSmall gestures say the most.",
           count: 24,
           // Preserve the 14 displayed originals; files 15–16 were already unused.
-          order: [1, 17, 2, 3, 18, 19, 20, 21, 22, 4, 5, 23, 6, 7, 8, 9, 10, 11, 12, 13, 14, 24],
+          order: [1, 17, 2, 3, 18, 19, 21, 4, 22, 5, 20, 23, 6, 7, 8, 9, 10, 11, 12, 13, 14, 24],
           ext: "webp",
           thumbExt: "webp",
           captions: []
