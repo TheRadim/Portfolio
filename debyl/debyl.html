@@ -1,0 +1,410 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Trofej debylů</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap&subset=latin-ext">
+<style>
+/* Layout: label pinned ~10vh from the top; everything else centred in the remaining height.
+   The 3D scene is a fixed full-screen layer behind the page, framed onto the stage slot, so flying parts never clip at a box edge.
+   Single dark look by design: black velvet + gold. */
+:root{
+  --velvet:#0e0b12;
+  --velvet-2:#1a1420;
+  --line:#2c2433;
+  --gold:#e4b95b;
+  --gold-hi:#f6dc96;
+  --gold-deep:#8f6a22;
+  --ink:#f4ecda;
+  --muted:#a0957f;
+
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+
+  --fs-display:clamp(2.5rem,11vw,4.25rem);
+  --fs-h2:clamp(2.25rem,9vw,3.25rem);
+  --fs-name-lg:1.25rem;
+  --fs-name:1.0625rem;
+  --fs-body:1rem;
+  --fs-small:.875rem;
+  --fs-caption:.75rem;
+
+  --ease-out:cubic-bezier(.22,1,.36,1);
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{
+  background:var(--velvet);
+  background-image:radial-gradient(120% 70% at 50% 30%, var(--velvet-2) 0%, var(--velvet) 62%);
+  background-attachment:fixed;
+  color:var(--ink);font-family:var(--body);font-size:var(--fs-body);line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  overflow-x:hidden;
+}
+.scene{position:fixed;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0;transition:opacity .4s var(--ease-out)}
+.scene.gone{opacity:0}
+
+.wrap{position:relative;z-index:1;max-width:560px;min-height:100%;box-sizing:border-box;margin:0 auto;padding-block:0 32px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.eyebrow{padding-top:max(16px,calc(10vh - 8px));font-family:var(--mono);font-size:var(--fs-caption);letter-spacing:.22em;text-transform:uppercase;color:var(--gold);display:flex;align-items:center;gap:10px}
+.eyebrow::before,.eyebrow::after{content:"";width:28px;height:1px;background:var(--gold-deep)}
+.main{flex:1;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding-block:16px 0}
+
+.stage{width:100%;height:min(50vh,460px);min-height:280px;cursor:pointer;border-radius:24px;-webkit-tap-highlight-color:transparent}
+.stage.opened{cursor:default}
+.stage:focus-visible{outline:2px solid var(--gold-hi);outline-offset:-2px}
+.below{min-height:13.5rem;width:100%;display:flex;justify-content:center}
+
+button{font:inherit;color:inherit}
+.btn{
+  border:1px solid var(--gold-deep);background:transparent;border-radius:999px;
+  padding:12px 22px;font-weight:600;font-size:var(--fs-small);color:var(--gold-hi);cursor:pointer;
+  transition:background .2s,border-color .2s,transform .1s ease-out;
+}
+.btn:hover{background:rgba(228,185,91,.08);border-color:var(--gold)}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible{outline:2px solid var(--gold-hi);outline-offset:3px}
+.btn.solid{background:var(--gold);color:var(--velvet);border-color:var(--gold);font-size:.9375rem;padding:14px 24px;text-wrap:balance}
+.btn.solid:hover{background:var(--gold-hi);border-color:var(--gold-hi)}
+
+h1{
+  font-family:var(--display);font-weight:900;text-transform:uppercase;
+  font-size:var(--fs-display);line-height:1.1;letter-spacing:-.005em;margin:0;text-wrap:balance;
+  background:linear-gradient(180deg,var(--gold-hi) 0%,var(--gold) 55%,var(--gold-deep) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.reveal{display:flex;flex-direction:column;align-items:center;gap:22px}
+.fade{animation:rise .6s var(--ease-out) both}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+.hall{width:100%;display:flex;flex-direction:column;gap:20px;text-align:left}
+.hall header{text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
+.hall h2{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:var(--fs-h2);line-height:1.05;letter-spacing:-.005em;margin:0;color:var(--gold)}
+.hall header p{margin:0;color:var(--muted);font-size:var(--fs-small)}
+.list-wrap{position:relative}
+ol{
+  list-style:none;margin:0;padding:0;border-top:1px solid var(--line);
+  max-height:min(52vh,560px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:var(--line) transparent;
+}
+ol.fade-top{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 40px);mask-image:linear-gradient(to bottom,transparent 0,#000 40px)}
+ol.fade-bottom{-webkit-mask-image:linear-gradient(to top,transparent 0,#000 40px);mask-image:linear-gradient(to top,transparent 0,#000 40px)}
+ol.fade-top.fade-bottom{-webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 40px,#000 calc(100% - 40px),transparent 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 40px,#000 calc(100% - 40px),transparent 100%)}
+li{display:grid;grid-template-columns:2.4em 1fr auto;align-items:center;column-gap:12px;row-gap:2px;padding:14px 4px;border-bottom:1px solid var(--line)}
+.n{grid-row:1/3;font-family:var(--display);font-weight:800;font-size:1.375rem;color:var(--gold-deep);font-variant-numeric:tabular-nums}
+.who{font-weight:600;font-size:var(--fs-name);min-width:0;overflow-wrap:anywhere}
+.d{grid-column:2;font-family:var(--mono);font-size:var(--fs-caption);color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.holder{grid-column:3;grid-row:1/3;display:flex;align-items:center;gap:8px}
+.holder canvas{width:56px;height:76px;display:block}
+.tag{font-family:var(--mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--velvet);background:var(--gold);padding:3px 7px;border-radius:3px;white-space:nowrap}
+li.now{padding-block:10px;background:linear-gradient(90deg,rgba(228,185,91,.12),rgba(228,185,91,0));border-bottom-color:var(--gold-deep)}
+li.now .n{color:var(--gold)}
+li.now .who{font-size:var(--fs-name-lg);color:var(--gold-hi)}
+.foot{text-align:center}
+@media (max-width:380px){.tag{display:none}}
+@media (prefers-reduced-motion:reduce){.fade{animation:none}.scene,.btn{transition:none}}
+</style>
+
+<canvas class="scene" id="c" aria-hidden="true"></canvas>
+
+<main class="wrap">
+  <div class="eyebrow">Trofej debylů</div>
+
+  <div class="main">
+    <div class="stage" id="stage" tabindex="0" role="button" aria-label="Otevřít krabici"></div>
+
+    <div class="below" id="below">
+      <div class="reveal" id="reveal" hidden>
+        <h1 class="fade">Gratulujeme, jsi největší debyl</h1>
+        <button class="btn solid fade" id="more" type="button" hidden>Podívej se, jaké další debyly tu&nbsp;máme&nbsp;→</button>
+      </div>
+    </div>
+
+    <section class="hall" id="hall" hidden aria-labelledby="hall-title">
+      <header class="fade">
+        <h2 id="hall-title">Síň slávy</h2>
+        <p>Všichni, kdo kořen kdy drželi, od toho současného</p>
+      </header>
+      <ol id="list"></ol>
+      <div class="foot fade"><button class="btn" id="again" type="button">Otevřít krabici znovu</button></div>
+    </section>
+  </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ===== Seznam vítězů — uprav tady. Piš od nejstaršího po nejnovějšího.
+   Poslední v seznamu trofej právě má a na stránce se ukáže nahoře.
+   date: "MM.RRRR", name: "Jméno"                                        */
+const WINNERS = [
+  { date: "8.2020", name: "Moňka" },
+  { date: "12.2020", name: "Simonka" },
+  { date: "12.2021", name: "Ráďa" },
+  { date: "12.2022", name: "Moňka" },
+  { date: "7.2023", name: "Barunka" },
+  { date: "12.2023", name: "Terezka" },
+  { date: "12.2024", name: "Bertík" },
+  { date: "12.2025", name: "Ráďa + Síma" },
+  { date: "12.2026", name: "Terezka + Joren" },
+];
+
+const GEO = {"v":[4.25,-0.84,110.46,-6.51,7.99,126.37,-6.23,3.04,110.37,4.18,5.12,133.95,-12.2,12.46,108.76,-12.7,18.73,134.98,1.58,31.09,102.11,12.03,30.18,120.93,14.2,27.93,105.36,1.44,35.54,130.45,17.32,21.18,129.63,20.72,15.05,104.84,-11.41,13.42,44.24,-0.91,20.98,55.03,-0.46,19.46,40.53,-11.0,14.71,56.68,-16.64,1.48,42.8,-15.6,3.79,58.57,14.87,-0.47,83.35,23.69,5.83,76.34,22.63,10.14,75.81,17.0,-2.04,82.15,23.21,-6.66,84.85,28.59,0.28,80.17,17.87,-15.33,84.25,9.89,-10.95,80.33,3.76,-8.24,81.63,8.12,-15.08,60.5,12.74,-6.44,52.93,15.12,-7.46,55.47,0.55,-13.02,58.94,24.23,-13.7,60.73,18.44,-20.76,65.35,21.85,1.89,56.35,30.48,-5.45,61.32,18.04,7.71,54.2,6.3,-15.33,70.74,-0.44,-10.5,70.56,15.51,-20.71,75.33,18.22,11.79,64.81,24.17,6.91,65.41,31.83,0.82,69.94,46.58,-5.86,75.79,52.99,1.39,83.74,44.87,1.87,96.42,19.62,-24.05,77.81,34.8,-20.84,88.64,32.76,-13.56,101.0,36.03,-18.81,80.29,40.13,-13.65,76.46,38.09,-5.6,98.08,12.16,-8.3,43.8,0.55,-17.61,26.51,12.52,-11.22,26.69,0.98,-14.84,44.64,17.48,3.45,42.24,18.24,1.06,25.69,-11.3,-10.74,33.61,-18.19,0.22,23.35,-10.6,-9.64,44.09,-9.89,-6.25,59.43,11.22,14.55,40.95,11.81,13.11,23.91,9.79,17.09,54.54,-0.56,18.94,22.61,-11.51,13.13,41.36,-12.56,12.56,22.51,11.3,35.82,97.62,19.27,28.78,103.14,24.43,51.4,105.87,33.71,43.74,111.26,41.01,34.13,106.75,26.71,20.31,99.74,8.61,35.03,86.09,20.63,50.06,93.06,22.09,44.68,83.79,11.33,31.22,76.11,-0.22,26.95,83.35,1.74,24.46,71.21,40.25,30.17,94.66,28.34,16.17,89.82,35.59,31.42,85.5,26.48,17.21,79.24,20.34,9.15,87.48,19.04,23.87,74.47,28.58,37.22,82.01,13.33,19.66,69.52,-6.91,-2.68,78.93,-12.19,8.77,86.54,-12.62,6.33,76.8,-6.26,-0.57,88.72,4.44,-4.34,89.87,13.47,1.52,88.38,13.41,5.01,108.58,-8.56,16.39,74.17,-8.21,18.54,84.16,-8.19,22.55,106.49,-8.41,29.89,132.82,13.46,5.72,114.47,13.45,11.37,131.53,-0.24,21.73,64.27,-9.66,15.58,66.55,-8.94,16.14,71.33,-13.97,5.06,68.83,9.99,18.27,63.91,-8.47,-4.15,70.0,16.59,1.79,2.24,10.57,14.58,-0.92,-2.61,22.44,-4.39,-14.28,-11.32,-0.84,-22.68,1.6,-4.34,-11.79,-11.75,24.95,-1.16,-16.8,2.32,10.88,-10.47,3.32,-16.62,15.89,-5.7,12.0,30.52,129.32,-6.41,8.44,135.24],"f":[0,1,2,1,0,3,1,4,2,5,4,1,6,7,8,7,6,9,8,10,11,10,8,7,12,13,14,13,12,15,12,16,17,15,12,17,18,19,20,19,18,21,19,22,23,22,19,21,24,21,25,24,22,21,18,25,21,25,18,26,27,28,29,28,27,30,29,31,32,27,29,32,31,33,34,33,31,29,33,28,35,28,33,29,36,26,37,26,36,25,38,25,36,25,38,24,38,36,32,27,32,36,27,37,30,37,27,36,33,39,40,39,33,35,40,41,34,33,40,34,41,19,23,19,41,40,39,19,40,19,39,20,42,41,43,41,42,34,23,43,41,23,44,43,45,46,24,47,24,46,45,48,46,48,45,32,48,31,49,31,48,32,49,34,42,34,49,31,50,23,22,44,23,50,22,47,50,47,22,24,51,52,53,54,52,51,54,28,30,28,54,51,55,28,51,28,55,35,51,53,56,56,55,51,57,16,58,16,57,59,60,16,59,16,60,17,54,60,59,60,54,30,57,54,59,54,57,52,61,56,62,55,56,61,61,35,55,35,61,63,14,63,61,63,14,13,62,14,61,14,62,64,65,64,66,64,65,14,65,66,58,58,16,65,8,67,6,67,8,68,68,69,67,68,70,69,68,71,70,71,68,72,72,8,11,8,72,68,73,74,75,75,76,73,74,67,69,67,74,73,6,73,77,6,67,73,76,77,73,77,76,78,79,72,80,72,79,71,79,80,81,82,81,80,82,83,20,83,82,80,72,83,80,83,72,11,84,81,82,81,84,85,76,85,84,85,76,75,86,76,84,76,86,78,86,82,20,82,86,84,87,88,89,88,87,90,4,90,2,90,4,88,91,2,90,2,91,0,90,87,26,91,90,26,92,26,18,91,26,92,91,93,0,93,91,92,11,92,83,92,11,93,20,92,18,20,83,92,94,77,78,77,94,95,95,6,77,6,95,96,88,96,95,96,88,4,95,89,88,95,94,89,96,9,6,9,96,97,97,96,4,4,5,97,98,3,0,3,98,99,98,10,99,10,98,11,15,100,13,100,15,101,100,102,78,102,100,101,103,102,101,102,103,89,101,17,103,101,15,17,63,39,35,39,63,104,39,86,20,86,39,104,104,100,78,78,86,104,63,100,104,100,63,13,105,17,60,17,105,103,89,105,87,105,89,103,37,87,105,87,37,26,105,60,30,37,105,30,106,62,56,62,106,107,107,108,64,62,107,64,109,58,110,58,109,111,112,111,109,111,112,52,113,52,112,52,113,53,56,113,106,53,113,56,66,108,114,108,66,64,110,66,114,66,110,58,32,45,38,45,24,38,52,57,111,57,58,111,11,98,93,98,0,93,102,89,94,78,102,94,65,12,14,65,16,12,115,10,7,115,7,9,116,5,1,116,1,3,5,116,3,3,99,10,10,115,9,9,97,5,5,3,10,10,9,5,50,24,47,50,44,24,42,48,49,48,47,46,47,44,50,44,42,43,42,47,48,47,42,44,75,74,69,69,70,71,71,79,81,81,85,75,75,69,71,71,81,75,110,114,108,108,107,106,106,113,112,112,109,110,110,108,106,106,112,110],"c":[-2.41,2.21]};
+const REDUCED = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = id => document.getElementById(id);
+
+/* ---------- shared geometry & materials ---------- */
+function trunkGeometry(){
+  const g = new THREE.BufferGeometry(), p = [], [cx, cy] = GEO.c;
+  for (let i = 0; i < GEO.v.length; i += 3) p.push(GEO.v[i] - cx, GEO.v[i+2] + 15, -(GEO.v[i+1] - cy));
+  g.setAttribute('position', new THREE.Float32BufferAttribute(p, 3)); g.setIndex(GEO.f);
+  const flat = g.toNonIndexed(); flat.computeVertexNormals(); return flat;
+}
+function baseGeometry(){
+  const pts = [[0,0],[34.2,0],[35,.8],[33.5,11]];
+  for (let i = 1; i <= 10; i++){ const a = i/10*Math.PI/2; pts.push([29.5+4*Math.cos(a), 11+4*Math.sin(a)]); }
+  pts.push([0,15]);
+  return new THREE.LatheGeometry(pts.map(([r,y]) => new THREE.Vector2(r,y)), 96);
+}
+const TRUNK_G = trunkGeometry(), BASE_G = baseGeometry();
+
+function makeEnv(renderer){
+  const s = new THREE.Scene();
+  s.add(new THREE.Mesh(new THREE.SphereGeometry(500, 32, 16), new THREE.MeshBasicMaterial({ color: 0x6b5640, side: THREE.BackSide })));
+  const panel = (w, h, col, k, pos) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(col).multiplyScalar(k), side: THREE.DoubleSide }));
+    m.position.set(...pos); m.lookAt(0, 0, 0); s.add(m);
+  };
+  panel(400, 400, 0xffffff, 5, [0, 420, 80]);
+  panel(160, 500, 0xffe2b0, 6, [-380, 60, 120]);
+  panel(120, 500, 0xbfd0ff, 1.6, [380, 40, -60]);
+  panel(300, 80, 0xffffff, 2, [0, 120, -420]);
+  const pm = new THREE.PMREMGenerator(renderer); const env = pm.fromScene(s, .04).texture; pm.dispose(); return env;
+}
+const goldMat  = env => new THREE.MeshStandardMaterial({ color: 0xffc95e, metalness: .9, roughness: .32, flatShading: true, envMap: env, envMapIntensity: 1.5 });
+const blackMat = env => new THREE.MeshStandardMaterial({ color: 0x050407, metalness: 0, roughness: .45, envMap: env, envMapIntensity: .2 });
+function makeTrophy(env){
+  const t = new THREE.Group();
+  t.add(new THREE.Mesh(TRUNK_G, goldMat(env)), new THREE.Mesh(BASE_G, blackMat(env)));
+  return t;
+}
+function setupRenderer(canvas){
+  const r = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  r.setPixelRatio(Math.min(devicePixelRatio, 2));
+  r.outputEncoding = THREE.sRGBEncoding; r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.05;
+  return r;
+}
+function addLights(scene){
+  const key = new THREE.DirectionalLight(0xfff1d6, 1.2); key.position.set(-120, 260, 200); scene.add(key);
+  const rim = new THREE.DirectionalLight(0xc9d6ff, .7); rim.position.set(160, 120, -200); scene.add(rim);
+  scene.add(new THREE.AmbientLight(0xffffff, .12));
+}
+
+/* ---------- main scene (full-screen layer, framed onto the stage slot) ---------- */
+const canvas = $('c'), stageEl = $('stage');
+const R = setupRenderer(canvas);
+const scene = new THREE.Scene();
+const env = makeEnv(R);
+addLights(scene);
+const camera = new THREE.PerspectiveCamera(30, 1, 1, 5000);
+const LOOK = new THREE.Vector3(0, 90, 0), DIST = 700;
+
+function fitCamera(){
+  const W = canvas.clientWidth, H = canvas.clientHeight, r = stageEl.getBoundingClientRect();
+  if (!W || !H || !r.height) return;
+  // stage shows ~250 mm tall / ~170 mm wide; the rest of the screen continues the same view
+  const half = Math.max(125, 85 / (r.width / r.height));
+  camera.fov = THREE.MathUtils.radToDeg(2 * Math.atan(half * (H / r.height) / DIST));
+  camera.aspect = W / H;
+  camera.position.set(0, LOOK.y + DIST * .28, DIST); camera.lookAt(LOOK);
+  camera.setViewOffset(W, H, W/2 - (r.left + r.width/2), H/2 - (r.top + r.height/2), W, H);
+  camera.updateProjectionMatrix();
+}
+function resize(){ R.setSize(canvas.clientWidth, canvas.clientHeight, false); fitCamera(); }
+addEventListener('resize', resize); resize();
+
+// contact shadow
+const sh = document.createElement('canvas'); sh.width = sh.height = 128;
+const sx = sh.getContext('2d'), gr = sx.createRadialGradient(64,64,0,64,64,64);
+gr.addColorStop(0,'rgba(0,0,0,.65)'); gr.addColorStop(1,'rgba(0,0,0,0)'); sx.fillStyle = gr; sx.fillRect(0,0,128,128);
+const shadow = new THREE.Mesh(new THREE.PlaneGeometry(170,170), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(sh), transparent: true, depthWrite: false }));
+shadow.rotation.x = -Math.PI/2; shadow.position.y = .1; scene.add(shadow);
+
+// gift box: open-top body + separate lid (own materials so it can fade on its own)
+const mBox = () => new THREE.MeshStandardMaterial({ color: 0x0a070c, roughness: .45, metalness: 0, envMap: env, envMapIntensity: .2, transparent: true });
+const mRib = () => new THREE.MeshStandardMaterial({ color: 0xe8b84f, metalness: .9, roughness: .28, envMap: env, envMapIntensity: 1.2, transparent: true });
+const boxMat = mBox(), ribbonMat = mRib(), lidMat = mBox(), lidRibMat = mRib();
+const box = new THREE.Group(); scene.add(box);
+const body = new THREE.Group(); box.add(body);
+const W_ = 100, H_ = 82, TH = 3;
+const part = (parent, w, h, d, x, y, z, m) => { const k = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); k.position.set(x, y, z); parent.add(k); };
+part(body, W_, TH, W_, 0, -H_/2 + TH/2, 0, boxMat);
+part(body, W_, H_, TH, 0, 0,  W_/2 - TH/2, boxMat);  part(body, W_, H_, TH, 0, 0, -W_/2 + TH/2, boxMat);
+part(body, TH, H_, W_ - 2*TH,  W_/2 - TH/2, 0, 0, boxMat); part(body, TH, H_, W_ - 2*TH, -W_/2 + TH/2, 0, 0, boxMat);
+part(body, 16, H_ + .4, .6, 0, 0,  W_/2 + .3, ribbonMat); part(body, 16, H_ + .4, .6, 0, 0, -W_/2 - .3, ribbonMat);
+part(body, .6, H_ + .4, 16,  W_/2 + .3, 0, 0, ribbonMat); part(body, .6, H_ + .4, 16, -W_/2 - .3, 0, 0, ribbonMat);
+body.position.y = H_/2;
+const lid = new THREE.Group(); box.add(lid);
+part(lid, 108, 18, 108, 0, 0, 0, lidMat);
+part(lid, 109, 18.4, 17, 0, 0, 0, lidRibMat); part(lid, 17, 18.4, 109, 0, 0, 0, lidRibMat);
+const loopG = new THREE.TorusGeometry(13, 4.2, 12, 32);
+[-1, 1].forEach(s => { const l = new THREE.Mesh(loopG, lidRibMat); l.position.set(s*12, 18, 0); l.rotation.z = s*.55; l.scale.set(1,.75,1); lid.add(l); });
+const knot = new THREE.Mesh(new THREE.SphereGeometry(6, 16, 12), lidRibMat); knot.position.y = 12; lid.add(knot);
+const LID_Y = H_ + 9; lid.position.y = LID_Y;
+
+// trophy, hidden inside the closed box
+const trophy = makeTrophy(env); scene.add(trophy);
+const T_IN = { y: 22, s: .5 }, RISE = 35;
+trophy.position.y = T_IN.y; trophy.scale.setScalar(T_IN.s);
+
+// sparks
+const N = 140, sp = new Float32Array(N*3), sv = [];
+const sparkG = new THREE.BufferGeometry(); sparkG.setAttribute('position', new THREE.BufferAttribute(sp, 3));
+const sparkM = new THREE.PointsMaterial({ color: 0xffd98a, size: 3.2, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
+scene.add(new THREE.Points(sparkG, sparkM));
+function burst(){
+  for (let i = 0; i < N; i++){
+    sp[i*3] = (Math.random()-.5)*60; sp[i*3+1] = 85; sp[i*3+2] = (Math.random()-.5)*60;
+    const a = Math.random()*Math.PI*2, up = 90 + Math.random()*120, out = 30 + Math.random()*80;
+    sv[i] = [Math.cos(a)*out, up, Math.sin(a)*out];
+  }
+  sparkG.attributes.position.needsUpdate = true; sparkM.opacity = 1;
+}
+
+/* ---------- motion ---------- */
+const ease = { out: t => 1-Math.pow(1-t,3), inOut: t => t<.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2,
+               back: t => { const c = 1.4; return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2); } };
+const seg = (t, a, b) => Math.min(1, Math.max(0, (t-a)/(b-a)));
+// press feedback: critically damped spring (damping 1, response .25 s)
+const press = { x: 1, v: 0, to: 1 };
+const K = Math.pow(2*Math.PI/.25, 2), C = 4*Math.PI/.25;
+let state = 'idle', t0 = 0, spin = 0, last = performance.now(), running = true;
+
+function frame(now){
+  if (!running) return;
+  const dt = Math.min(.05, (now-last)/1000); last = now;
+  const t = (now - t0)/1000;
+  fitCamera();
+
+  press.v += (K*(press.to - press.x) - C*press.v)*dt; press.x += press.v*dt;
+
+  if (state === 'idle'){
+    const T = now/1000, ph = T % 4;
+    box.rotation.y = Math.sin(T*.5)*.3 + .5;
+    const wig = ph < .5 && !REDUCED ? Math.sin(ph*36)*.045*(1 - ph/.5) : 0;   // short nudge every 4 s
+    box.rotation.z = wig; lid.position.y = LID_Y + Math.abs(wig)*40;
+    box.scale.set(1 + (1-press.x)*.4, press.x, 1 + (1-press.x)*.4);           // squash on press
+  } else {
+    const tt = t * (REDUCED ? 2.2 : 1);
+    box.scale.set(1,1,1);
+    // lid: pops up, tumbles away up-left, shrinks and fades before it can reach a screen edge
+    const l = ease.out(seg(tt, 0, 1.1));
+    lid.position.set(-l*130, LID_Y + l*240, l*110);
+    lid.rotation.set(-l*1.8, l*.7, l*2.6);
+    lid.scale.setScalar(1 - .35*l);
+    lidMat.opacity = lidRibMat.opacity = 1 - seg(tt, .35, .95);
+    // body sinks and fades
+    const b = ease.inOut(seg(tt, .55, 1.5));
+    body.position.y = H_/2 - b*70; boxMat.opacity = ribbonMat.opacity = 1 - seg(tt, .6, 1.6);
+    box.visible = tt < 1.7;
+    if (state !== 'leaving'){
+      const r = ease.out(seg(tt, .25, 1.3)), s = ease.back(seg(tt, .4, 1.6)), d = ease.inOut(seg(tt, 1.3, 2.2));
+      trophy.position.y = T_IN.y + r*RISE - d*(T_IN.y + RISE) + (tt > 2.2 ? Math.sin((tt-2.2)*1.4)*2.5 : 0);
+      trophy.scale.setScalar(T_IN.s + (1-T_IN.s)*s);
+      spin += dt * (REDUCED ? .5 : (.9 + 5*(1 - seg(tt, .3, 2.4))));
+      shadow.scale.setScalar(.7 + .3*d);
+    }
+  }
+  if (state === 'leaving'){
+    const v = ease.inOut(seg((now - tLeave)/1000, 0, .6));
+    spin += dt*(1 + v*14);
+    trophy.scale.setScalar(1 - v); trophy.position.y = v*30; shadow.scale.setScalar(1 - v);
+  }
+  trophy.rotation.y = spin;
+
+  if (sparkM.opacity > 0){
+    for (let i = 0; i < N; i++){ sv[i][1] -= 260*dt; sp[i*3] += sv[i][0]*dt; sp[i*3+1] += sv[i][1]*dt; sp[i*3+2] += sv[i][2]*dt; }
+    sparkG.attributes.position.needsUpdate = true; sparkM.opacity = Math.max(0, sparkM.opacity - dt*.6);
+  }
+  R.render(scene, camera);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ---------- interactions ---------- */
+let moreTimer, revealTimer, tLeave = 0;
+function openBox(){
+  if (state !== 'idle') return;
+  state = 'opening'; t0 = performance.now(); press.to = 1;
+  stageEl.classList.add('opened'); stageEl.removeAttribute('role'); stageEl.setAttribute('aria-label', 'Trofej'); stageEl.tabIndex = -1;
+  if (!REDUCED) setTimeout(burst, 120);
+  revealTimer = setTimeout(() => {
+    state = 'shown'; $('reveal').hidden = false;
+    moreTimer = setTimeout(() => { $('more').hidden = false; $('more').focus({ preventScroll: true }); }, 1000);
+  }, REDUCED ? 600 : 1500);
+}
+stageEl.addEventListener('pointerdown', () => { if (state === 'idle') press.to = .9; });
+['pointerleave','pointercancel'].forEach(e => stageEl.addEventListener(e, () => { press.to = 1; }));
+stageEl.addEventListener('click', openBox);
+stageEl.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openBox(); } });
+
+$('more').addEventListener('click', () => {
+  state = 'leaving'; tLeave = performance.now();
+  $('below').hidden = true;
+  setTimeout(() => {
+    canvas.classList.add('gone'); stageEl.hidden = true; showHall(); fitCamera();
+    setTimeout(() => { running = false; }, 450);
+  }, REDUCED ? 0 : 450);
+});
+
+$('again').addEventListener('click', () => {
+  clearTimeout(moreTimer); clearTimeout(revealTimer); stopMini();
+  $('hall').hidden = true; $('more').hidden = true; $('reveal').hidden = true; $('below').hidden = false;
+  stageEl.hidden = false; stageEl.classList.remove('opened'); stageEl.setAttribute('role', 'button'); stageEl.setAttribute('aria-label', 'Otevřít krabici'); stageEl.tabIndex = 0;
+  lid.position.set(0, LID_Y, 0); lid.rotation.set(0,0,0); lid.scale.setScalar(1);
+  body.position.y = H_/2; boxMat.opacity = ribbonMat.opacity = lidMat.opacity = lidRibMat.opacity = 1; box.visible = true;
+  trophy.position.y = T_IN.y; trophy.scale.setScalar(T_IN.s); shadow.scale.setScalar(1); sparkM.opacity = 0;
+  state = 'idle'; spin = 0;
+  canvas.classList.remove('gone');
+  if (!running){ running = true; last = performance.now(); requestAnimationFrame(frame); }
+  window.scrollTo({ top: 0 });
+});
+
+/* ---------- hall of fame: newest (current holder) on top ---------- */
+let mini = null;
+function showHall(){
+  const ol = $('list'); ol.innerHTML = '';
+  WINNERS.map((w, i) => ({ ...w, n: i + 1 })).reverse().forEach((w, i) => {
+    const li = document.createElement('li'), now = i === 0;
+    li.className = 'fade' + (now ? ' now' : ''); li.style.animationDelay = (Math.min(i, 8)*60) + 'ms';
+    li.innerHTML = `<span class="n">${w.n}.</span><span class="who"></span><span class="d"></span>` +
+      (now ? `<span class="holder"><span class="tag">Teď ji má</span><canvas width="112" height="152" aria-label="Trofej"></canvas></span>` : '');
+    li.querySelector('.who').textContent = w.name;
+    li.querySelector('.d').textContent = w.date;
+    ol.appendChild(li);
+  });
+  $('hall').hidden = false;
+  ol.scrollTop = 0; edgeFades();
+  const c = ol.querySelector('.holder canvas'); if (c) startMini(c);
+}
+function edgeFades(){
+  const ol = $('list'), more = ol.scrollHeight - ol.clientHeight > 2;
+  ol.classList.toggle('fade-top', more && ol.scrollTop > 2);
+  ol.classList.toggle('fade-bottom', more && ol.scrollTop < ol.scrollHeight - ol.clientHeight - 2);
+}
+$('list').addEventListener('scroll', edgeFades, { passive: true });
+addEventListener('resize', () => { if (!$('hall').hidden) edgeFades(); });
+
+function startMini(c){
+  const r = setupRenderer(c); r.setSize(56, 76, false);
+  const s = new THREE.Scene(); addLights(s);
+  const t = makeTrophy(makeEnv(r)); s.add(t);
+  const cam = new THREE.PerspectiveCamera(30, 56/76, 1, 2000); cam.position.set(0, 110, 320); cam.lookAt(0, 74, 0);
+  let on = true, a = 0, prev = performance.now();
+  (function loop(n){ if (!on) return; a += (n-prev)/1000*(REDUCED ? .4 : 1.1); prev = n; t.rotation.y = a; r.render(s, cam); requestAnimationFrame(loop); })(prev);
+  mini = { stop(){ on = false; r.dispose(); } };
+}
+function stopMini(){ if (mini){ mini.stop(); mini = null; } }
+</script>
+
+</body></html>
