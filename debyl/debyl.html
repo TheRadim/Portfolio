@@ -97,12 +97,10 @@ li{display:grid;grid-template-columns:2.4em 1fr auto;align-items:center;column-g
 .d{grid-column:2;font-family:var(--mono);font-size:var(--fs-caption);color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.04em}
 .holder{grid-column:3;grid-row:1/3;display:flex;align-items:center;gap:8px}
 .holder canvas{width:56px;height:76px;display:block}
-.tag{font-family:var(--mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--velvet);background:var(--gold);padding:3px 7px;border-radius:3px;white-space:nowrap}
 li.now{padding-block:10px;background:linear-gradient(90deg,rgba(228,185,91,.12),rgba(228,185,91,0));border-bottom-color:var(--gold-deep)}
 li.now .n{color:var(--gold)}
 li.now .who{font-size:var(--fs-name-lg);color:var(--gold-hi)}
 .foot{text-align:center}
-@media (max-width:380px){.tag{display:none}}
 @media (prefers-reduced-motion:reduce){.fade{animation:none}.scene,.btn{transition:none}}
 </style>
 
@@ -378,7 +376,7 @@ function showHall(){
     const li = document.createElement('li'), now = i === 0;
     li.className = 'fade' + (now ? ' now' : ''); li.style.animationDelay = (Math.min(i, 8)*60) + 'ms';
     li.innerHTML = `<span class="n">${w.n}.</span><span class="who"></span><span class="d"></span>` +
-      (now ? `<span class="holder"><span class="tag">Teď ji má</span><canvas width="112" height="152" aria-label="Trofej"></canvas></span>` : '');
+      (now ? `<span class="holder"><canvas width="112" height="152" aria-label="Trofej"></canvas></span>` : '');
     li.querySelector('.who').textContent = w.name;
     li.querySelector('.d').textContent = w.date;
     ol.appendChild(li);
